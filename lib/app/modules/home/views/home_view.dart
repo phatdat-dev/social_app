@@ -7,9 +7,9 @@ import '../../../../facebook/screens/facebook_screen_groups.dart';
 import '../../../../facebook/screens/facebook_screen_more.dart';
 import '../../../../facebook/screens/facebook_screen_notify.dart';
 import '../../../../facebook/screens/facebook_screen_pages.dart';
-import '../../../../facebook/screens/facebook_screen_post.dart';
 import '../../../../facebook/screens/facebook_screen_videos.dart';
 import '../controllers/home_controller.dart';
+import 'home_dashboard_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     controller.onInitData();
 
     tabBarWidget = {
-      Tab(icon: Icon(Icons.home_outlined, size: 30)): FacebookScreenPost(),
+      Tab(icon: Icon(Icons.home_outlined, size: 30)): HomeDashBoardView(),
       Tab(icon: Icon(Icons.person_outline, size: 30)): FacebookScreenGroups(),
       Tab(icon: Icon(Icons.ondemand_video_outlined, size: 30)): FacebookScreenVideos(),
       Tab(icon: Icon(Icons.flag_outlined, size: 30)): FacebookScreenPages(),
