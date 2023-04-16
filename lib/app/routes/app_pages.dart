@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:social_app/app/core/constants/global_constant.dart';
-import 'package:social_app/app/modules/authentication/views/authentication_view.dart';
 import 'package:social_app/app/modules/home/views/home_view.dart';
 
 // https://pub.dev/documentation/go_router/latest/topics/Get%20started-topic.html
@@ -19,7 +18,7 @@ class AppPages {
     routes: [
       GoRoute(
         path: "/",
-        builder: (context, state) => AuthenticationView(),
+        builder: (context, state) => HomeView(),
         // routes: <RouteBase>[
         //   GoRoute(
         //     path: 'details',

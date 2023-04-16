@@ -4,8 +4,6 @@ import 'package:social_app/app/core/utils/extension/app_extension.dart';
 abstract class ColorConstants {
   //0xFF vao` hex
   // static final MaterialColor blue100 = MaterialColor(0xFFE1EDF9, getSwatch(const Color(0xFFE1EDF9)));
-  static final MaterialColor pink500 = MaterialColor(0xFFFFE6E6, getSwatch(const Color(0xFFFFE6E6)));
-  static final MaterialColor pink800 = MaterialColor(0xFFF76969, getSwatch(const Color(0xFFF76969)));
 
   static Map<int, Color> getSwatch(Color color) {
     final hslColor = HSLColor.fromColor(color);

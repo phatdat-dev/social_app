@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 
 // import 'package:collection/collection.dart'; //sort AZ
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class Helper {
@@ -40,4 +42,6 @@ class Helper {
     }
     return list;
   }
+
+  static Future<dynamic> readFileJson(String assets) async => jsonDecode(await rootBundle.loadString(assets));
 }

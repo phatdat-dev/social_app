@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         providers: providers,
         builder: (context, child) => MaterialApp.router(
           routerConfig: AppPages.router,
-          title: "Title App",
+          title: "Social App",
           debugShowCheckedModeBanner: false,
           //theme
           theme: theme.lightTheme,

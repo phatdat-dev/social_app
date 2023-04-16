@@ -60,6 +60,7 @@ dependencies:
   # flutter_inappwebview: any #web view load and display html
   youtube_player_flutter: ^8.1.2 #run trailer from YT
   # auto_size_text: ^3.0.0
+  material_design_icons_flutter: any #icon Fb
 
   #
   flutter:
@@ -111,6 +112,8 @@ flutter:
     - assets/svg/
     - assets/gif/
     - assets/translations/
+    - assets/emoji/
+    - assets/json/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
