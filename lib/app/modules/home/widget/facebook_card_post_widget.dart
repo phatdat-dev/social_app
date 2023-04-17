@@ -12,6 +12,7 @@ class FacebookCardPostWidget extends StatelessWidget {
   final String description;
   final String nums;
   final String reactions;
+  final Widget? child;
 
   FacebookCardPostWidget({
     required this.image_path,
@@ -21,6 +22,7 @@ class FacebookCardPostWidget extends StatelessWidget {
     required this.user_name,
     required this.profile_path,
     required this.reactions,
+    this.child,
   });
 
   @override
@@ -57,27 +59,39 @@ class FacebookCardPostWidget extends StatelessWidget {
             endIndent: 10,
           ),
           _buildButtonBar(),
+          child ?? SizedBox.shrink(),
         ],
       ),
     );
   }
 
   Row _buildButtonBar() {
+    bool like = false;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          child: TextButton.icon(
-            onPressed: () {},
-            icon: Icon(
-              MdiIcons.thumbUpOutline,
-              color: Colors.grey,
-            ),
-            label: Text(
-              "Like",
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
+          child: StatefulBuilder(
+              builder: (context, setState) => TextButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        like = !like;
+                      });
+                    },
+                    icon: like
+                        ? Icon(
+                            MdiIcons.thumbUp,
+                            color: Colors.blue,
+                          )
+                        : Icon(
+                            MdiIcons.thumbUpOutline,
+                            color: Colors.grey,
+                          ),
+                    label: Text(
+                      "Like",
+                      style: TextStyle(color: like ? Colors.blue : Colors.grey),
+                    ),
+                  )),
         ),
         Expanded(
           child: TextButton.icon(
