@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
+import 'package:social_app/app/widget/animated_route.dart';
 import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:social_app/facebook/models/model_story.dart';
 import 'package:social_app/package/comment_tree/comment_tree.dart';
@@ -197,7 +199,9 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
               ),
               Expanded(
                 child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Navigator.of(context).push(AnimatedRoute(CreatePostView()));
+                    },
                     child: Text("Bạn đang nghĩ gì ?", style: TextStyle(color: Colors.black)),
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
