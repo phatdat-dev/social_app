@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 import 'package:social_app/app/core/base/base_model.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/widget/loadding_widget.dart';
-import 'package:go_router/go_router.dart';
 
 import '../constants/app_constant.dart';
 

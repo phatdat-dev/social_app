@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 import 'package:social_app/app/widget/animated_route.dart';
@@ -19,9 +21,11 @@ class HomeDashBoardView extends StatefulWidget {
 bool visible = false;
 
 class _HomeDashBoardViewState extends State<HomeDashBoardView> {
+  late final HomeController controller;
   @override
   void initState() {
     super.initState();
+    controller = context.read<HomeController>();
   }
 
   @override
@@ -47,119 +51,122 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
       children: <Widget>[
         _buildInputStory(context),
         _buildListCardStory(),
-        FutureBuilder(
-            future: Helper.readFileJson('assets/json/FacebookPost.json'),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var data = snapshot.data;
-                return ListView.builder(
-                    itemCount: data.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (context, int index) {
-                      return FacebookCardPostWidget(
-                        image_path: data[index]['media_path'],
-                        date: data[index]['date_posted'],
-                        description: data[index]['title'],
-                        reactions: data[index]['people_reacted'],
-                        nums: data[index]['no_of_reactions'],
-                        user_name: data[index]['user_name'],
-                        profile_path: data[index]['profile_image'],
-                        child: Builder(builder: (context) {
-                          Widget contentComment(dynamic data) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'userName',
-                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          '${data.content}',
-                                          style: Theme.of(context).textTheme.bodyMedium,
-                                        ),
-                                      ],
+        Selector<HomeController, List<Map<String, dynamic>>?>(
+          selector: (_, controller) => controller.postData,
+          builder: (context, data, child) {
+            if (data == null) {
+              return CircularProgressIndicator();
+            }
+            Printt.green("rebuild");
+            return ListView.builder(
+                itemCount: data.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, int index) {
+                  return FacebookCardPostWidget(
+                    user_name: data[index]['user']['nickname'],
+                    profile_path: data[index]['user']['avatar_url'],
+                    image_path: (data[index]['post']['images'] as List).isNotEmpty
+                        ? (data[index]['post']['images'] as List).first
+                        : "assets/images/pexel.jpeg",
+                    date: data[index]['post']['reply_time'],
+                    description: "${data[index]['post']['subject']}\n${data[index]['post']['content']}",
+                    reactions: data[index]['stat']['view_num'].toString(),
+                    nums: "21 comments",
+                    child: Builder(builder: (context) {
+                      Widget contentComment(dynamic data) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'userName',
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
                                     ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      '${data.content}',
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              DefaultTextStyle(
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.grey),
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 5),
+                                      Text('33p', style: Theme.of(context).textTheme.bodySmall!),
+                                      SizedBox(width: 24),
+                                      Text('Like'),
+                                      SizedBox(width: 24),
+                                      Text('Reply'),
+                                    ],
                                   ),
-                                  DefaultTextStyle(
-                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.grey),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(width: 5),
-                                          Text('33p', style: Theme.of(context).textTheme.bodySmall!),
-                                          SizedBox(width: 24),
-                                          Text('Like'),
-                                          SizedBox(width: 24),
-                                          Text('Reply'),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              );
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: CommentTreeWidget<Comment, Comment>(
-                              root: Comment(avatar: 'null', userName: 'null', content: 'felangel made felangel/cubit_and_beyond public '),
-                              replies: [
-                                Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
-                                Comment(
-                                    avatar: 'null',
-                                    userName: 'null',
-                                    content: 'A Dart template generator which helps teams generator which helps teams generator which helps teams'),
-                                Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
-                                Comment(
-                                    avatar: 'null',
-                                    userName: 'null',
-                                    content: 'A Dart template generator which helps teams generator which helps teams '),
-                              ],
-                              treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
-                              avatarRoot: (context, data) => PreferredSize(
-                                child: CircleAvatarWidget(radius: 20),
-                                preferredSize: Size.fromRadius(20),
-                              ),
-                              avatarChild: (context, data) => PreferredSize(
-                                child: CircleAvatarWidget(radius: 14),
-                                preferredSize: Size.fromRadius(14),
-                              ),
-                              contentRoot: (context, data) {
-                                return contentComment(data);
-                              },
-                              contentChild: (context, data) {
-                                return contentComment(data);
-                              },
-                            ),
+                                ),
+                              )
+                            ],
                           );
-                        }),
-                        // child: Column(
-                        //   children: <Widget>[
-                        //     FacebookCardCommentWidget(
-                        //         comment_username: data[index]['comments'][0]['cuser_name'],
-                        //         comment_profile_pic: data[index]['comments'][0]['cprofile_image'],
-                        //         comment_text: data[index]['comments'][0]['ctitle']),
-                        //     FacebookCardCommentWidget(
-                        //         comment_username: data[index]['comments'][1]['cuser_name'],
-                        //         comment_profile_pic: data[index]['comments'][1]['cprofile_image'],
-                        //         comment_text: data[index]['comments'][1]['ctitle']),
-                        //   ],
-                        // ),
-                        // comment_visible: data[index]['comments_visible'],
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: CommentTreeWidget<Comment, Comment>(
+                          root: Comment(avatar: 'null', userName: 'null', content: 'felangel made felangel/cubit_and_beyond public '),
+                          replies: [
+                            Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
+                            Comment(
+                                avatar: 'null',
+                                userName: 'null',
+                                content: 'A Dart template generator which helps teams generator which helps teams generator which helps teams'),
+                            Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
+                            Comment(
+                                avatar: 'null',
+                                userName: 'null',
+                                content: 'A Dart template generator which helps teams generator which helps teams '),
+                          ],
+                          treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
+                          avatarRoot: (context, data) => PreferredSize(
+                            child: CircleAvatarWidget(radius: 20),
+                            preferredSize: Size.fromRadius(20),
+                          ),
+                          avatarChild: (context, data) => PreferredSize(
+                            child: CircleAvatarWidget(radius: 14),
+                            preferredSize: Size.fromRadius(14),
+                          ),
+                          contentRoot: (context, data) {
+                            return contentComment(data);
+                          },
+                          contentChild: (context, data) {
+                            return contentComment(data);
+                          },
+                        ),
                       );
-                    });
-              }
-              return Center(child: CircularProgressIndicator());
-            })
+                    }),
+                    // child: Column(
+                    //   children: <Widget>[
+                    //     FacebookCardCommentWidget(
+                    //         comment_username: data[index]['comments'][0]['cuser_name'],
+                    //         comment_profile_pic: data[index]['comments'][0]['cprofile_image'],
+                    //         comment_text: data[index]['comments'][0]['ctitle']),
+                    //     FacebookCardCommentWidget(
+                    //         comment_username: data[index]['comments'][1]['cuser_name'],
+                    //         comment_profile_pic: data[index]['comments'][1]['cprofile_image'],
+                    //         comment_text: data[index]['comments'][1]['ctitle']),
+                    //   ],
+                    // ),
+                    // comment_visible: data[index]['comments_visible'],
+                  );
+                });
+          },
+        )
       ],
     );
   }

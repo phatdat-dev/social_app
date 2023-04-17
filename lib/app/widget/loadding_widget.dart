@@ -18,7 +18,7 @@ class Loadding {
   }
 
   static void dismiss() {
-    stacKLoadding.removeLast();
+    if (stacKLoadding.isNotEmpty) stacKLoadding.removeLast();
     if (stacKLoadding.isEmpty && key.currentContext != null) {
       Navigator.of(key.currentContext!, rootNavigator: true).pop();
       key = GlobalKey<_LoaddingWidgetState>();

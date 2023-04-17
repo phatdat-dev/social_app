@@ -50,47 +50,52 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         // extendBody: true,
         extendBodyBehindAppBar: true,
         // drawer: HomeDrawerWidget(),
-        body: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-                //automaticallyImplyLeading: false,
-                // centerTitle: true,
-                // expandedHeight: 150,
-                floating: true, //giuu lau bottom
-                pinned: true, //giuu lai bottom
-                snap: true,
-                title: Text('Social App',
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontSize: 30,
-                          color: Theme.of(context).primaryColor,
-                        )),
-                actions: [
-                  AppBarIcon(iconData: Icons.add, onTap: () {}),
-                  AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
-                  AppBarIcon(iconData: MdiIcons.facebookMessenger, onTap: () {}),
-                ],
-                // flexibleSpace: const FlexibleSpaceBar(
-                //   centerTitle: true,
-                //   //collapseMode: CollapseMode.parallax,
-                //   background: Padding(
-                //     padding: EdgeInsets.only(left: 10),
-                //     child: Align(
-                //       alignment: Alignment.centerLeft,
-                //       child: Text('Find your favorite product', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-                //     ),
-                //   ),
-                // ),
-                bottom: TabBar(
-                  controller: tabBarController,
-                  tabs: tabBarWidget.keys.toList(),
-                )),
-          ],
-          body: TabBarView(
-            controller: tabBarController,
-            children: tabBarWidget.values.toList(),
-          ),
-        ),
+        body: RefreshIndicator(
+            onRefresh: () async {
+              await controller.onInitData();
+            },
+            child: NestedScrollView(
+              key: controller.globalKeyScrollController,
+              floatHeaderSlivers: true,
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                    //automaticallyImplyLeading: false,
+                    // centerTitle: true,
+                    // expandedHeight: 150,
+                    floating: true, //giuu lau bottom
+                    pinned: true, //giuu lai bottom
+                    snap: true,
+                    title: Text('Social App',
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              fontSize: 30,
+                              color: Theme.of(context).primaryColor,
+                            )),
+                    actions: [
+                      AppBarIcon(iconData: Icons.add, onTap: () {}),
+                      AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
+                      AppBarIcon(iconData: MdiIcons.facebookMessenger, onTap: () {}),
+                    ],
+                    // flexibleSpace: const FlexibleSpaceBar(
+                    //   centerTitle: true,
+                    //   //collapseMode: CollapseMode.parallax,
+                    //   background: Padding(
+                    //     padding: EdgeInsets.only(left: 10),
+                    //     child: Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: Text('Find your favorite product', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                    //     ),
+                    //   ),
+                    // ),
+                    bottom: TabBar(
+                      controller: tabBarController,
+                      tabs: tabBarWidget.keys.toList(),
+                    )),
+              ],
+              body: TabBarView(
+                controller: tabBarController,
+                children: tabBarWidget.values.toList(),
+              ),
+            )),
         //Footer
       ),
     );

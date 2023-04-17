@@ -45,12 +45,21 @@ class FacebookCardPostWidget extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             )),
           ),
-          Image.asset(
-            image_path,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            // height: 300,
-          ),
+          image_path.contains("http")
+              ? FadeInImage.assetNetwork(
+                  placeholder: "assets/images/Img_error.png",
+                  image: image_path,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  fadeInDuration: const Duration(milliseconds: 200),
+                  fadeOutDuration: const Duration(milliseconds: 180),
+                  // height: 300,
+                )
+              : Image.asset(
+                  image_path,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
           _buildNumbericLikeComment(context),
           Divider(
             height: 0, //height spacing of divider
@@ -195,7 +204,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                   // shape: BoxShape.circle,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: AssetImage(profile_path),
+                    image: NetworkImage(profile_path),
                     fit: BoxFit.cover,
                   )),
             ),
