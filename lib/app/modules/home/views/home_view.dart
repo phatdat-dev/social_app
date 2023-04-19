@@ -3,12 +3,14 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:social_app/app/widget/app_bar_icon.dart';
 
-import '../../../../facebook/screens/facebook_screen_more.dart';
 import '../../../../facebook/screens/facebook_screen_pages.dart';
 import '../controllers/home_controller.dart';
 import 'home_dashboard_view.dart';
+import 'home_menu_view.dart';
 import 'home_notify_view.dart';
 import 'home_video_view.dart';
+
+part '../widget/home_view_extension.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -30,7 +32,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       Tab(icon: Icon(Icons.ondemand_video_outlined, size: 30)): HomeVideoView(),
       Tab(icon: Icon(Icons.flag_outlined, size: 30)): FacebookScreenPages(),
       Tab(icon: Icon(Icons.notifications_outlined, size: 30)): HomeNotifyView(),
-      Tab(icon: Icon(Icons.menu_outlined, size: 30)): FacebookScreenMore(),
+      Tab(icon: Icon(Icons.menu_outlined, size: 30)): HomeMenuView(),
     };
 
     controller.tabBarController = TabController(length: controller.tabBarWidget.length, vsync: this);
@@ -71,6 +73,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       _buildAppBarDefaultTab(),
                       _buildAppBarNotify(context),
                     ];
+                  case 4:
+                    return [
+                      _buildAppBarDefaultTab(),
+                      _buildAppBarMenu(context),
+                    ];
                   default:
                     return [_buildAppBarDefaultTab()];
                 }
@@ -83,118 +90,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           ),
         ),
         //Footer
-      ),
-    );
-  }
-
-  SliverAppBar _buildAppBarDefaultTab() {
-    return SliverAppBar(
-      floating: true, //giuu lau bottom
-      pinned: true, //giuu lai bottom
-      snap: true,
-      //with padding safeArea
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        background: SafeArea(
-          child: TabBar(
-            controller: controller.tabBarController,
-            tabs: controller.tabBarWidget.keys.toList(),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAppBarHome(BuildContext context) {
-    return SliverAppBar(
-      floating: true, //giuu lau bottom
-      pinned: true, //giuu lai bottom
-      snap: true,
-
-      title: Text(
-        'Social App',
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              fontSize: 30,
-              color: Theme.of(context).primaryColor,
-            ),
-      ),
-      actions: [
-        AppBarIcon(iconData: Icons.add, onTap: () {}),
-        AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
-        AppBarIcon(iconData: MdiIcons.facebookMessenger, onTap: () {}),
-      ],
-      bottom: TabBar(
-        controller: controller.tabBarController,
-        tabs: controller.tabBarWidget.keys.toList(),
-      ),
-    );
-  }
-
-  Widget _buildAppBarWatch(BuildContext context) {
-    // final controller = context.read<HomeController>();
-    return MediaQuery.removePadding(
-      removeTop: true,
-      context: context,
-      child: controller.subTabBarVideoWidget != null
-          ? SliverAppBar(
-              floating: true, //giuu lau bottom
-              pinned: true, //giuu lai bottom
-              snap: true,
-
-              title: Text(
-                'Watch',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      fontSize: 30,
-                      color: Theme.of(context).primaryColor,
-                    ),
-              ),
-              actions: [
-                AppBarIcon(iconData: Icons.person_outline, onTap: () {}),
-                AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
-              ],
-              bottom: TabBar(
-                controller: controller.subTabBarVideoController,
-                tabs: controller.subTabBarVideoWidget!.keys.toList(),
-                isScrollable: true,
-                indicatorColor: Theme.of(context).colorScheme.secondary,
-                // indicatorSize: TabBarIndicatorSize.label,
-                //duong` vien`
-                indicatorPadding: const EdgeInsets.all(8),
-                splashBorderRadius: BorderRadius.circular(100),
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: Theme.of(context).colorScheme.secondary,
-                  border: Border.all(color: Theme.of(context).colorScheme.secondary),
-                ),
-                labelColor: Theme.of(context).colorScheme.primary,
-                labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                // unselectedLabelColor: Theme.of(context).colorScheme.secondary,
-              ),
-            )
-          : const SliverToBoxAdapter(child: SizedBox.shrink()),
-    );
-  }
-
-  Widget _buildAppBarNotify(BuildContext context) {
-    // final controller = context.read<HomeController>();
-    return MediaQuery.removePadding(
-      removeTop: true,
-      context: context,
-      child: SliverAppBar(
-        floating: true, //giuu lau bottom
-        pinned: true, //giuu lai bottom
-        snap: true,
-
-        title: Text(
-          'Thông báo',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontSize: 30,
-                color: Theme.of(context).primaryColor,
-              ),
-        ),
-        actions: [
-          AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
-        ],
       ),
     );
   }
