@@ -4,10 +4,16 @@ class FacebookCardNotification extends StatelessWidget {
   final String ImageData;
   final String title;
   final String date;
-  final Color color;
+  final Color? color;
   final String icon;
 
-  FacebookCardNotification({required this.ImageData, required this.title, required this.date, required this.color, required this.icon});
+  FacebookCardNotification({
+    required this.ImageData,
+    required this.title,
+    required this.date,
+    this.color,
+    required this.icon,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,8 +31,8 @@ class FacebookCardNotification extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      height: 80,
-                      width: 80,
+                      height: 70,
+                      width: 70,
                       decoration: BoxDecoration(
                           color: Colors.grey, shape: BoxShape.circle, image: DecorationImage(image: NetworkImage(ImageData), fit: BoxFit.cover)),
                     ),

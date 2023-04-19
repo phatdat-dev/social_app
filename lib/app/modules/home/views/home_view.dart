@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:social_app/app/widget/app_bar_icon.dart';
 
 import '../../../../facebook/screens/facebook_screen_more.dart';
-import '../../../../facebook/screens/facebook_screen_notify.dart';
 import '../../../../facebook/screens/facebook_screen_pages.dart';
 import '../controllers/home_controller.dart';
 import 'home_dashboard_view.dart';
+import 'home_notify_view.dart';
 import 'home_video_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       Tab(icon: Icon(Icons.home_outlined, size: 30)): HomeDashBoardView(),
       Tab(icon: Icon(Icons.ondemand_video_outlined, size: 30)): HomeVideoView(),
       Tab(icon: Icon(Icons.flag_outlined, size: 30)): FacebookScreenPages(),
-      Tab(icon: Icon(Icons.notifications_outlined, size: 30)): FacebookScreenNotify(),
+      Tab(icon: Icon(Icons.notifications_outlined, size: 30)): HomeNotifyView(),
       Tab(icon: Icon(Icons.menu_outlined, size: 30)): FacebookScreenMore(),
     };
 
@@ -65,6 +65,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     return [
                       _buildAppBarDefaultTab(),
                       _buildAppBarWatch(context),
+                    ];
+                  case 3:
+                    return [
+                      _buildAppBarDefaultTab(),
+                      _buildAppBarNotify(context),
                     ];
                   default:
                     return [_buildAppBarDefaultTab()];
@@ -158,8 +163,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 splashBorderRadius: BorderRadius.circular(100),
                 indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                  border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.1)),
+                  color: Theme.of(context).colorScheme.secondary,
+                  border: Border.all(color: Theme.of(context).colorScheme.secondary),
                 ),
                 labelColor: Theme.of(context).colorScheme.primary,
                 labelStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -167,6 +172,30 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               ),
             )
           : const SliverToBoxAdapter(child: SizedBox.shrink()),
+    );
+  }
+
+  Widget _buildAppBarNotify(BuildContext context) {
+    // final controller = context.read<HomeController>();
+    return MediaQuery.removePadding(
+      removeTop: true,
+      context: context,
+      child: SliverAppBar(
+        floating: true, //giuu lau bottom
+        pinned: true, //giuu lai bottom
+        snap: true,
+
+        title: Text(
+          'Thông báo',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontSize: 30,
+                color: Theme.of(context).primaryColor,
+              ),
+        ),
+        actions: [
+          AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
+        ],
+      ),
     );
   }
 }
