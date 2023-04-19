@@ -5,6 +5,10 @@ import 'package:social_app/app/core/utils/utils.dart';
 
 class HomeController extends BaseController {
   // final BaseSearchRequestModel searchRequestModel = BaseSearchRequestModel(pageSize: 10);
+  late final Map<Widget, Widget> tabBarWidget;
+  late final TabController tabBarController;
+  Map<Widget, Widget>? subTabBarVideoWidget;
+  TabController? subTabBarVideoController;
   Map<String, dynamic> request = {
     "loading_type": 0,
     "page_size": 2,
@@ -19,7 +23,8 @@ class HomeController extends BaseController {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final scrollController = globalKeyScrollController.currentState!.innerController;
       scrollController.addListener(() {
-        if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isScrollBottom = scrollController.position.pixels == scrollController.position.maxScrollExtent;
+        if (tabBarController.index == 0 && isScrollBottom) {
           // Khi scroll đến cuối danh sách
           // Thực hiện tải thêm dữ liệu
           request = request.copyWith({"page_size": request["page_size"] + 2});
@@ -45,7 +50,6 @@ class HomeController extends BaseController {
       } else {
         postData = [...postData!, ...List.from(value["data"]["list"])]; //ko xai` .addAll vi` notifyListeners se k rebuild
       }
-      Printt.white(postData!.length);
       notifyListeners();
     });
   }

@@ -22,7 +22,7 @@ extension MapExtension<K, V> on Map<K, V> {
   }
 
   //insert index
-  Map<K, V> insert({required int index, required K key, required V value}) {
+  void insert({required int index, required K key, required V value}) {
     final result = <K, V>{};
     var i = 0;
     for (final entry in entries) {
@@ -30,7 +30,8 @@ extension MapExtension<K, V> on Map<K, V> {
       result[entry.key] = entry.value;
       i++;
     }
-    return result;
+    clear();
+    addAll(result);
   }
 
   /// * if [addNew] is true, add new key
@@ -59,6 +60,26 @@ extension MapExtension<K, V> on Map<K, V> {
       }
     }
     return result;
+  }
+
+  /// return key of element index
+  /// ```dart
+  /// final mapData = {
+  ///   "index1": "value1",
+  ///   "index2": "value2",
+  ///   "index3": "value3",
+  ///   "index4": "value4",
+  ///   "index5": "value5",
+  /// };
+  /// // swap data
+  /// final keyOfIndex = mapData.keyOfIndex(3); //"index4"
+  /// final removeIndex = mapData.remove(keyOfIndex!); //"value4"
+  /// final newInsert = mapData.insert(index: 0, key: keyOfIndex, value: removeIndex!); //
+  /// print(newInsert);// {"index4": "value4", "index1": "value1", "index2": "value2", "index3": "value3", "index5": "value5"}
+  ///  ```
+  K? keyOfIndex(int index) {
+    if (index < 0 || index >= length) return null;
+    return keys.elementAt(index);
   }
 
   // from GetX

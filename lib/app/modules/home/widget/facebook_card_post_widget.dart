@@ -27,6 +27,7 @@ class FacebookCardPostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ValueNotifier<bool> isExpandedNotifier = ValueNotifier(false);
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
@@ -67,14 +68,21 @@ class FacebookCardPostWidget extends StatelessWidget {
             indent: 10,
             endIndent: 10,
           ),
-          _buildButtonBar(),
-          child ?? SizedBox.shrink(),
+          _buildButtonBar(isExpandedNotifier),
+          ValueListenableBuilder(
+              valueListenable: isExpandedNotifier,
+              builder: (context, value, child) => AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 200),
+                    firstChild: SizedBox.shrink(),
+                    secondChild: this.child ?? SizedBox.shrink(),
+                    crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  )),
         ],
       ),
     );
   }
 
-  Row _buildButtonBar() {
+  Row _buildButtonBar(ValueNotifier<bool> isExpandedNotifier) {
     bool like = false;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -104,7 +112,9 @@ class FacebookCardPostWidget extends StatelessWidget {
         ),
         Expanded(
           child: TextButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              isExpandedNotifier.value = !isExpandedNotifier.value;
+            },
             icon: Icon(
               MdiIcons.commentOutline,
               color: Colors.grey,

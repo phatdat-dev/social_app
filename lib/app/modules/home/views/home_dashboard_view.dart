@@ -57,7 +57,6 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
             if (data == null) {
               return CircularProgressIndicator();
             }
-            Printt.green("rebuild");
             return ListView.builder(
                 itemCount: data.length,
                 shrinkWrap: true,
