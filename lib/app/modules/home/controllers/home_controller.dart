@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/utils/utils.dart';
@@ -55,20 +54,10 @@ class HomeController extends BaseController {
     });
   }
 
-  Future<List<XFile>?> pickMultiImage() async {
-    final ImagePicker _imagePicker = ImagePicker();
-    final List<XFile> images = await _imagePicker.pickMultiImage();
-    if (images.isNotEmpty) {
-      return images;
-      // final List<File> files = images.map((e) => File(e.path)).toList();
-      // final List<MultipartFile> multipartFiles = files.map((e) => MultipartFile.fromFileSync(e.path)).toList();
-      // final Map<String, dynamic> data = {
-      //   "files": multipartFiles,
-      // };
-      // apiCall.onRequest(ApiUrl.uploadFile(), RequestMethod.POST, data: data).then((value) {
-      //   print(value);
-      // });
-    }
-    return null;
+
+  Future<void> createPostData()async{
+    
   }
+
+ 
 }
