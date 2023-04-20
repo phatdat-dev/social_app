@@ -66,9 +66,9 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
                   return FacebookCardPostWidget(
                     user_name: data[index]['user']['nickname'],
                     profile_path: data[index]['user']['avatar_url'],
-                    image_path: (data[index]['post']['images'] as List).isNotEmpty
-                        ? (data[index]['post']['images'] as List).first
-                        : "assets/images/pexel.jpeg",
+                    imageUrl: (data[index]['post']['images'] as List).isNotEmpty
+                        ? List<String>.from(data[index]['post']['images'])
+                        : ["assets/images/pexel.jpeg"],
                     date: data[index]['post']['reply_time'],
                     description: "${data[index]['post']['subject']}\n${data[index]['post']['content']}",
                     reactions: data[index]['stat']['view_num'].toString(),

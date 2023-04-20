@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:social_app/app/widget/circle_avatar_widget.dart';
 
 class FacebookCardPostWidget extends StatelessWidget {
-  final String image_path;
+  final List<String> imageUrl;
   final String profile_path;
   final String user_name;
   final String date;
@@ -15,7 +15,7 @@ class FacebookCardPostWidget extends StatelessWidget {
   final Widget? child;
 
   FacebookCardPostWidget({
-    required this.image_path,
+    required this.imageUrl,
     required this.date,
     required this.description,
     required this.nums,
@@ -46,21 +46,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             )),
           ),
-          image_path.contains("http")
-              ? FadeInImage.assetNetwork(
-                  placeholder: "assets/images/Img_error.png",
-                  image: image_path,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  fadeInDuration: const Duration(milliseconds: 200),
-                  fadeOutDuration: const Duration(milliseconds: 180),
-                  // height: 300,
-                )
-              : Image.asset(
-                  image_path,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
+          _buildImagePost(context),
           _buildNumbericLikeComment(context),
           Divider(
             height: 0, //height spacing of divider
@@ -273,5 +259,80 @@ class FacebookCardPostWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildImagePost(BuildContext context) {
+    Widget buildImage(String image) {
+      return image.contains("http")
+          ? FadeInImage.assetNetwork(
+              placeholder: "assets/images/Img_error.png",
+              image: image,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              fadeInDuration: const Duration(milliseconds: 200),
+              fadeOutDuration: const Duration(milliseconds: 180),
+              // height: 300,
+            )
+          : Image.asset(
+              image,
+              fit: BoxFit.cover,
+              width: double.infinity,
+            );
+    }
+
+    if (imageUrl.length == 1) {
+      return buildImage(imageUrl.first);
+    } else if (imageUrl.length == 2) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          buildImage(imageUrl.first),
+          buildImage(imageUrl.last),
+        ],
+      );
+    }
+
+//imageUrl.length >= 3
+    else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          buildImage(imageUrl.first),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 150,
+                  child: buildImage(imageUrl[1]),
+                ),
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height: 150,
+                      child: buildImage(imageUrl[2]),
+                    ),
+                    Container(
+                      height: 150,
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                    Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: CircleAvatar(
+                          child: Text("+${imageUrl.length - 2}"),
+                          backgroundColor: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
   }
 }

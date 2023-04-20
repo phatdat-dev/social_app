@@ -45,7 +45,7 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
                         user_name: data[index]['user_name'],
                         date: data[index]['date_posted'],
                         description: data[index]['title'],
-                        image_path: data[index]['media_path'],
+                        imageUrl: [data[index]['media_path']],
                         reactions: data[index]['people_reacted'],
                         nums: data[index]['no_of_reactions'],
                       );

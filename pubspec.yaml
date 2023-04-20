@@ -57,10 +57,11 @@ dependencies:
   form_builder_validators: any
   # carousel_slider: any
   # flutter_rating_bar: any
-  # flutter_inappwebview: any #web view load and display html
+  flutter_inappwebview: any #web view load and display html
   youtube_player_flutter: ^8.1.2 #run trailer from YT
   # auto_size_text: ^3.0.0
   material_design_icons_flutter: any #icon Fb
+  image_picker: any #pick image
 
   #
   flutter:
