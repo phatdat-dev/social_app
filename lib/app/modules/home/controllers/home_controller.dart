@@ -54,10 +54,5 @@ class HomeController extends BaseController {
     });
   }
 
-
-  Future<void> createPostData()async{
-    
-  }
-
- 
+  Future<void> createPostData() async {}
 }

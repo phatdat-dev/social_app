@@ -18,6 +18,7 @@ class PickerService with ChangeNotifier {
 
     if (result != null) {
       files = result.paths.map((path) => File(path!)).toList();
+      Printt.white(files);
       notifyListeners();
 
       return files;
