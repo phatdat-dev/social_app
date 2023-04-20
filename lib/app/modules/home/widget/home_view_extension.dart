@@ -131,7 +131,11 @@ extension HomeViewExtension on _HomeViewState {
               ),
         ),
         actions: [
-          AppBarIcon(iconData: Icons.settings, onTap: () {}),
+          AppBarIcon(
+              iconData: Icons.settings,
+              onTap: () {
+                context.push("/viewColorTheme");
+              }),
           AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
         ],
       ),

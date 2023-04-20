@@ -41,31 +41,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ThemeConfig();
-
     return EasyLocalization(
       path: 'assets/translations', //
       supportedLocales: TranslationService.locales,
       fallbackLocale: TranslationService.fallbackLocale,
       child: MultiProvider(
         providers: providers,
-        builder: (context, child) => MaterialApp.router(
-          routerConfig: AppPages.router,
-          title: "Social App",
-          debugShowCheckedModeBanner: false,
-          //theme
-          theme: theme.lightTheme,
-          darkTheme: theme.dartTheme,
-          themeMode: ThemeMode.light,
-          //language
-          locale: context.locale,
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: [
-            ...context.localizationDelegates,
-            FormBuilderLocalizations.delegate,
-          ],
-          //
-        ),
+        builder: (context, child) {
+          final themeConfig = context.watch<ThemeConfig>();
+          return MaterialApp.router(
+            routerConfig: AppPages.router,
+            title: "Social App",
+            debugShowCheckedModeBanner: false,
+            //theme
+            theme: themeConfig.lightTheme,
+            darkTheme: themeConfig.dartTheme,
+            themeMode: themeConfig.defaultThemeMode,
+            //language
+            locale: context.locale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: [
+              ...context.localizationDelegates,
+              FormBuilderLocalizations.delegate,
+            ],
+            //
+          );
+        },
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/extension/string_extension.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
+import 'package:social_app/app/modules/home/views/search_tag_friend_view.dart';
 import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:video_player/video_player.dart';
 
@@ -265,9 +266,15 @@ class CreatePostView extends StatelessWidget {
                         color: Colors.green,
                       ),
                     ),
-                    Icon(
-                      Icons.loyalty_outlined,
-                      color: Colors.blue,
+                    InkWell(
+                      onTap: () async {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchTagFriendView()));
+                      },
+                      customBorder: StadiumBorder(),
+                      child: Icon(
+                        Icons.loyalty_outlined,
+                        color: Colors.blue,
+                      ),
                     ),
                     Icon(
                       Icons.tag_faces,

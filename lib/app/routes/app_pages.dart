@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:social_app/app/core/config/theme_config.dart';
 import 'package:social_app/app/core/constants/global_constant.dart';
 import 'package:social_app/app/modules/home/views/home_view.dart';
 
@@ -28,6 +29,7 @@ class AppPages {
         //   ),
         // ],
       ),
+      GoRoute(path: "/viewColorTheme", builder: (context, state) => ThemeView()),
       GoRoute(
         path: "/${_Path.HOME}",
         builder: (context, state) => HomeView(),
