@@ -35,7 +35,11 @@ extension HomeViewExtension on _HomeViewState {
       actions: [
         AppBarIcon(iconData: Icons.add, onTap: () {}),
         AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
-        AppBarIcon(iconData: MdiIcons.facebookMessenger, onTap: () {}),
+        AppBarIcon(
+            iconData: MdiIcons.facebookMessenger,
+            onTap: () {
+              context.push(Routes.MESSAGE());
+            }),
       ],
       bottom: TabBar(
         controller: controller.tabBarController,

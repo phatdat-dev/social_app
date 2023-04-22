@@ -1,12 +1,18 @@
 import 'dart:convert';
 
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/app/core/config/theme_config.dart';
 import 'package:social_app/app/core/constants/app_constant.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/authentication/views/authentication_view.dart';
 import 'package:social_app/app/modules/home/views/home_view.dart';
+import 'package:social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:social_app/app/modules/message/views/message_view.dart';
+
+import '../modules/message/views/message_detail_view.dart';
+import '../modules/message/views/message_search_view.dart';
 
 // https://pub.dev/documentation/go_router/latest/topics/Get%20started-topic.html
 // ignore_for_file: constant_identifier_names
@@ -53,6 +59,26 @@ class AppPages {
         path: '/authentication',
         builder: (context, state) => const AuthenticationView(),
         routes: [],
+      ),
+      GoRoute(
+        path: '/message',
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (context) => MessageController(),
+          child: const MessageView(),
+        ),
+        routes: [
+          GoRoute(
+            path: 'detail/:id', // /message/detail/:id
+            builder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>;
+              return ChangeNotifierProvider.value(value: extra['controller'] as MessageController, child: MessageDetailView(extra['user']));
+            },
+          ),
+          GoRoute(
+            path: 'search', // /message/search
+            builder: (context, state) => ChangeNotifierProvider.value(value: state.extra as MessageController, child: MessageSearchView()),
+          ),
+        ],
       ),
     ],
   );

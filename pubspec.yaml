@@ -52,6 +52,11 @@ dependencies:
   #firebase
   firebase_core: ^2.9.0
   firebase_auth: any
+  flutter_local_notifications: any
+  flutter_native_timezone: any
+  cloud_firestore: any #dung de load data notify
+  firebase_messaging: any
+
   flutter_native_splash: ^2.2.19 #splash screen
   flutter_form_builder: any #bingding form
   form_builder_validators: any
