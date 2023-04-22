@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/modules/authentication/widget/forgot_password_tab_widget.dart';
 
 import '../../../core/utils/utils.dart';
 import '../controllers/authentication_controller.dart';
@@ -33,6 +34,7 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
     listTabBar = [
       Tab(text: TranslateKeys.SignIn.tr()),
       Tab(text: TranslateKeys.SignUp.tr()),
+      Tab(text: TranslateKeys.ForgotPassword.tr()),
     ];
     tabController = TabController(length: listTabBar.length, vsync: this);
     //
@@ -57,7 +59,7 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
             //     color: Theme.of(context).colorScheme.primary,
             //   ),
             // ),
-            WaveDrawClipPathWidget(title: "Authenication"),
+            const WaveDrawClipPathWidget(title: 'Authenication'),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -67,7 +69,7 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                     decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(borderRadius), boxShadow: [
                       BoxShadow(
                         color: Colors.green.shade50,
-                        offset: Offset(5, 5),
+                        offset: const Offset(5, 5),
                         blurRadius: 10,
                         // spreadRadius: 5,
                         // blurStyle: BlurStyle.normal,
@@ -80,7 +82,7 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(borderRadius),
                               topRight: Radius.circular(borderRadius),
                             ),
@@ -108,8 +110,9 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                           child: TabBarView(
                             controller: tabController,
                             children: [
-                              SignInTabWidget(),
-                              SignUpTapWidget(),
+                              const SignInTabWidget(),
+                              const SignUpTapWidget(),
+                              const ForgotPasswordTapWidget(),
                             ],
                           ),
                         ),
@@ -119,14 +122,14 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(TranslateKeys.DoYouWantToTryIt.tr(), style: TextStyle(fontSize: 12)),
+                      Text(TranslateKeys.DoYouWantToTryIt.tr(), style: const TextStyle(fontSize: 12)),
                       TextButton(
-                        child: Text(TranslateKeys.TryNow.tr(), style: TextStyle(fontSize: 14)),
+                        child: Text(TranslateKeys.TryNow.tr(), style: const TextStyle(fontSize: 14)),
                         onPressed: () => controller.onTryApp(),
                       ),
                     ],
                   ),
-                  OrDivider(),
+                  const OrDivider(),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: Row(
@@ -138,7 +141,7 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                             Color(0xFF187adf),
                             Color(0xFF00eaf8),
                           ],
-                          iconURL: "assets/svg/facebook.svg",
+                          iconURL: 'assets/svg/facebook.svg',
                           onPressed: () async {},
                         ),
                         SocialIcon(
@@ -146,9 +149,9 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                             Color(0xFF17ead9),
                             Color(0xFF6078ea),
                           ],
-                          iconURL: "assets/svg/twitter.svg",
+                          iconURL: 'assets/svg/twitter.svg',
                           onPressed: () {
-                            print("twitter");
+                            print('twitter');
                           },
                         ),
                         SocialIcon(
@@ -156,7 +159,7 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                             Color(0xFFff4f38),
                             Color(0xFFff355d),
                           ],
-                          iconURL: "assets/svg/google-plus.svg",
+                          iconURL: 'assets/svg/google-plus.svg',
                           onPressed: () async {},
                         ),
                         SocialIcon(
@@ -164,9 +167,9 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                             Color(0xFF00c6fb),
                             Color(0xFF005bea),
                           ],
-                          iconURL: "assets/svg/github.svg",
+                          iconURL: 'assets/svg/github.svg',
                           onPressed: () {
-                            print("github");
+                            print('github');
                           },
                         )
                       ],

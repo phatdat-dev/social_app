@@ -23,7 +23,7 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
         Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
-            "Những người bạn có thể biết",
+            'Những người bạn có thể biết',
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
@@ -37,7 +37,7 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
                     child: Container(
                       height: 80,
                       width: 80,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.grey,
                           shape: BoxShape.circle,
                           image: DecorationImage(image: AssetImage('assets/images/china.jpg'), fit: BoxFit.cover)),
@@ -49,14 +49,14 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Wung Chang",
+                        const Text(
+                          'Wung Chang',
                           style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 3.0),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 3.0),
                           child: Text(
-                            "15 Mutual friends",
+                            '15 Mutual friends',
                             style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ),
@@ -65,7 +65,7 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
                             //Add Friends
                             FilledButton.tonal(
                               onPressed: () {},
-                              child: Text("Add Friends",
+                              child: Text('Add Friends',
                                   style: TextStyle(
                                     color: Theme.of(context).colorScheme.inverseSurface,
                                   )),
@@ -76,7 +76,7 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
                             //Remove
                             OutlinedButton(
                               onPressed: () {},
-                              child: Text("Remove",
+                              child: Text('Remove',
                                   style: TextStyle(
                                     color: Theme.of(context).colorScheme.inverseSurface,
                                   )),
@@ -92,34 +92,34 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
           ),
         ),
         // ElevatedButton(onPressed: () {}, child: Text("See All")),
-        Divider(),
+        const Divider(),
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Text(
-            "Trước đó",
+            'Trước đó',
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         FutureBuilder(
-            future: Helper.readFileJson("assets/json/notification.json"),
+            future: Helper.readFileJson('assets/json/notification.json'),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data == null ? 0 : snapshot.data.length,
                     itemBuilder: (context, int index) {
                       return FacebookCardNotification(
-                        color: snapshot.data[index]['status'] == "unread" ? Theme.of(context).colorScheme.secondary : null,
+                        color: snapshot.data[index]['status'] == 'unread' ? Theme.of(context).colorScheme.secondary : null,
                         ImageData: snapshot.data[index]['profile_image'],
                         title: snapshot.data[index]['notification_message'],
                         date: snapshot.data[index]['notification_time'],
-                        icon: snapshot.data[index]['notication_type'] == "page" ? 'assets/images/page.jpg' : 'assets/images/fb.png',
+                        icon: snapshot.data[index]['notication_type'] == 'page' ? 'assets/images/page.jpg' : 'assets/images/fb.png',
                       );
                     });
               }
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }),

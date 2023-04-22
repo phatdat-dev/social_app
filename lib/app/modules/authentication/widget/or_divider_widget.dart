@@ -7,7 +7,7 @@ class OrDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       width: size.width * 0.8,
       child: Row(
         children: const [
@@ -17,7 +17,7 @@ class OrDivider extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              "OR",
+              'OR',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),

@@ -25,10 +25,10 @@ class _FacebookScreenPagesState extends State<FacebookScreenPages> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
-              "Pages",
+              'Pages',
               style: TextStyle(fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
@@ -37,10 +37,10 @@ class _FacebookScreenPagesState extends State<FacebookScreenPages> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                FacebookButtonGroup(onPress: () {}, icon: Icons.add_circle_outline, text: "Create"),
-                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: "Discover"),
-                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: "Discover"),
-                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: "Liked Pades"),
+                FacebookButtonGroup(onPress: () {}, icon: Icons.add_circle_outline, text: 'Create'),
+                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: 'Discover'),
+                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: 'Discover'),
+                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: 'Liked Pades'),
               ],
             ),
           ),
@@ -52,10 +52,10 @@ class _FacebookScreenPagesState extends State<FacebookScreenPages> {
               color: Colors.grey,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
-              "Your Pages",
+              'Your Pages',
               style: TextStyle(fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
@@ -69,16 +69,16 @@ class _FacebookScreenPagesState extends State<FacebookScreenPages> {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(color: Colors.greenAccent, shape: BoxShape.circle, border: Border.all(color: Colors.grey, width: 1)),
-                    child: Center(
+                    child: const Center(
                       child: Text(
-                        "C",
+                        'C',
                         style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                     ),
                   ),
                 ),
                 Column(children: <Widget>[
-                  Text("Cool Teens",
+                  const Text('Cool Teens',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.black,
@@ -87,7 +87,7 @@ class _FacebookScreenPagesState extends State<FacebookScreenPages> {
                   Container(
                     height: 10,
                     width: 10,
-                    decoration: BoxDecoration(),
+                    decoration: const BoxDecoration(),
                   )
                 ])
               ],

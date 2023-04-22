@@ -11,40 +11,40 @@ class HomeMenuView extends StatefulWidget {
 class _HomeMenuViewState extends State<HomeMenuView> {
   List<Map<String, dynamic>> items = [
     {
-      "image": "assets/images/page.jpg",
-      "title": "Your 1 Page",
+      'image': 'assets/images/page.jpg',
+      'title': 'Your 1 Page',
     },
     {
-      "image": "assets/images/bookmarks.png",
-      "title": "Bookmark",
+      'image': 'assets/images/bookmarks.png',
+      'title': 'Bookmark',
     },
     {
-      "image": "assets/images/events.png",
-      "title": "Events",
+      'image': 'assets/images/events.png',
+      'title': 'Events',
     },
     {
-      "image": "assets/images/friends.png",
-      "title": "Friends",
+      'image': 'assets/images/friends.png',
+      'title': 'Friends',
     },
     {
-      "image": "assets/images/memories.png",
-      "title": "Memories",
+      'image': 'assets/images/memories.png',
+      'title': 'Memories',
     },
     {
-      "image": "assets/images/multimedia.png",
-      "title": "Multimedia",
+      'image': 'assets/images/multimedia.png',
+      'title': 'Multimedia',
     },
     {
-      "image": "assets/images/localization.png",
-      "title": "Locals",
+      'image': 'assets/images/localization.png',
+      'title': 'Locals',
     },
     {
-      "image": "assets/images/gaming.png",
-      "title": "Gaming",
+      'image': 'assets/images/gaming.png',
+      'title': 'Gaming',
     },
     {
-      "image": "assets/images/jobs.png",
-      "title": "Jobs",
+      'image': 'assets/images/jobs.png',
+      'title': 'Jobs',
     },
   ];
 
@@ -55,19 +55,19 @@ class _HomeMenuViewState extends State<HomeMenuView> {
       children: <Widget>[
         ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: CircleAvatarWidget(radius: 30),
+          leading: const CircleAvatarWidget(radius: 30),
           title: Text(
-            "Nguyen Van A",
+            'Nguyen Van A',
             style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            "Xem trang cá nhân của bạn",
+            'Xem trang cá nhân của bạn',
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
           ),
         ),
         const Divider(),
         Text(
-          "Lối tắt của bạn",
+          'Lối tắt của bạn',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         SizedBox(
@@ -105,12 +105,12 @@ class _HomeMenuViewState extends State<HomeMenuView> {
                           child: Container(
                             height: 30,
                             width: 30,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
                               // image: DecorationImage(image: AssetImage(icon), fit: BoxFit.cover),
                             ),
-                            child: Icon(Icons.group_add),
+                            child: const Icon(Icons.group_add),
                           ),
                         ),
                       ),
@@ -118,7 +118,7 @@ class _HomeMenuViewState extends State<HomeMenuView> {
                   ],
                 ),
                 Text(
-                  "Group Name",
+                  'Group Name',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
@@ -126,7 +126,7 @@ class _HomeMenuViewState extends State<HomeMenuView> {
           ),
         ),
         Text(
-          "Tất cả lối tắt",
+          'Tất cả lối tắt',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         Wrap(
@@ -140,14 +140,14 @@ class _HomeMenuViewState extends State<HomeMenuView> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Image.asset(
-                      items[index]["image"],
+                      items[index]['image'],
                       width: 30,
                       height: 30,
                     ),
                     const SizedBox(width: 10),
                     Text(
                       "${items[index]["title"]}",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

@@ -33,13 +33,13 @@ class WaveDrawClipPathWidget extends StatelessWidget {
             decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.green, Theme.of(context).colorScheme.primary])),
             child: Column(
               children: <Widget>[
-                SizedBox(height: 20),
-                Icon(
+                const SizedBox(height: 20),
+                const Icon(
                   Icons.fastfood,
                   color: Colors.white,
                   size: 60,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   title,
                   style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary, fontWeight: FontWeight.w700, fontSize: 30),

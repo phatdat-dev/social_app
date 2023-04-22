@@ -59,7 +59,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                                       username,
                                     ),
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.home,
                                     color: Colors.grey,
                                   ),
@@ -79,7 +79,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.more_horiz,
                           color: Colors.black,
                         )
@@ -106,7 +106,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Expanded(
+                      const Expanded(
                           child: SizedBox(
                         width: double.infinity,
                       )),
@@ -114,7 +114,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 16.0, right: 8.0),
                         child: Text(
                           total_reations,
-                          style: TextStyle(color: Colors.black, fontSize: 13),
+                          style: const TextStyle(color: Colors.black, fontSize: 13),
                         ),
                       ),
                     ],
@@ -130,7 +130,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                               color: Colors.grey,
                               shape: BoxShape.circle,
                               border: Border.all(color: Colors.white, width: 2),
-                              image: DecorationImage(image: AssetImage('assets/emoji/emoji1.png'), fit: BoxFit.cover)),
+                              image: const DecorationImage(image: AssetImage('assets/emoji/emoji1.png'), fit: BoxFit.cover)),
                         ),
                       )),
                   Positioned(
@@ -144,7 +144,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                               color: Colors.grey,
                               shape: BoxShape.circle,
                               border: Border.all(color: Colors.white, width: 2),
-                              image: DecorationImage(image: AssetImage('assets/emoji/emoji.jpg'), fit: BoxFit.cover)),
+                              image: const DecorationImage(image: AssetImage('assets/emoji/emoji.jpg'), fit: BoxFit.cover)),
                         ),
                       )),
                   Positioned(
@@ -158,7 +158,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                               color: Colors.grey,
                               shape: BoxShape.circle,
                               border: Border.all(color: Colors.white, width: 2),
-                              image: DecorationImage(image: AssetImage('assets/emoji/emoji2.png'), fit: BoxFit.cover)),
+                              image: const DecorationImage(image: AssetImage('assets/emoji/emoji2.png'), fit: BoxFit.cover)),
                         ),
                       )),
                   Positioned(
@@ -167,7 +167,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 0.0, top: 15.0),
                           child: Text(
                             reaction_text,
-                            style: TextStyle(fontSize: 13),
+                            style: const TextStyle(fontSize: 13),
                           ))),
                 ],
               ),
@@ -183,7 +183,7 @@ class FacebookCardGroupPost extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Expanded(
@@ -197,7 +197,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                               ),
                               onPressed: () {}),
                           Text(
-                            "Like",
+                            'Like',
                             style: TextStyle(fontWeight: FontWeight.w700, color: Colors.grey[600]),
                           )
                         ],
@@ -215,7 +215,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                               ),
                               onPressed: () {}),
                           Text(
-                            "Comment",
+                            'Comment',
                             style: TextStyle(fontWeight: FontWeight.w700, color: Colors.grey[600]),
                           )
                         ],
@@ -233,7 +233,7 @@ class FacebookCardGroupPost extends StatelessWidget {
                               ),
                               onPressed: () {}),
                           Text(
-                            "Share",
+                            'Share',
                             style: TextStyle(fontWeight: FontWeight.w700, color: Colors.grey[600]),
                           )
                         ],

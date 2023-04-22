@@ -38,10 +38,10 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
   }
 
   List<ModelStory> story_list = [
-    ModelStory(image_Path: "assets/images/photo.jpg", user_name: "Add a story", profile_path: "assets/images/photo.jpg"),
-    ModelStory(image_Path: "assets/images/china.jpg", user_name: "Wung Chang", profile_path: "assets/images/china.jpg"),
-    ModelStory(image_Path: "assets/images/sunset.jpg", user_name: "Jakal", profile_path: "assets/images/sunset.jpg"),
-    ModelStory(image_Path: "assets/images/pexel.jpeg", user_name: "Jakal", profile_path: "assets/images/pexel.jpeg")
+    ModelStory(image_Path: 'assets/images/photo.jpg', user_name: 'Add a story', profile_path: 'assets/images/photo.jpg'),
+    ModelStory(image_Path: 'assets/images/china.jpg', user_name: 'Wung Chang', profile_path: 'assets/images/china.jpg'),
+    ModelStory(image_Path: 'assets/images/sunset.jpg', user_name: 'Jakal', profile_path: 'assets/images/sunset.jpg'),
+    ModelStory(image_Path: 'assets/images/pexel.jpeg', user_name: 'Jakal', profile_path: 'assets/images/pexel.jpeg')
   ];
 
   @override
@@ -55,7 +55,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
           selector: (_, controller) => controller.postData,
           builder: (context, data, child) {
             if (data == null) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
             return ListView.builder(
                 itemCount: data.length,
@@ -79,13 +79,13 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
             addAutomaticKeepAlives: true,
             scrollDirection: Axis.horizontal,
             itemCount: story_list.length,
-            separatorBuilder: (context, index) => SizedBox(width: 5),
+            separatorBuilder: (context, index) => const SizedBox(width: 5),
             itemBuilder: (context, int index) {
               return FacebookCardStory(
                   avatarImage: story_list[index].profile_path,
                   backgroundImage: story_list[index].image_Path,
                   showAddButton: index == 0 ? visible = true : false,
-                  user_name: index == 0 ? "Tạo tin của bạn" : story_list[index].user_name);
+                  user_name: index == 0 ? 'Tạo tin của bạn' : story_list[index].user_name);
             }),
       ),
     );
@@ -100,16 +100,16 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10),
+              const Padding(
+                padding: EdgeInsets.all(10),
                 child: CircleAvatarWidget(radius: 25),
               ),
               Expanded(
                 child: OutlinedButton(
                     onPressed: () async {
-                      await Navigator.of(context).push(AnimatedRoute(CreatePostView()));
+                      await Navigator.of(context).push(AnimatedRoute(const CreatePostView()));
                     },
-                    child: Text("Bạn đang nghĩ gì ?", style: TextStyle(color: Colors.black)),
+                    child: const Text('Bạn đang nghĩ gì ?', style: TextStyle(color: Colors.black)),
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -118,7 +118,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
                       alignment: Alignment.centerLeft,
                     )),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.photo_library_outlined, color: Colors.green))
+              IconButton(onPressed: () {}, icon: const Icon(Icons.photo_library_outlined, color: Colors.green))
             ],
           ),
         ],

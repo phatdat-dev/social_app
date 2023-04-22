@@ -4,7 +4,7 @@ class CustomPrefixIconWidget extends StatelessWidget {
   const CustomPrefixIconWidget({super.key, required this.color, required this.icon});
 
   final Color color;
-  final Icon icon;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class CustomPrefixIconWidget extends StatelessWidget {
         margin: const EdgeInsets.only(right: 8.0),
         decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30.0),
                 bottomLeft: Radius.circular(30.0),
                 topRight: Radius.circular(30.0),

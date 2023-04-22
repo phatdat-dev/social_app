@@ -14,7 +14,7 @@ import 'package:social_app/app/modules/home/views/home_view.dart';
 part 'app_routes.dart';
 
 class AppPages {
-  static const INITIAL = "/";
+  static const INITIAL = '/';
 
   //context.Go
   static final router = GoRouter(
@@ -31,14 +31,14 @@ class AppPages {
           return null;
         }
         //nếu chưa đăng nhập thì chuyển về màn hình đăng nhập
-        return "/authentication";
+        return '/authentication';
       }
       return null;
     },
     routes: [
       GoRoute(
-        path: "/",
-        builder: (context, state) => HomeView(),
+        path: '/',
+        builder: (context, state) => const HomeView(),
         // routes: <RouteBase>[
         //   GoRoute(
         //     path: 'details',
@@ -48,10 +48,10 @@ class AppPages {
         //   ),
         // ],
       ),
-      GoRoute(path: "/viewColorTheme", builder: (context, state) => ThemeView()),
+      GoRoute(path: '/viewColorTheme', builder: (context, state) => const ThemeView()),
       GoRoute(
-        path: "/authentication",
-        builder: (context, state) => AuthenticationView(),
+        path: '/authentication',
+        builder: (context, state) => const AuthenticationView(),
         routes: [],
       ),
     ],

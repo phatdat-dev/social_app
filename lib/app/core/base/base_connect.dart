@@ -30,7 +30,7 @@ class BaseConnect {
     dio = Dio(BaseOptions(
       // Cấu hình đường path để call api, thành phần gồm
       // - options.path: đường dẫn cụ thể API. Ví dụ: "user/user-info"
-      baseUrl: "http://192.168.1.6:8000",
+      baseUrl: 'http://192.168.1.6:8000',
 
       // Đoạn này dùng để config timeout api từ phía client, tránh việc call 1 API
       // bị lỗi trả response quá lâu.
@@ -41,9 +41,9 @@ class BaseConnect {
       // Gắn access_token vào header, gửi kèm access_token trong header mỗi khi call API
       headers: {
         // "Authorization": "Bearer ${AuthenticationController.userAccount?.token}", //setup Sau
-        "Accept": "application/json, text/plain, */*",
+        'Accept': 'application/json, text/plain, */*',
         // "Content-Type":"application/json;charset=UTF-8",
-        "Charset": "utf-8",
+        'Charset': 'utf-8',
       },
 
       // contentType: "application/json;charset=UTF-8"
@@ -55,11 +55,11 @@ class BaseConnect {
         onRequest: (options, handler) async {
           //debug
           if (isShowLoading) Loadding.show();
-          Printt.yellow("${options.method}:  ${options.uri.toString()}                           ------------request");
+          Printt.yellow('${options.method}:  ${options.uri.toString()}                           ------------request');
 
           //add token
           if (AuthenticationController.userAccount != null) {
-            options.headers["Authorization"] = "Bearer ${AuthenticationController.userAccount?.token}";
+            options.headers['Authorization'] = 'Bearer ${AuthenticationController.userAccount?.token}';
           }
 
           return handler.next(options);
@@ -93,25 +93,25 @@ class BaseConnect {
         final Map<String, dynamic> errorMessage = jsonDecode(response.data!);
         // ignore: prefer_interpolation_to_compose_strings
 
-        String message = "";
+        String message = '';
         if (errorMessage['error'] is Map) {
           //cho nay` bat' loi~ OpenAI
           message = errorMessage['error']['message'];
         } else {
           message = (errorMessage['message'] ?? errorMessage['error']) as String;
         }
-        HelperWidget.showToast("CODE (${response.statusCode}):\n$message");
+        HelperWidget.showToast('CODE (${response.statusCode}):\n$message');
         Printt.red(message);
         break;
       case 401:
         //401: Print token expired
-        String message = "CODE (${response.statusCode}):\n${response.statusMessage}";
+        String message = 'CODE (${response.statusCode}):\n${response.statusMessage}';
         HelperWidget.showToast(message);
         Printt.red(message);
         //Remove token
         Global.sharedPreferences.remove(StorageConstants.userAccount);
         AuthenticationController.userAccount = null;
-        Global.navigatorKey.currentContext!.go("/");
+        Global.navigatorKey.currentContext!.go('/authentication');
         break;
       default:
         break;
@@ -121,7 +121,7 @@ class BaseConnect {
   // -------------------------
 
   void onError(Object error) {
-    print("has error, request again after ${requestAgainSecond}s ----- \x1B[31m${error.toString()}\x1B[0m");
+    print('has error, request again after ${requestAgainSecond}s ----- \x1B[31m${error.toString()}\x1B[0m');
   }
 
   Future<dynamic> onRequest<T extends BaseModel>(

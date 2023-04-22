@@ -134,7 +134,7 @@ extension HomeViewExtension on _HomeViewState {
           AppBarIcon(
               iconData: Icons.settings,
               onTap: () {
-                context.push("/viewColorTheme");
+                context.push('/viewColorTheme');
               }),
           AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
         ],

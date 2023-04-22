@@ -10,7 +10,7 @@ class SignInTabWidget extends StatelessWidget {
       key: controller.formSignInKey,
       child: ListView(
         padding: const EdgeInsets.all(15.0),
-        physics: BouncingScrollPhysics(), //remove Glow effect
+        physics: const BouncingScrollPhysics(), //remove Glow effect
         children: <Widget>[
           ...buildTextField_UserNamePassWord(),
           const SizedBox(height: 15.0),
@@ -39,18 +39,18 @@ class SignInTabWidget extends StatelessWidget {
 List<Widget> buildTextField_UserNamePassWord() => [
       FormBuilderTextField(
         name: 'email',
-        initialValue: "brycen.nolan@example.net",
+        initialValue: 'brycen.nolan@example.net',
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           prefixIcon: CustomPrefixIconWidget(
-            icon: const Icon(Icons.person, color: Colors.green),
+            icon: const Icon(Icons.email, color: Colors.green),
             color: Colors.greenAccent.withOpacity(0.5),
           ),
           // suffixIcon: Icon(
           //   Icons.check_circle,
           //   color: Colors.black26,
           // ),
-          labelText: "${TranslateKeys.Email.tr()}",
+          labelText: '${TranslateKeys.Email.tr()}',
           // hintStyle: const TextStyle(color: Colors.yellow),
           filled: true,
           fillColor: Colors.lightBlueAccent.withOpacity(0.1),
@@ -64,18 +64,18 @@ List<Widget> buildTextField_UserNamePassWord() => [
       const SizedBox(height: 15.0),
       FormBuilderTextField(
         name: 'password',
-        initialValue: "password",
+        initialValue: 'password',
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           prefixIcon: CustomPrefixIconWidget(
-            icon: const Icon(Icons.person, color: Colors.pinkAccent),
+            icon: const Icon(Icons.key, color: Colors.pinkAccent),
             color: Colors.yellowAccent.withOpacity(0.5),
           ),
           // suffixIcon: Icon(
           //   Icons.check_circle,
           //   color: Colors.black26,
           // ),
-          labelText: "${TranslateKeys.Password.tr()}",
+          labelText: '${TranslateKeys.Password.tr()}',
           // hintStyle: const TextStyle(color: Colors.yellow),
           filled: true,
           fillColor: Colors.lightBlueAccent.withOpacity(0.1),

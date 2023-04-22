@@ -55,7 +55,7 @@ extension MapExtension<K, V> on Map<K, V> {
   Map<K, V> copyWith(Map<K, V> copy, {bool addNew = false, bool noCopyIfIsEmpty = false}) {
     final result = Map<K, V>.from(this);
     for (final entry in copy.entries) {
-      if (!(noCopyIfIsEmpty && (entry.value == null || entry.value == "")) && (containsKey(entry.key) || addNew)) {
+      if (!(noCopyIfIsEmpty && (entry.value == null || entry.value == '')) && (containsKey(entry.key) || addNew)) {
         result[entry.key] = entry.value;
       }
     }

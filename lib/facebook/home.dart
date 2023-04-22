@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     fetchCompanies();
-    print("fetching");
+    print('fetching');
   }
 
   @override
@@ -37,12 +37,12 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Text(
+        title: const Text(
           'Cutom Feed',
           style: TextStyle(fontWeight: FontWeight.w900, fontSize: 40, color: Colors.white),
         ),
         leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.menu,
               color: Colors.black,
             ),
@@ -54,14 +54,14 @@ class _HomeState extends State<Home> {
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, int index) {
                     return getBookDetails(
                         snapshot.data![index].id, snapshot.data![index].image, snapshot.data![index].title, snapshot.data![index].items);
                   });
             }
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),
@@ -82,14 +82,14 @@ Widget getBookDetails(int id, String title, String image, String items) {
   return Container(
     width: 180,
     height: double.infinity,
-    margin: EdgeInsets.all(10),
+    margin: const EdgeInsets.all(10),
     decoration:
-        BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), image: DecorationImage(image: NetworkImage(image), fit: BoxFit.fill)),
+        BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), image: DecorationImage(image: NetworkImage(image), fit: BoxFit.fill)),
     child: Column(
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
         ),
         Text(id.toString())
       ],

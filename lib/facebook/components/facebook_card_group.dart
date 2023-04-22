@@ -15,7 +15,7 @@ class FacebookCardGroup extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         AnimatedPadding(
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           padding: EdgeInsets.all(padding),
           child: InkWell(
             splashColor: Colors.grey,
@@ -25,7 +25,7 @@ class FacebookCardGroup extends StatelessWidget {
               width: 50,
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   border: Border.all(color: Colors.grey, width: 1.5),
                   image: DecorationImage(image: AssetImage(ImagePath), fit: BoxFit.cover)),
             ),
@@ -34,7 +34,7 @@ class FacebookCardGroup extends StatelessWidget {
         Expanded(
             child: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.black),
+          style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.black),
         )),
       ],
     );

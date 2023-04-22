@@ -57,10 +57,10 @@ class SearchWidget extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 controller.clear();
-                onChanged != null ? onChanged!("") : null;
+                onChanged != null ? onChanged!('') : null;
               },
               borderRadius: borderRadius,
-              child: Icon(Icons.close),
+              child: const Icon(Icons.close),
             ),
           ),
         ),

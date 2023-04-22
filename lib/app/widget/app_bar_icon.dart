@@ -11,7 +11,7 @@ class AppBarIcon extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(5),
         width: 35,
         height: 35,
         decoration: BoxDecoration(

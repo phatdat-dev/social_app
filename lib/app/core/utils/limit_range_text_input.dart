@@ -21,13 +21,13 @@ class LimitRangeTextInput extends TextInputFormatter {
     }
 
     //neu nhap dau' thap phan (.) giua~ chung` ma` phia' sau ko co' so' thi` tra? ve` dau' . con` nguyen vi tri' ko thay doi?
-    final arrayS = newValue.text.split(".");
+    final arrayS = newValue.text.split('.');
 
     if (arrayS.last.isEmpty) return newValue;
     //ep' kieu?, format so'
 
     var value = newValue.text.toDouble();
-    if (value < minRange) return TextEditingValue(text: "$minRange");
+    if (value < minRange) return TextEditingValue(text: '$minRange');
 
     // return value > maxRange ? oldValue : newValue;
     if (value > maxRange) {
@@ -38,7 +38,7 @@ class LimitRangeTextInput extends TextInputFormatter {
     try {
       format = value.formatNumber();
     } catch (e) {
-      format = "";
+      format = '';
     }
     return newValue.copyWith(text: format, selection: TextSelection.collapsed(offset: format.length));
   }

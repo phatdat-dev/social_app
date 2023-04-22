@@ -62,14 +62,14 @@ class _LoaddingWidgetState extends State<LoaddingWidget> {
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Colors.black26,
                     blurRadius: 10.0,
-                    offset: const Offset(0.0, 10.0),
+                    offset: Offset(0.0, 10.0),
                   ),
                 ],
               ),
-              child: CircularProgressIndicator()
+              child: const CircularProgressIndicator()
               // Image(
               //   image: imageLoadding,
               //   width: 200,

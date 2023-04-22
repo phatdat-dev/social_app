@@ -9,14 +9,14 @@ class SearchTagFriendView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('Gắn thẻ bạn bè'),
+          title: const Text('Gắn thẻ bạn bè'),
           centerTitle: true,
           actions: [
             Padding(
               padding: const EdgeInsets.all(10),
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text('Xong'),
+                child: const Text('Xong'),
               ),
             ),
           ],
@@ -24,7 +24,7 @@ class SearchTagFriendView extends StatelessWidget {
             preferredSize: const Size.fromHeight(50),
             child: SearchWidget(
               controller: TextEditingController(),
-              hintText: "Tìm kiếm",
+              hintText: 'Tìm kiếm',
               backgroundColor: Colors.grey.shade100,
               elevation: 0,
             ),
@@ -35,7 +35,7 @@ class SearchTagFriendView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Đã chọn
-            Text("Đã chọn", style: Theme.of(context).textTheme.titleLarge),
+            Text('Đã chọn', style: Theme.of(context).textTheme.titleLarge),
             //ListView Horizontal
             Container(
               height: 100,
@@ -48,13 +48,13 @@ class SearchTagFriendView extends StatelessWidget {
                         children: [
                           Stack(
                             children: [
-                              CircleAvatarWidget(radius: 30),
-                              Positioned(
+                              const CircleAvatarWidget(radius: 30),
+                              const Positioned(
                                 top: 0,
                                 right: 0,
                                 child: Material(
                                   elevation: 1,
-                                  shape: const CircleBorder(),
+                                  shape: CircleBorder(),
                                   child: CircleAvatar(
                                     radius: 8,
                                     backgroundColor: Colors.red,
@@ -65,7 +65,7 @@ class SearchTagFriendView extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
+                          const Text(
                             'Nguyễn Văn A',
                             maxLines: 2,
                           ),
@@ -73,7 +73,7 @@ class SearchTagFriendView extends StatelessWidget {
                       )),
             ),
 
-            Text("Tất cả bạn bè", style: Theme.of(context).textTheme.titleLarge),
+            Text('Tất cả bạn bè', style: Theme.of(context).textTheme.titleLarge),
             Expanded(
                 child: ListView.separated(
                     itemCount: 5,
@@ -89,7 +89,7 @@ class SearchTagFriendView extends StatelessWidget {
                                   isCheck = value!;
                                   setState(() {});
                                 },
-                                secondary: CircleAvatarWidget(radius: 25),
+                                secondary: const CircleAvatarWidget(radius: 25),
                                 title: Text('Nguyễn Văn A', style: Theme.of(context).textTheme.bodyLarge),
                                 activeColor: Theme.of(context).primaryColor,
                                 contentPadding: EdgeInsets.zero,

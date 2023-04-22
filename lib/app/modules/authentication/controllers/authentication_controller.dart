@@ -22,8 +22,8 @@ class AuthenticationController extends BaseController {
       userAccount = UsersModel().fromJson(jsonDecode(userAccountString));
       //set field username, password
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        formSignInKey.currentState?.fields["email"]?.didChange(userAccount?.email);
-        formSignInKey.currentState?.fields["password"]?.didChange(userAccount?.password);
+        formSignInKey.currentState?.fields['email']?.didChange(userAccount?.email);
+        formSignInKey.currentState?.fields['password']?.didChange(userAccount?.password);
       });
     }
   }
@@ -41,8 +41,8 @@ class AuthenticationController extends BaseController {
         if (result == null) return;
         userAccount = result as UsersModel;
         //luu lai username, password
-        _saveRememberPassword(userAccount!..password = formSignInKey.currentState?.value["password"]);
-        Global.navigatorKey.currentContext!.go("/");
+        _saveRememberPassword(userAccount!..password = formSignInKey.currentState?.value['password']);
+        Global.navigatorKey.currentContext!.go('/');
       });
     }
     // else {
@@ -62,12 +62,12 @@ class AuthenticationController extends BaseController {
   }
 
   void onSignOut() {
-    saveAccount(userAccount?..token = "");
-    Global.navigatorKey.currentContext!.go("/authentication");
+    saveAccount(userAccount?..token = '');
+    Global.navigatorKey.currentContext!.go('/authentication');
   }
 
   void onTryApp() {
-    Global.navigatorKey.currentContext!.go("/");
+    Global.navigatorKey.currentContext!.go('/');
   }
 
   void saveAccount(UsersModel? user) {
@@ -78,5 +78,9 @@ class AuthenticationController extends BaseController {
 
   void _saveRememberPassword(UsersModel user) {
     isRememberPassword ? saveAccount(user) : saveAccount(null);
+  }
+
+  void onForgotPassword(String value){
+    
   }
 }

@@ -30,11 +30,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     controller.onInitData();
 
     controller.tabBarWidget = {
-      Tab(icon: Icon(Icons.home_outlined, size: 30)): HomeDashBoardView(),
-      Tab(icon: Icon(Icons.ondemand_video_outlined, size: 30)): HomeVideoView(),
-      Tab(icon: Icon(Icons.flag_outlined, size: 30)): FacebookScreenPages(),
-      Tab(icon: Icon(Icons.notifications_outlined, size: 30)): HomeNotifyView(),
-      Tab(icon: Icon(Icons.menu_outlined, size: 30)): HomeMenuView(),
+      const Tab(icon: Icon(Icons.home_outlined, size: 30)): HomeDashBoardView(),
+      const Tab(icon: Icon(Icons.ondemand_video_outlined, size: 30)): const HomeVideoView(),
+      const Tab(icon: Icon(Icons.flag_outlined, size: 30)): FacebookScreenPages(),
+      const Tab(icon: Icon(Icons.notifications_outlined, size: 30)): HomeNotifyView(),
+      const Tab(icon: Icon(Icons.menu_outlined, size: 30)): HomeMenuView(),
     };
 
     controller.tabBarController = TabController(length: controller.tabBarWidget.length, vsync: this);
@@ -49,7 +49,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         resizeToAvoidBottomInset: false,
         // extendBody: true,
         extendBodyBehindAppBar: true,
-        drawer: HomeDrawerWidget(),
+        drawer: const HomeDrawerWidget(),
         body: RefreshIndicator(
           onRefresh: () async {
             await controller.onInitData();

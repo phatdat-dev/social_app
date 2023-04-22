@@ -30,7 +30,7 @@ void main() async {
 
   runApp(const MyApp());
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent, // status bar color
     // systemNavigationBarColor: Colors.blue, // navigation bar color
   ));
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           final themeConfig = context.watch<ThemeConfig>();
           return MaterialApp.router(
             routerConfig: AppPages.router,
-            title: "Social App",
+            title: 'Social App',
             debugShowCheckedModeBanner: false,
             //theme
             theme: themeConfig.lightTheme,

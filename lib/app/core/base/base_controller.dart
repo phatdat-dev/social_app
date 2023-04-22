@@ -6,7 +6,7 @@ import 'package:social_app/app/core/utils/utils.dart';
 
 abstract class BaseController with ChangeNotifier {
   BaseController() {
-    Printt.white("Create Controller: ${runtimeType}");
+    Printt.white('Create Controller: ${runtimeType}');
   }
   final apiCall = BaseConnect.instance;
   GlobalKey key = GlobalKey();

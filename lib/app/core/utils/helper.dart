@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 class Helper {
   static String tryFormatDateTime(String dateString) {
     if (dateString.isEmpty) {
-      return "";
+      return '';
     }
     var inputDate = DateTime.tryParse(dateString);
     if (inputDate == null) return dateString;

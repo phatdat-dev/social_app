@@ -25,7 +25,7 @@ class CreatePostView extends StatelessWidget {
             var filesPicker = context.select((PickerService pickerService) => pickerService.files);
             return Scaffold(
               appBar: AppBar(
-                title: Text("Tạo bài viết"),
+                title: const Text('Tạo bài viết'),
                 actions: [
                   Padding(
                     padding: const EdgeInsets.all(10),
@@ -55,8 +55,8 @@ class CreatePostView extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     // minVerticalPadding: 10,
                     // visualDensity: VisualDensity.compact,
-                    leading: CircleAvatarWidget(radius: 25),
-                    title: Text("Username Here", style: TextStyle(fontWeight: FontWeight.bold)),
+                    leading: const CircleAvatarWidget(radius: 25),
+                    title: const Text('Username Here', style: TextStyle(fontWeight: FontWeight.bold)),
                     // isThreeLine: true,
                     subtitle: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -70,7 +70,7 @@ class CreatePostView extends StatelessWidget {
                               border: Border.all(color: Colors.grey, width: 0.5),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: IconTheme(
+                            child: const IconTheme(
                                 data: IconThemeData(size: 18, color: Colors.grey),
                                 child: Text.rich(
                                   TextSpan(
@@ -95,7 +95,7 @@ class CreatePostView extends StatelessWidget {
                               border: Border.all(color: Colors.grey, width: 0.5),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: IconTheme(
+                            child: const IconTheme(
                                 data: IconThemeData(size: 18, color: Colors.grey),
                                 child: Text.rich(
                                   TextSpan(
@@ -123,7 +123,7 @@ class CreatePostView extends StatelessWidget {
                         // scrollController: scrollController,
                         scrollPhysics: const BouncingScrollPhysics(),
                         controller: txtController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           // filled: true,
                           // fillColor: ,
                           border: InputBorder.none,
@@ -134,7 +134,7 @@ class CreatePostView extends StatelessWidget {
                     ),
                   ),
 
-                  Divider(
+                  const Divider(
                     indent: 20,
                     endIndent: 20,
                     thickness: 1,
@@ -169,7 +169,7 @@ class CreatePostView extends StatelessWidget {
                                               alignment: Alignment.topRight,
                                               child: Material(
                                                 elevation: 1,
-                                                shape: CircleBorder(),
+                                                shape: const CircleBorder(),
                                                 child: CloseButton(
                                                   onPressed: () {
                                                     filesPicker.removeAt(index);
@@ -196,7 +196,7 @@ class CreatePostView extends StatelessWidget {
                                                   child: VideoPlayer(videoPlayerController),
                                                 );
                                               }
-                                              return CircularProgressIndicator();
+                                              return const CircularProgressIndicator();
                                             },
                                           ),
                                           //play button
@@ -205,7 +205,7 @@ class CreatePostView extends StatelessWidget {
                                               alignment: Alignment.center,
                                               child: Material(
                                                 elevation: 1,
-                                                shape: CircleBorder(),
+                                                shape: const CircleBorder(),
                                                 child: StatefulBuilder(
                                                   builder: (context, setState) => IconButton(
                                                     icon: Icon(videoPlayerController.value.isPlaying ? Icons.pause : Icons.play_arrow),
@@ -226,7 +226,7 @@ class CreatePostView extends StatelessWidget {
                                               alignment: Alignment.topRight,
                                               child: Material(
                                                 elevation: 1,
-                                                shape: CircleBorder(),
+                                                shape: const CircleBorder(),
                                                 child: CloseButton(
                                                   onPressed: () {
                                                     filesPicker.removeAt(index);
@@ -260,8 +260,8 @@ class CreatePostView extends StatelessWidget {
                       onTap: () async {
                         context.read<PickerService>().pickMultiFile(FileType.media);
                       },
-                      customBorder: StadiumBorder(),
-                      child: Icon(
+                      customBorder: const StadiumBorder(),
+                      child: const Icon(
                         Icons.photo_library_outlined,
                         color: Colors.green,
                       ),
@@ -270,24 +270,24 @@ class CreatePostView extends StatelessWidget {
                       onTap: () async {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchTagFriendView()));
                       },
-                      customBorder: StadiumBorder(),
-                      child: Icon(
+                      customBorder: const StadiumBorder(),
+                      child: const Icon(
                         Icons.loyalty_outlined,
                         color: Colors.blue,
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.tag_faces,
                       color: Colors.amber,
                     ),
-                    Icon(
+                    const Icon(
                       Icons.location_on_outlined,
                       color: Colors.red,
                     ),
-                    Icon(Icons.more_outlined),
+                    const Icon(Icons.more_outlined),
                   ];
                   return IconTheme(
-                      data: IconThemeData(size: 30),
+                      data: const IconThemeData(size: 30),
                       child: Row(
                         children: children.map((e) => Expanded(child: e)).toList(),
                       ));

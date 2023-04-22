@@ -14,13 +14,13 @@ class FacebookButtonGroup extends StatelessWidget {
         padding: const EdgeInsets.all(3.0),
         child: Container(
           height: 30,
-          decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(30))),
+          decoration: const BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(30))),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),
               child: Row(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Icon(
@@ -28,12 +28,12 @@ class FacebookButtonGroup extends StatelessWidget {
                     color: Colors.black,
                     size: 15,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
                     text,
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                   )
                 ],
               ),

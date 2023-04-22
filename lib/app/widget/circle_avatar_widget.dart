@@ -13,14 +13,14 @@ class CircleAvatarWidget extends StatelessWidget {
       tag: StringExtension.randomString(10),
       child: CircleAvatar(
           radius: radius,
-          backgroundImage: (image?.contains("assets") ?? false) ? AssetImage(image ?? "assets/images/user_default_icon.png") : null,
+          backgroundImage: (image?.contains('assets') ?? false) ? AssetImage(image ?? 'assets/images/user_default_icon.png') : null,
           child: //check image is web url
-              image?.contains("http") ?? true
+              image?.contains('http') ?? true
                   ? ClipOval(
                       child: FadeInImage.assetNetwork(
-                      placeholder: "assets/images/user_default_icon.png",
+                      placeholder: 'assets/images/user_default_icon.png',
                       image: image ??
-                          "https://img.freepik.com/free-vector/cute-bad-cat-wearing-suit-sunglasses-with-baseball-bat-cartoon-icon-illustration-animal-fashion-icon-concept-isolated-flat-cartoon-style_138676-2170.jpg?w=2000",
+                          'https://img.freepik.com/free-vector/cute-bad-cat-wearing-suit-sunglasses-with-baseball-bat-cartoon-icon-illustration-animal-fashion-icon-concept-isolated-flat-cartoon-style_138676-2170.jpg?w=2000',
                       fit: BoxFit.cover,
                       fadeInDuration: const Duration(milliseconds: 200),
                       fadeOutDuration: const Duration(milliseconds: 180),

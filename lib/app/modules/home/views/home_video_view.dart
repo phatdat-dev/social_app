@@ -20,14 +20,14 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
     controller = context.read<HomeController>();
 
     controller.subTabBarVideoWidget = {
-      Tab(text: "Dành cho bạn"): ListView(
+      const Tab(text: 'Dành cho bạn'): ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           Selector<HomeController, List<PostResponseModel>?>(
             selector: (_, controller) => controller.postData,
             builder: (context, data, child) {
               if (data == null) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
               return ListView.builder(
                   itemCount: data.length,
@@ -41,17 +41,17 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
           ),
         ],
       ),
-      Tab(text: "Trực tiếp"): Container(
+      const Tab(text: 'Trực tiếp'): Container(
         width: 100,
         height: 100,
         color: Colors.red,
       ),
-      Tab(text: "Chơi game"): Container(
+      const Tab(text: 'Chơi game'): Container(
         width: 100,
         height: 100,
         color: Colors.red,
       ),
-      Tab(text: "Đang theo dõi"): Container(
+      const Tab(text: 'Đang theo dõi'): Container(
         width: 100,
         height: 100,
         color: Colors.red,

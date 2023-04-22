@@ -14,10 +14,10 @@ class FacebookScreenGroups extends StatefulWidget {
 
 class _FacebookScreenGroupsState extends State<FacebookScreenGroups> {
   List<ModelGroup> groups = [
-    ModelGroup(image_path: 'assets/images/china.jpg', title: "Farming Group"),
-    ModelGroup(image_path: 'assets/images/page.jpg', title: "Cool Page"),
-    ModelGroup(image_path: 'assets/images/pexel.jpeg', title: "Pexel Page"),
-    ModelGroup(image_path: 'assets/images/sunset.jpg', title: "Nature Page"),
+    ModelGroup(image_path: 'assets/images/china.jpg', title: 'Farming Group'),
+    ModelGroup(image_path: 'assets/images/page.jpg', title: 'Cool Page'),
+    ModelGroup(image_path: 'assets/images/pexel.jpeg', title: 'Pexel Page'),
+    ModelGroup(image_path: 'assets/images/sunset.jpg', title: 'Nature Page'),
   ];
   @override
   void initState() {
@@ -50,9 +50,9 @@ class _FacebookScreenGroupsState extends State<FacebookScreenGroups> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Expanded(
+                      const Expanded(
                           child: Text(
-                        "Groups",
+                        'Groups',
                         style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.black),
                       )),
                       AppBarIcon(iconData: Icons.search, onTap: () {}),
@@ -63,10 +63,10 @@ class _FacebookScreenGroupsState extends State<FacebookScreenGroups> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
-                        FacebookButtonGroup(onPress: () {}, icon: Icons.person, text: "Your Groups"),
-                        FacebookButtonGroup(onPress: () {}, icon: Icons.discord, text: "Doscover"),
-                        FacebookButtonGroup(onPress: () {}, icon: Icons.add, text: "Create"),
-                        FacebookButtonGroup(onPress: () {}, icon: Icons.settings, text: "Settings"),
+                        FacebookButtonGroup(onPress: () {}, icon: Icons.person, text: 'Your Groups'),
+                        FacebookButtonGroup(onPress: () {}, icon: Icons.discord, text: 'Doscover'),
+                        FacebookButtonGroup(onPress: () {}, icon: Icons.add, text: 'Create'),
+                        FacebookButtonGroup(onPress: () {}, icon: Icons.settings, text: 'Settings'),
                       ],
                     ),
                   ),
@@ -93,8 +93,8 @@ class _FacebookScreenGroupsState extends State<FacebookScreenGroups> {
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {
                       return Container(
-                        child: Center(
-                          child: Text("Loading..."),
+                        child: const Center(
+                          child: Text('Loading...'),
                         ),
                       );
                     }

@@ -31,10 +31,10 @@ class DateTimeRangePicker {
 
   DateTimeRangePicker({
     Key? key,
-    this.startText = "Start",
-    this.endText = "End",
-    this.doneText = "OK",
-    this.cancelText = "Cancel",
+    this.startText = 'Start',
+    this.endText = 'End',
+    this.doneText = 'OK',
+    this.cancelText = 'Cancel',
     this.mode = DateTimeRangePickerMode.dateAndTime,
     this.interval = 15,
     this.use24hFormat = false,

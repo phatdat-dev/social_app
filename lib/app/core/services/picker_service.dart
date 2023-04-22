@@ -6,7 +6,7 @@ import 'package:social_app/app/core/utils/utils.dart';
 
 class PickerService with ChangeNotifier {
   PickerService() {
-    Printt.white("Create Service: ${runtimeType}");
+    Printt.white('Create Service: ${runtimeType}');
   }
   List<File>? files = null;
 

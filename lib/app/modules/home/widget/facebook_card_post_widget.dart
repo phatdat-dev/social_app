@@ -29,14 +29,14 @@ class FacebookCardPostWidget extends StatelessWidget {
             child: Text.rich(TextSpan(
               children: [
                 TextSpan(text: postResponseModel.postContent),
-                TextSpan(text: "\n#hasTag", style: TextStyle(color: Colors.blue.shade700)),
+                TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
               ],
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             )),
           ),
           _buildMediaPost(context),
           _buildNumbericLikeComment(context),
-          Divider(
+          const Divider(
             height: 0, //height spacing of divider
             thickness: 1, //thickness of divier line
             indent: 10,
@@ -47,7 +47,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               valueListenable: isExpandedNotifier,
               builder: (context, value, child) => AnimatedCrossFade(
                     duration: const Duration(milliseconds: 200),
-                    firstChild: SizedBox.shrink(),
+                    firstChild: const SizedBox.shrink(),
                     secondChild: _buildComment(context),
                     crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                   )),
@@ -70,16 +70,16 @@ class FacebookCardPostWidget extends StatelessWidget {
                       });
                     },
                     icon: like
-                        ? Icon(
+                        ? const Icon(
                             MdiIcons.thumbUp,
                             color: Colors.blue,
                           )
-                        : Icon(
+                        : const Icon(
                             MdiIcons.thumbUpOutline,
                             color: Colors.grey,
                           ),
                     label: Text(
-                      "Like",
+                      'Like',
                       style: TextStyle(color: like ? Colors.blue : Colors.grey),
                     ),
                   )),
@@ -89,12 +89,12 @@ class FacebookCardPostWidget extends StatelessWidget {
             onPressed: () {
               isExpandedNotifier.value = !isExpandedNotifier.value;
             },
-            icon: Icon(
+            icon: const Icon(
               MdiIcons.commentOutline,
               color: Colors.grey,
             ),
-            label: Text(
-              "Comment",
+            label: const Text(
+              'Comment',
               style: TextStyle(color: Colors.grey),
             ),
           ),
@@ -102,12 +102,12 @@ class FacebookCardPostWidget extends StatelessWidget {
         Expanded(
           child: TextButton.icon(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               MdiIcons.shareOutline,
               color: Colors.grey,
             ),
-            label: Text(
-              "Share",
+            label: const Text(
+              'Share',
               style: TextStyle(color: Colors.grey),
             ),
           ),
@@ -136,11 +136,11 @@ class FacebookCardPostWidget extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Spacer(),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0, right: 8.0),
                 child: Text(
-                  "${postResponseModel.totalComment} · ${postResponseModel.totalShare}",
+                  '${postResponseModel.totalComment} · ${postResponseModel.totalShare}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -163,7 +163,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.only(left: 0.0, top: 15.0),
                   child: Text(
-                    "${postResponseModel.totalLike} likes",
+                    '${postResponseModel.totalLike} likes',
                     style: Theme.of(context).textTheme.bodySmall,
                   ))),
         ],
@@ -192,7 +192,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                     fit: BoxFit.cover,
                   )),
             ),
-            Positioned(
+            const Positioned(
               right: 0,
               bottom: 0,
               child: CircleAvatarWidget(radius: 15),
@@ -222,29 +222,29 @@ class FacebookCardPostWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     postResponseModel.username!,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text.rich(TextSpan(children: [
                     if (!isUserPost)
                       TextSpan(
-                          text: "${postResponseModel.username}  · ",
+                          text: '${postResponseModel.username}  · ',
                           style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
-                    TextSpan(text: "${postResponseModel.createdAt} · ☘", style: Theme.of(context).textTheme.bodySmall),
+                    TextSpan(text: '${postResponseModel.createdAt} · ☘', style: Theme.of(context).textTheme.bodySmall),
                   ])),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                 ],
               ),
             ),
           ),
           IconButton(
             padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
+            constraints: const BoxConstraints(),
             onPressed: () {},
-            icon: Icon(Icons.more_horiz),
+            icon: const Icon(Icons.more_horiz),
           ),
         ],
       ),
@@ -253,9 +253,9 @@ class FacebookCardPostWidget extends StatelessWidget {
 
   Widget _buildMediaPost(BuildContext context) {
     Widget buildImage(String url) {
-      return url.contains("http")
+      return url.contains('http')
           ? FadeInImage.assetNetwork(
-              placeholder: "assets/images/Img_error.png",
+              placeholder: 'assets/images/Img_error.png',
               image: url,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -272,7 +272,7 @@ class FacebookCardPostWidget extends StatelessWidget {
 
     Widget buildVideo(String url) {
       VideoPlayerController videoPlayerController =
-          VideoPlayerController.network("https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4");
+          VideoPlayerController.network('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4');
       return Stack(
         children: [
           FutureBuilder(
@@ -284,7 +284,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                   child: VideoPlayer(videoPlayerController),
                 );
               }
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             },
           ),
           //play button
@@ -293,7 +293,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               alignment: Alignment.center,
               child: Material(
                 elevation: 1,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 child: StatefulBuilder(
                   builder: (context, setState) => IconButton(
                     icon: Icon(videoPlayerController.value.isPlaying ? Icons.pause : Icons.play_arrow),
@@ -364,7 +364,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: CircleAvatar(
-                          child: Text("+${listMedia.length - 2}"),
+                          child: Text('+${listMedia.length - 2}'),
                           backgroundColor: Colors.transparent,
                         ),
                       ),
@@ -393,7 +393,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                     'userName',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(
@@ -406,15 +406,15 @@ class FacebookCardPostWidget extends StatelessWidget {
             DefaultTextStyle(
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.grey),
               child: Padding(
-                padding: EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.only(top: 5),
                 child: Row(
                   children: [
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Text('33p', style: Theme.of(context).textTheme.bodySmall!),
-                    SizedBox(width: 24),
-                    Text('Like'),
-                    SizedBox(width: 24),
-                    Text('Reply'),
+                    const SizedBox(width: 24),
+                    const Text('Like'),
+                    const SizedBox(width: 24),
+                    const Text('Reply'),
                   ],
                 ),
               ),
@@ -435,11 +435,11 @@ class FacebookCardPostWidget extends StatelessWidget {
           Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams generator which helps teams '),
         ],
         treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
-        avatarRoot: (context, data) => PreferredSize(
+        avatarRoot: (context, data) => const PreferredSize(
           child: CircleAvatarWidget(radius: 20),
           preferredSize: Size.fromRadius(20),
         ),
-        avatarChild: (context, data) => PreferredSize(
+        avatarChild: (context, data) => const PreferredSize(
           child: CircleAvatarWidget(radius: 14),
           preferredSize: Size.fromRadius(14),
         ),

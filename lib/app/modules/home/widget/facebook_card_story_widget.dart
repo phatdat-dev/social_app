@@ -11,12 +11,12 @@ class FacebookCardStory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         width: 100,
         height: 150,
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.1),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           image: DecorationImage(image: AssetImage(backgroundImage), fit: BoxFit.cover),
         ),
         child: Stack(
@@ -37,12 +37,12 @@ class FacebookCardStory extends StatelessWidget {
                         image: DecorationImage(image: AssetImage(avatarImage), fit: BoxFit.cover)),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     user_name,
-                    style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+                    style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
                   ),
                 ),
               ],
@@ -53,10 +53,10 @@ class FacebookCardStory extends StatelessWidget {
                 padding: const EdgeInsets.all(3.5),
                 child: RawMaterialButton(
                   onPressed: () {},
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   fillColor: Colors.white,
-                  constraints: BoxConstraints.tightFor(width: 42.0, height: 42.0),
-                  child: Icon(
+                  constraints: const BoxConstraints.tightFor(width: 42.0, height: 42.0),
+                  child: const Icon(
                     Icons.add,
                     color: Colors.blue,
                     size: 30,

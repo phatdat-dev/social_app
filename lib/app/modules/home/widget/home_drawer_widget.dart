@@ -20,9 +20,9 @@ class HomeDrawerWidget extends StatelessWidget {
             padding: EdgeInsets.zero, //remove padding SafeArea
             children: [
               DrawerHeader(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/images/background-3.png"),
+                    image: AssetImage('assets/images/background-3.png'),
                     fit: BoxFit.cover,
                     opacity: 0.5,
                   ),
@@ -35,16 +35,16 @@ class HomeDrawerWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 10),
-                        Text(
-                          "UserName",
+                        const Text(
+                          'UserName',
                           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          "email@gmail.com",
+                        const Text(
+                          'email@gmail.com',
                           style: TextStyle(fontStyle: FontStyle.italic),
                         ),
-                        Text(
-                          "012938797",
+                        const Text(
+                          '012938797',
                           style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ],
@@ -54,40 +54,40 @@ class HomeDrawerWidget extends StatelessWidget {
               ),
               ListTile(
                 style: ListTileStyle.drawer,
-                leading: Icon(Icons.favorite_outline),
+                leading: const Icon(Icons.favorite_outline),
                 title: Text(TranslateKeys.Favorite.tr()),
-                trailing: Icon(Icons.navigate_next_outlined),
+                trailing: const Icon(Icons.navigate_next_outlined),
               ),
               //download
-              ListTile(
+              const ListTile(
                 style: ListTileStyle.drawer,
                 leading: Icon(Icons.download_outlined),
-                title: const Text('Download'),
+                title: Text('Download'),
                 trailing: Icon(Icons.navigate_next_outlined),
               ),
 
               //location
-              ListTile(
+              const ListTile(
                 style: ListTileStyle.drawer,
                 leading: Icon(Icons.location_on_outlined),
-                title: const Text('Location'),
+                title: Text('Location'),
                 trailing: Icon(Icons.navigate_next_outlined),
               ),
               //display
-              ListTile(
+              const ListTile(
                 style: ListTileStyle.drawer,
                 leading: Icon(Icons.display_settings_outlined),
-                title: const Text('Display'),
+                title: Text('Display'),
                 trailing: Icon(Icons.navigate_next_outlined),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: const Divider(),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(),
               ),
               //language
 
               ExpansionTile(
-                leading: Icon(Icons.language_outlined),
+                leading: const Icon(Icons.language_outlined),
                 title: Text(TranslateKeys.Language.tr()),
                 children: TranslationService.locales
                     .map((e) => CheckRadioListTile<Locale>(
@@ -104,9 +104,9 @@ class HomeDrawerWidget extends StatelessWidget {
               //settings
               ListTile(
                 style: ListTileStyle.drawer,
-                leading: Icon(Icons.settings_outlined),
+                leading: const Icon(Icons.settings_outlined),
                 title: Text(TranslateKeys.Setting.tr()),
-                trailing: Icon(Icons.navigate_next_outlined),
+                trailing: const Icon(Icons.navigate_next_outlined),
               ),
             ],
           ),
@@ -117,7 +117,7 @@ class HomeDrawerWidget extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: ElevatedButton.icon(
                   onPressed: () => context.read<AuthenticationController>().onSignOut(),
-                  icon: Icon(Icons.logout_outlined),
+                  icon: const Icon(Icons.logout_outlined),
                   label: Text(TranslateKeys.LogOut.tr()),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.pinkAccent)),
             ),
@@ -165,7 +165,7 @@ class HomeDrawerWidget extends StatelessWidget {
 
   Widget buildAvatarEdit(BuildContext context) => Stack(
         children: [
-          CircleAvatarWidget(radius: 50),
+          const CircleAvatarWidget(radius: 50),
           Positioned(
             right: 5,
             bottom: 5,
@@ -178,7 +178,7 @@ class HomeDrawerWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.green, width: 1),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.camera_alt_outlined,
                 size: 15,
               ),

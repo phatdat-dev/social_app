@@ -18,7 +18,7 @@ class FacebookCardIconText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(20))),
+      decoration: BoxDecoration(color: color, borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

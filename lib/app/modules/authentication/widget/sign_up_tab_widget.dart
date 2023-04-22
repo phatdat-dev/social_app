@@ -10,7 +10,7 @@ class SignUpTapWidget extends StatelessWidget {
       key: controller.formSignUpKey,
       child: ListView(
         padding: const EdgeInsets.all(15.0),
-        physics: BouncingScrollPhysics(), //remove Glow effect
+        physics: const BouncingScrollPhysics(), //remove Glow effect
         children: <Widget>[
           ...buildTextField_UserNamePassWord(),
           const SizedBox(height: 15.0),
@@ -19,14 +19,14 @@ class SignUpTapWidget extends StatelessWidget {
             decoration: InputDecoration(
               contentPadding: EdgeInsets.zero,
               prefixIcon: CustomPrefixIconWidget(
-                icon: const Icon(Icons.person, color: Colors.white),
+                icon: const Icon(Icons.vpn_key, color: Colors.white),
                 color: Colors.blueAccent.withOpacity(0.5),
               ),
               // suffixIcon: Icon(
               //   Icons.check_circle,
               //   color: Colors.black26,
               // ),
-              labelText: "${TranslateKeys.ConfirmPassword.tr()}",
+              labelText: '${TranslateKeys.ConfirmPassword.tr()}',
               // hintStyle: const TextStyle(color: Colors.yellow),
               filled: true,
               fillColor: Colors.lightBlueAccent.withOpacity(0.1),

@@ -31,7 +31,7 @@ class _WellcomeViewState<T extends WellComeController> extends State<WellcomeVie
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('You have pushed the button this many times:'),
+          const Text('You have pushed the button this many times:'),
           Text('PleaseWait'.tr()),
           Consumer<WellComeController>(
             builder: (context, controller, child) {
@@ -44,7 +44,7 @@ class _WellcomeViewState<T extends WellComeController> extends State<WellcomeVie
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FloatingActionButton(
-                heroTag: "1",
+                heroTag: '1',
                 onPressed: () {
                   controller.increment();
                 },
@@ -53,7 +53,7 @@ class _WellcomeViewState<T extends WellComeController> extends State<WellcomeVie
               ),
               const SizedBox(width: 10),
               FloatingActionButton(
-                heroTag: "2",
+                heroTag: '2',
                 onPressed: () {
                   controller.decrement();
                 },
@@ -64,23 +64,23 @@ class _WellcomeViewState<T extends WellComeController> extends State<WellcomeVie
           ),
           ElevatedButton.icon(
             onPressed: () {
-              context.push("/");
+              context.push('/');
             },
-            icon: Icon(Icons.dangerous),
-            label: Text("fetchData"),
+            icon: const Icon(Icons.dangerous),
+            label: const Text('fetchData'),
           ),
           ElevatedButton.icon(
             onPressed: () {
               FirebaseAuth.instance.verifyPhoneNumber(
-                phoneNumber: "+84388002837",
+                phoneNumber: '+84388002837',
                 verificationCompleted: (phoneAuthCredential) {},
                 verificationFailed: (error) {},
                 codeSent: (verificationId, forceResendingToken) {},
                 codeAutoRetrievalTimeout: (verificationId) {},
               );
             },
-            icon: Icon(Icons.sms_outlined),
-            label: Text("SMS OTP send"),
+            icon: const Icon(Icons.sms_outlined),
+            label: const Text('SMS OTP send'),
           ),
         ],
       ),
