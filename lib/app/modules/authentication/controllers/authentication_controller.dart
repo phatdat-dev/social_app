@@ -6,13 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/constants/app_constant.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
 
 class AuthenticationController extends BaseController {
   static UsersModel? userAccount;
   final formSignInKey = GlobalKey<FormBuilderState>();
   final formSignUpKey = GlobalKey<FormBuilderState>();
+  final formForgotPasswordKey = GlobalKey<FormBuilderState>();
   bool isRememberPassword = true;
 
   @override
@@ -53,12 +54,20 @@ class AuthenticationController extends BaseController {
 
   void onSignUp() {
     if (formSignUpKey.currentState?.saveAndValidate() ?? false) {
-      Printt.white(formSignUpKey.currentState?.value.toString());
+      final name = formSignUpKey.currentState!.value['email'].toString().split('@')[0];
+      apiCall.onRequest(
+        ApiUrl.post_auth_register(),
+        RequestMethod.POST,
+        body: {
+          'firstName': name,
+          'lastName': name,
+          ...formSignUpKey.currentState!.value,
+        },
+      ).then((result) {
+        if (result == null) return;
+        HelperWidget.showSnackBar(context: key.currentContext!, message: result['message']);
+      });
     }
-    // else {
-    //   Printt.white(formSignUpKey.currentState?.value.toString());
-    //   Printt.white('validation failed');
-    // }
   }
 
   void onSignOut() {
@@ -80,7 +89,18 @@ class AuthenticationController extends BaseController {
     isRememberPassword ? saveAccount(user) : saveAccount(null);
   }
 
-  void onForgotPassword(String value){
-    
+  void onForgotPassword() {
+    if (formForgotPasswordKey.currentState?.saveAndValidate() ?? false) {
+      apiCall
+          .onRequest(
+        ApiUrl.post_auth_forgotPassword(),
+        RequestMethod.POST,
+        body: formForgotPasswordKey.currentState?.value,
+      )
+          .then((result) {
+        if (result == null) return;
+        HelperWidget.showSnackBar(message: result.toString(), context: key.currentContext!);
+      });
+    }
   }
 }

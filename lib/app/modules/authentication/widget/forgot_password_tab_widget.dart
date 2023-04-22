@@ -15,56 +15,51 @@ class ForgotPasswordTapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.read<AuthenticationController>();
-    final formForgotPasswordKey = GlobalKey<FormBuilderState>();
 
     return FormBuilder(
-      key: formForgotPasswordKey,
-      child: Padding(
+      key: controller.formForgotPasswordKey,
+      child: ListView(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: <Widget>[
-            FormBuilderTextField(
-              name: 'forgotPassword',
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
-                prefixIcon: CustomPrefixIconWidget(
-                  icon: SvgPicture.asset(
-                    'assets/svg/google-plus.svg',
-                    height: 20,
-                    width: 20,
-                    colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                  ),
-                  color: Colors.red,
+        physics: const BouncingScrollPhysics(), //remove Glow effect
+        children: <Widget>[
+          FormBuilderTextField(
+            name: 'email',
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.zero,
+              prefixIcon: CustomPrefixIconWidget(
+                icon: SvgPicture.asset(
+                  'assets/svg/google-plus.svg',
+                  height: 20,
+                  width: 20,
+                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 ),
-                // suffixIcon: Icon(
-                //   Icons.check_circle,
-                //   color: Colors.black26,
-                // ),
-                labelText: '${TranslateKeys.Email.tr()}',
-                // hintStyle: const TextStyle(color: Colors.yellow),
-                filled: true,
-                fillColor: Colors.lightBlueAccent.withOpacity(0.1),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0), borderSide: BorderSide.none),
+                color: Colors.red,
               ),
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
-              ]),
+              // suffixIcon: Icon(
+              //   Icons.check_circle,
+              //   color: Colors.black26,
+              // ),
+              labelText: '${TranslateKeys.Email.tr()}',
+              // hintStyle: const TextStyle(color: Colors.yellow),
+              filled: true,
+              fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0), borderSide: BorderSide.none),
             ),
-            const SizedBox(height: 162.0),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (formForgotPasswordKey.currentState?.saveAndValidate() ?? false) {
-                    controller.onForgotPassword(formForgotPasswordKey.currentState?.value['forgotPassword']);
-                  }
-                },
-                child: Text(TranslateKeys.SignUp.tr()),
-              ),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(),
+              FormBuilderValidators.email(),
+            ]),
+          ),
+          const SizedBox(height: 163.0),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: ElevatedButton(
+              onPressed: () => controller.onForgotPassword(),
+              child: const Text('OK'),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

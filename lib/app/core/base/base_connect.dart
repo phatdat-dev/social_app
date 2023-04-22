@@ -90,15 +90,24 @@ class BaseConnect {
       case 404:
       case 500:
         //
-        final Map<String, dynamic> errorMessage = jsonDecode(response.data!);
+        final Map<String, dynamic> errorMessage = response.data!;
         // ignore: prefer_interpolation_to_compose_strings
 
         String message = '';
-        if (errorMessage['error'] is Map) {
-          //cho nay` bat' loi~ OpenAI
-          message = errorMessage['error']['message'];
+        if (errorMessage.containsKey('error') || errorMessage.containsKey('message')) {
+          if (errorMessage['error'] is Map) {
+            //cho nay` bat' loi~ OpenAI
+            message = errorMessage['error']['message'];
+          } else {
+            message = (errorMessage['message'] ?? errorMessage['error']).toString();
+          }
         } else {
-          message = (errorMessage['message'] ?? errorMessage['error']) as String;
+          errorMessage.forEach((key, value) {
+            if (value is List)
+              message += value.join('\n') + '\n';
+            else
+              message += value.toString();
+          });
         }
         HelperWidget.showToast('CODE (${response.statusCode}):\n$message');
         Printt.red(message);

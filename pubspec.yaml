@@ -63,6 +63,7 @@ dependencies:
   material_design_icons_flutter: any #icon Fb
   file_picker: any #pick file/video/image
   video_player: any #play video
+  # animations: any
 
   #
   flutter:

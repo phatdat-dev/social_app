@@ -52,4 +52,29 @@ class HelperWidget {
 
     return spans;
   }
+
+  static void showSnackBar({
+    required BuildContext context,
+    required String message,
+    MaterialColor color = Colors.green,
+    IconData iconData = Icons.task_alt,
+    Duration duration = const Duration(seconds: 3),
+    double? width,
+  }) =>
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(iconData, color: color),
+            Text(message, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        backgroundColor: color.shade100,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), //StadiumBorder()
+        margin: const EdgeInsets.all(10),
+        width: width,
+        duration: duration,
+        //show snackbar animation bottom to top
+      ));
 }
