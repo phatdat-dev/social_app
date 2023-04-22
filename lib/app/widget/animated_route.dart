@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//using await Navigator.of(context).push(AnimatedRoute( CreatePostView() ));
 class AnimatedRoute extends PageRouteBuilder {
   final Widget widget;
 

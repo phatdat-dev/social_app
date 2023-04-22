@@ -37,8 +37,8 @@ class UsersModel extends BaseModel<UsersModel> {
 
   @override
   UsersModel fromJson(Map<String, dynamic> json) {
-    final String token = json["access_token"];
-    json = json["user"];
+    final String? token = json["access_token"];
+    if (json["user"] != null) json = json["user"];
     return UsersModel(
       id: (json['id'] as num?)?.toInt(),
       firstName: json['first_name'],
@@ -53,7 +53,7 @@ class UsersModel extends BaseModel<UsersModel> {
       relationship: (json['relationship'] as num?)?.toInt(),
       phone: json['phone'],
       address: json['address'],
-      token: token,
+      token: token ?? json['token'],
       password: json['password'],
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/modules/home/widget/home_drawer_widget.dart';
 import 'package:social_app/app/widget/app_bar_icon.dart';
 
 import '../../../../facebook/screens/facebook_screen_pages.dart';
@@ -48,7 +49,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         resizeToAvoidBottomInset: false,
         // extendBody: true,
         extendBodyBehindAppBar: true,
-        // drawer: HomeDrawerWidget(),
+        drawer: HomeDrawerWidget(),
         body: RefreshIndicator(
           onRefresh: () async {
             await controller.onInitData();
