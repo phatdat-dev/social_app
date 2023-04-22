@@ -1,8 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
+
+import '../../../core/utils/utils.dart';
+import '../controllers/authentication_controller.dart';
+
+part '../widget/custom_prefix_icon_widget.dart';
+part '../widget/or_divider_widget.dart';
+part '../widget/sign_in_tab_widget.dart';
+part '../widget/sign_up_tab_widget.dart';
+part '../widget/social_icon_widget.dart';
+part '../widget/wave_clipper.dart';
+part '../widget/wave_draw_clippath_widget.dart';
 
 class AuthenticationView extends StatefulWidget {
   const AuthenticationView({Key? key}) : super(key: key);
@@ -39,7 +51,130 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
         key: controller.key,
         body: ListView(
           children: [
-            Center(child: Text("asdasd")),
+            // FractionallySizedBox(
+            //   heightFactor: 0.5,
+            //   child: Container(
+            //     color: Theme.of(context).colorScheme.primary,
+            //   ),
+            // ),
+            WaveDrawClipPathWidget(title: "Authenication"),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(borderRadius), boxShadow: [
+                      BoxShadow(
+                        color: Colors.green.shade50,
+                        offset: Offset(5, 5),
+                        blurRadius: 10,
+                        // spreadRadius: 5,
+                        // blurStyle: BlurStyle.normal,
+                      )
+                    ]),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(borderRadius),
+                              topRight: Radius.circular(borderRadius),
+                            ),
+                          ),
+                          child: TabBar(
+                            // onTap: (index) {},
+                            isScrollable: true,
+                            controller: tabController,
+                            indicatorColor: Colors.green,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            //duong` vien`
+                            // indicator: BoxDecoration(
+                            //   color: ColorConstants.blue100,
+                            //   borderRadius: BorderRadius.circular(100),
+                            //   border: Border.all(color: ColorConstants.blue100),
+                            // ),
+                            labelColor: Theme.of(context).colorScheme.primary,
+                            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                            unselectedLabelColor: Theme.of(context).colorScheme.inverseSurface.withOpacity(0.5),
+                            tabs: listTabBar,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 300,
+                          child: TabBarView(
+                            controller: tabController,
+                            children: [
+                              SignInTabWidget(),
+                              SignUpTapWidget(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(TranslateKeys.DoYouWantToTryIt.tr(), style: TextStyle(fontSize: 12)),
+                      TextButton(
+                        child: Text(TranslateKeys.TryNow.tr(), style: TextStyle(fontSize: 14)),
+                        onPressed: () => controller.onTryApp(),
+                      ),
+                    ],
+                  ),
+                  OrDivider(),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SocialIcon(
+                          colors: const [
+                            Color(0xFF102397),
+                            Color(0xFF187adf),
+                            Color(0xFF00eaf8),
+                          ],
+                          iconURL: "assets/svg/facebook.svg",
+                          onPressed: () async {},
+                        ),
+                        SocialIcon(
+                          colors: const [
+                            Color(0xFF17ead9),
+                            Color(0xFF6078ea),
+                          ],
+                          iconURL: "assets/svg/twitter.svg",
+                          onPressed: () {
+                            print("twitter");
+                          },
+                        ),
+                        SocialIcon(
+                          colors: const [
+                            Color(0xFFff4f38),
+                            Color(0xFFff355d),
+                          ],
+                          iconURL: "assets/svg/google-plus.svg",
+                          onPressed: () async {},
+                        ),
+                        SocialIcon(
+                          colors: const [
+                            Color(0xFF00c6fb),
+                            Color(0xFF005bea),
+                          ],
+                          iconURL: "assets/svg/github.svg",
+                          onPressed: () {
+                            print("github");
+                          },
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

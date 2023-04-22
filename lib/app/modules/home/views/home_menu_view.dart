@@ -130,29 +130,32 @@ class _HomeMenuViewState extends State<HomeMenuView> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         Wrap(
-          children: List.generate(
-              items.length,
-              (index) => Card(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 2 - 20,
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0, right: 16, left: 8),
-                            child: Image.asset(
-                              items[index]["image"],
-                              width: 48,
-                              height: 48,
-                            ),
-                          ),
-                          Text(
-                            items[index]["title"],
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                        ],
-                      ),
+          children: List.generate(items.length, (index) {
+            final widthh = MediaQuery.of(context).size.width / 2 - 20;
+            return Card(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width / 2 - 20),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Image.asset(
+                      items[index]["image"],
+                      width: 30,
+                      height: 30,
                     ),
-                  )),
+                    const SizedBox(width: 10),
+                    Text(
+                      "${items[index]["title"]}",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
         ),
       ],
     );

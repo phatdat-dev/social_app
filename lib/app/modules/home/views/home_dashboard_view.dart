@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/models/response/post_response_model.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 import 'package:social_app/app/widget/animated_route.dart';
 import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:social_app/facebook/models/model_story.dart';
-import 'package:social_app/package/comment_tree/comment_tree.dart';
 
 import '../widget/facebook_card_story_widget.dart';
 
@@ -51,7 +51,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
       children: <Widget>[
         _buildInputStory(context),
         _buildListCardStory(),
-        Selector<HomeController, List<Map<String, dynamic>>?>(
+        Selector<HomeController, List<PostResponseModel>?>(
           selector: (_, controller) => controller.postData,
           builder: (context, data, child) {
             if (data == null) {
@@ -63,109 +63,10 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, int index) {
-                  return FacebookCardPostWidget(
-                    user_name: data[index]['user']['nickname'],
-                    profile_path: data[index]['user']['avatar_url'],
-                    imageUrl: (data[index]['post']['images'] as List).isNotEmpty
-                        ? List<String>.from(data[index]['post']['images'])
-                        : ["assets/images/pexel.jpeg"],
-                    date: data[index]['post']['reply_time'],
-                    description: "${data[index]['post']['subject']}\n${data[index]['post']['content']}",
-                    reactions: data[index]['stat']['view_num'].toString(),
-                    nums: "21 comments",
-                    child: Builder(builder: (context) {
-                      Widget contentComment(dynamic data) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'userName',
-                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      '${data.content}',
-                                      style: Theme.of(context).textTheme.bodyMedium,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              DefaultTextStyle(
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.grey),
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 5),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: 5),
-                                      Text('33p', style: Theme.of(context).textTheme.bodySmall!),
-                                      SizedBox(width: 24),
-                                      Text('Like'),
-                                      SizedBox(width: 24),
-                                      Text('Reply'),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          );
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: CommentTreeWidget<Comment, Comment>(
-                          root: Comment(avatar: 'null', userName: 'null', content: 'felangel made felangel/cubit_and_beyond public '),
-                          replies: [
-                            Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
-                            Comment(
-                                avatar: 'null',
-                                userName: 'null',
-                                content: 'A Dart template generator which helps teams generator which helps teams generator which helps teams'),
-                            Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
-                            Comment(
-                                avatar: 'null',
-                                userName: 'null',
-                                content: 'A Dart template generator which helps teams generator which helps teams '),
-                          ],
-                          treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
-                          avatarRoot: (context, data) => PreferredSize(
-                            child: CircleAvatarWidget(radius: 20),
-                            preferredSize: Size.fromRadius(20),
-                          ),
-                          avatarChild: (context, data) => PreferredSize(
-                            child: CircleAvatarWidget(radius: 14),
-                            preferredSize: Size.fromRadius(14),
-                          ),
-                          contentRoot: (context, data) {
-                            return contentComment(data);
-                          },
-                          contentChild: (context, data) {
-                            return contentComment(data);
-                          },
-                        ),
-                      );
-                    }),
-                    // child: Column(
-                    //   children: <Widget>[
-                    //     FacebookCardCommentWidget(
-                    //         comment_username: data[index]['comments'][0]['cuser_name'],
-                    //         comment_profile_pic: data[index]['comments'][0]['cprofile_image'],
-                    //         comment_text: data[index]['comments'][0]['ctitle']),
-                    //     FacebookCardCommentWidget(
-                    //         comment_username: data[index]['comments'][1]['cuser_name'],
-                    //         comment_profile_pic: data[index]['comments'][1]['cprofile_image'],
-                    //         comment_text: data[index]['comments'][1]['ctitle']),
-                    //   ],
-                    // ),
-                    // comment_visible: data[index]['comments_visible'],
-                  );
+                  return FacebookCardPostWidget(data[index]);
                 });
           },
-        )
+        ),
       ],
     );
   }
@@ -224,19 +125,4 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
       ),
     );
   }
-}
-
-class Comment {
-  // ignore: constant_identifier_names
-  static const TAG = 'Comment';
-
-  String? avatar;
-  String? userName;
-  String? content;
-
-  Comment({
-    required this.avatar,
-    required this.userName,
-    required this.content,
-  });
 }

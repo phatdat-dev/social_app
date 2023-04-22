@@ -14,37 +14,49 @@ class ThemeConfig with ChangeNotifier, ColorConstants {
 
   ThemeData get lightTheme {
     return ThemeData.light().copyWith(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          secondary: Colors.blue.shade50,
-        ),
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        secondary: Colors.blue.shade50,
+      ),
 
-        // scaffoldBackgroundColor: ColorConstants.pink500,
-        appBarTheme: AppBarTheme(
-          elevation: 1,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black, //<-- SEE HERE
+      // scaffoldBackgroundColor: ColorConstants.pink500,
+      appBarTheme: AppBarTheme(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black, //<-- SEE HERE
+      ),
+      tabBarTheme: TabBarTheme(
+        labelColor: Colors.blueAccent,
+        unselectedLabelColor: Colors.grey,
+      ),
+      popupMenuTheme: const PopupMenuThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          //side: const BorderSide(color: Colors.pink)
         ),
-        tabBarTheme: TabBarTheme(
-          labelColor: Colors.blueAccent,
-          unselectedLabelColor: Colors.grey,
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: Colors.blue.shade50,
         ),
-        popupMenuTheme: const PopupMenuThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            //side: const BorderSide(color: Colors.pink)
-          ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          shape: StadiumBorder(),
         ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            backgroundColor: Colors.blue.shade50,
-          ),
+      ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          //side: const BorderSide(color: Colors.pink)
         ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            shape: StadiumBorder(),
-          ),
-        ));
+        //shadowColor: MaterialStateProperty.all<Color>(Colors.red),
+        //elevation: MaterialStateProperty.all<double>(0),
+        // backgroundColor: ColorConstants.pink800, //background
+      )),
+    );
   }
 
   ThemeData get dartTheme => ThemeData.dark();

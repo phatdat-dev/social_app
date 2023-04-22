@@ -2,28 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/models/response/post_response_model.dart';
 import 'package:social_app/app/widget/circle_avatar_widget.dart';
+import 'package:social_app/package/comment_tree/comment_tree.dart';
+import 'package:video_player/video_player.dart';
 
 class FacebookCardPostWidget extends StatelessWidget {
-  final List<String> imageUrl;
-  final String profile_path;
-  final String user_name;
-  final String date;
-  final String description;
-  final String nums;
-  final String reactions;
-  final Widget? child;
+  final PostResponseModel postResponseModel;
 
-  FacebookCardPostWidget({
-    required this.imageUrl,
-    required this.date,
-    required this.description,
-    required this.nums,
-    required this.user_name,
-    required this.profile_path,
-    required this.reactions,
-    this.child,
-  });
+  FacebookCardPostWidget(this.postResponseModel);
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +28,13 @@ class FacebookCardPostWidget extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Text.rich(TextSpan(
               children: [
-                TextSpan(text: description),
+                TextSpan(text: postResponseModel.postContent),
                 TextSpan(text: "\n#hasTag", style: TextStyle(color: Colors.blue.shade700)),
               ],
               style: TextStyle(fontSize: 16),
             )),
           ),
-          _buildImagePost(context),
+          _buildMediaPost(context),
           _buildNumbericLikeComment(context),
           Divider(
             height: 0, //height spacing of divider
@@ -60,7 +48,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               builder: (context, value, child) => AnimatedCrossFade(
                     duration: const Duration(milliseconds: 200),
                     firstChild: SizedBox.shrink(),
-                    secondChild: this.child ?? SizedBox.shrink(),
+                    secondChild: _buildComment(context),
                     crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                   )),
         ],
@@ -152,7 +140,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0, right: 8.0),
                 child: Text(
-                  nums,
+                  "${postResponseModel.totalComment} · ${postResponseModel.totalShare}",
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -175,7 +163,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.only(left: 0.0, top: 15.0),
                   child: Text(
-                    reactions,
+                    "${postResponseModel.totalLike} likes",
                     style: Theme.of(context).textTheme.bodySmall,
                   ))),
         ],
@@ -200,7 +188,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                   // shape: BoxShape.circle,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(profile_path),
+                    image: NetworkImage(postResponseModel.avatarUser!),
                     fit: BoxFit.cover,
                   )),
             ),
@@ -224,7 +212,7 @@ class FacebookCardPostWidget extends StatelessWidget {
           isUserPost
               ? CircleAvatarWidget(
                   radius: 25,
-                  image: profile_path,
+                  image: postResponseModel.avatarUser!,
                 )
               : _buildAvatarGroup(),
           Expanded(
@@ -236,14 +224,16 @@ class FacebookCardPostWidget extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(height: 5),
                   Text(
-                    user_name,
+                    postResponseModel.username!,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 5),
                   Text.rich(TextSpan(children: [
                     if (!isUserPost)
-                      TextSpan(text: "UserName  · ", style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
-                    TextSpan(text: "${date} · ☘", style: Theme.of(context).textTheme.bodySmall),
+                      TextSpan(
+                          text: "${postResponseModel.username}  · ",
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
+                    TextSpan(text: "${postResponseModel.createdAt} · ☘", style: Theme.of(context).textTheme.bodySmall),
                   ])),
                   SizedBox(height: 5),
                 ],
@@ -261,12 +251,12 @@ class FacebookCardPostWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildImagePost(BuildContext context) {
-    Widget buildImage(String image) {
-      return image.contains("http")
+  Widget _buildMediaPost(BuildContext context) {
+    Widget buildImage(String url) {
+      return url.contains("http")
           ? FadeInImage.assetNetwork(
               placeholder: "assets/images/Img_error.png",
-              image: image,
+              image: url,
               width: double.infinity,
               fit: BoxFit.cover,
               fadeInDuration: const Duration(milliseconds: 200),
@@ -274,20 +264,73 @@ class FacebookCardPostWidget extends StatelessWidget {
               // height: 300,
             )
           : Image.asset(
-              image,
+              url,
               fit: BoxFit.cover,
               width: double.infinity,
             );
     }
 
-    if (imageUrl.length == 1) {
-      return buildImage(imageUrl.first);
-    } else if (imageUrl.length == 2) {
+    Widget buildVideo(String url) {
+      VideoPlayerController videoPlayerController =
+          VideoPlayerController.network("https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4");
+      return Stack(
+        children: [
+          FutureBuilder(
+            future: videoPlayerController.initialize(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return AspectRatio(
+                  aspectRatio: videoPlayerController.value.aspectRatio,
+                  child: VideoPlayer(videoPlayerController),
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          ),
+          //play button
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Material(
+                elevation: 1,
+                shape: CircleBorder(),
+                child: StatefulBuilder(
+                  builder: (context, setState) => IconButton(
+                    icon: Icon(videoPlayerController.value.isPlaying ? Icons.pause : Icons.play_arrow),
+                    onPressed: () {
+                      setState(() {
+                        videoPlayerController.value.isPlaying ? videoPlayerController.pause() : videoPlayerController.play();
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    Widget buildMedia(String url) {
+      final bool isImageFile = url.isImageFileName;
+      final bool isVideoFile = url.isVideoFileName;
+      if (isImageFile) return buildImage(url);
+      if (isVideoFile) return buildVideo(url);
+      return const SizedBox.shrink();
+    }
+
+    final List<Mediafile> listMedia = postResponseModel.mediafile ?? [];
+
+    if (listMedia.isEmpty) return const SizedBox.shrink();
+
+    if (listMedia.length == 1) return buildMedia(listMedia.first.mediaFileName!);
+
+    if (listMedia.length == 2) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildImage(imageUrl.first),
-          buildImage(imageUrl.last),
+          buildMedia(listMedia.first.mediaFileName!),
+          buildMedia(listMedia.last.mediaFileName!),
         ],
       );
     }
@@ -297,13 +340,13 @@ class FacebookCardPostWidget extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildImage(imageUrl.first),
+          buildMedia(listMedia.first.mediaFileName!),
           Row(
             children: [
               Expanded(
                 child: SizedBox(
                   height: 150,
-                  child: buildImage(imageUrl[1]),
+                  child: buildMedia(listMedia[1].mediaFileName!),
                 ),
               ),
               Expanded(
@@ -311,7 +354,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 150,
-                      child: buildImage(imageUrl[2]),
+                      child: buildMedia(listMedia[2].mediaFileName!),
                     ),
                     Container(
                       height: 150,
@@ -321,7 +364,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: CircleAvatar(
-                          child: Text("+${imageUrl.length - 2}"),
+                          child: Text("+${listMedia.length - 2}"),
                           backgroundColor: Colors.transparent,
                         ),
                       ),
@@ -335,4 +378,93 @@ class FacebookCardPostWidget extends StatelessWidget {
       );
     }
   }
+
+  Widget _buildComment(BuildContext context) {
+    Widget contentComment(dynamic data) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'userName',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    '${data.content}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+            ),
+            DefaultTextStyle(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.grey),
+              child: Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Row(
+                  children: [
+                    SizedBox(width: 5),
+                    Text('33p', style: Theme.of(context).textTheme.bodySmall!),
+                    SizedBox(width: 24),
+                    Text('Like'),
+                    SizedBox(width: 24),
+                    Text('Reply'),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: CommentTreeWidget<Comment, Comment>(
+        root: Comment(avatar: 'null', userName: 'null', content: 'felangel made felangel/cubit_and_beyond public '),
+        replies: [
+          Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
+          Comment(
+              avatar: 'null',
+              userName: 'null',
+              content: 'A Dart template generator which helps teams generator which helps teams generator which helps teams'),
+          Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
+          Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams generator which helps teams '),
+        ],
+        treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
+        avatarRoot: (context, data) => PreferredSize(
+          child: CircleAvatarWidget(radius: 20),
+          preferredSize: Size.fromRadius(20),
+        ),
+        avatarChild: (context, data) => PreferredSize(
+          child: CircleAvatarWidget(radius: 14),
+          preferredSize: Size.fromRadius(14),
+        ),
+        contentRoot: (context, data) {
+          return contentComment(data);
+        },
+        contentChild: (context, data) {
+          return contentComment(data);
+        },
+      ),
+    );
+  }
+}
+
+class Comment {
+  // ignore: constant_identifier_names
+  static const TAG = 'Comment';
+
+  String? avatar;
+  String? userName;
+  String? content;
+
+  Comment({
+    required this.avatar,
+    required this.userName,
+    required this.content,
+  });
 }

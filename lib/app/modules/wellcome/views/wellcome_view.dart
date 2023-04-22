@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/modules/wellcome/controller/wellcome_controller.dart';
-import 'package:social_app/app/routes/app_pages.dart';
 
 class WellcomeView extends StatefulWidget {
   const WellcomeView({super.key});
@@ -65,7 +64,7 @@ class _WellcomeViewState<T extends WellComeController> extends State<WellcomeVie
           ),
           ElevatedButton.icon(
             onPressed: () {
-              context.push(Routes.HOME());
+              context.push("/");
             },
             icon: Icon(Icons.dangerous),
             label: Text("fetchData"),

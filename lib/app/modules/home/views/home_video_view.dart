@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/models/response/post_response_model.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 
@@ -23,34 +23,22 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
       Tab(text: "Dành cho bạn"): ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          FutureBuilder(
-              future: Helper.readFileJson('assets/json/video.json'),
-              builder: (context, snapshot) {
-                if (snapshot.data == null) {
-                  return Container(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-                var data = snapshot.data;
-                return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: data.length,
-                    itemBuilder: (context, int index) {
-                      return FacebookCardPostWidget(
-                        profile_path: data[index]['profile_image'],
-                        user_name: data[index]['user_name'],
-                        date: data[index]['date_posted'],
-                        description: data[index]['title'],
-                        imageUrl: [data[index]['media_path']],
-                        reactions: data[index]['people_reacted'],
-                        nums: data[index]['no_of_reactions'],
-                      );
-                    });
-              })
+          Selector<HomeController, List<PostResponseModel>?>(
+            selector: (_, controller) => controller.postData,
+            builder: (context, data, child) {
+              if (data == null) {
+                return CircularProgressIndicator();
+              }
+              return ListView.builder(
+                  itemCount: data.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, int index) {
+                    return FacebookCardPostWidget(data[index]);
+                  });
+            },
+          ),
         ],
       ),
       Tab(text: "Trực tiếp"): Container(
