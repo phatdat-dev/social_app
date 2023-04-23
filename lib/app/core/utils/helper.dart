@@ -44,4 +44,9 @@ class Helper {
   }
 
   static Future<dynamic> readFileJson(String assets) async => jsonDecode(await rootBundle.loadString(assets));
+
+  static bool containsToLowerCase(String? source, String? target) {
+    if (source == null || target == null) return false;
+    return source.toLowerCase().contains(target.toLowerCase());
+  }
 }

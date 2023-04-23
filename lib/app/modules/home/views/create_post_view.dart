@@ -5,15 +5,15 @@ import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/extension/string_extension.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
-import 'package:social_app/app/modules/home/views/search_tag_friend_view.dart';
+import 'package:social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
 import 'package:video_player/video_player.dart';
 
-class CreatePostView extends StatelessWidget {
+class CreatePostView<T extends HomeController> extends StatelessWidget {
   const CreatePostView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<HomeController>();
+    final controller = context.read<T>();
     final txtController = TextEditingController();
 
     return GestureDetector(
@@ -268,7 +268,7 @@ class CreatePostView extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () async {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchTagFriendView()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Gắn thẻ bạn bè')));
                       },
                       customBorder: const StadiumBorder(),
                       child: const Icon(

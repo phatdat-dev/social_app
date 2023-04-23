@@ -55,7 +55,7 @@ class _FacebookScreenGroupsState extends State<FacebookScreenGroups> {
                         'Groups',
                         style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.black),
                       )),
-                      AppBarIcon(iconData: Icons.search, onTap: () {}),
+                      AppBarIcon(icon: const Icon(Icons.search), onPressed: () {}),
                     ],
                   ),
                   Container(

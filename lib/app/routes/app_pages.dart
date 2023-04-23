@@ -77,7 +77,10 @@ class AppPages {
           ),
           GoRoute(
             path: 'search', // /message/search
-            builder: (context, state) => ChangeNotifierProvider.value(value: state.extra as MessageController, child: MessageSearchView()),
+            builder: (context, state) => ChangeNotifierProvider.value(
+              value: state.extra as MessageController,
+              child: MessageSearchView(),
+            ),
           ),
         ],
       ),

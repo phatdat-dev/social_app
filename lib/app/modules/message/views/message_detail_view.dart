@@ -55,7 +55,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
     if (text.isNotEmpty) {
       //neu' textField ko rong~ thi` gui tin nhan den fireStore
       //them vao` danh sach tin nhan' o phan tu? dau` tien
-      fireBaseService.call_sendMessage(widget.chatRoomId, text);
+      fireBaseService.call_sendMessage(chatRoomId: widget.chatRoomId, type: 'text', data: text);
     }
   }
 
@@ -142,7 +142,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
             children: [
               Flexible(
                 // Flexible dua theo widget, size cua thiet bi ma` thay doi?
-                child: StreamBuilder<QuerySnapshot>(
+                child: StreamBuilder(
                   stream: fireBaseService.call_getChatRoom(widget.chatRoomId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -175,45 +175,68 @@ class MessageDetailViewState extends State<MessageDetailView> {
     );
   }
 
-  Widget _buildChatMessage(QueryDocumentSnapshot messageData) {
+  Widget _buildChatMessage(QueryDocumentSnapshot<Map<String, dynamic>> messageData) {
     //minh` nhan', xac' dinh no' thong qua thuoc tinh' gi` gi` do', o day cho dai random
-    final bool isMySend = messageData['user']['id'] == AuthenticationController.userAccount!.id;
-    if (isMySend) {
-      return Align(
-        alignment: Alignment.centerRight,
-        child: Container(
+
+    final bool? isMySend = messageData.data()['user']?['id'] == AuthenticationController.userAccount!.id;
+    switch (messageData['type']) {
+      case 'notify':
+        return Align(
+          alignment: Alignment.center,
+          child: Container(
             margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-            decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)), color: Colors.blue),
-            child: Text(messageData['message'], style: const TextStyle(color: Colors.white))), //noi dung chat
-      );
-    }
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
-          ),
-          Column(
+            decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), color: Colors.grey.shade100),
+            child: Text(
+              messageData['data'],
+            ),
+          ), //noi dung chat
+        );
+      // case 'image':
+      //   break;
+      // case 'video':
+      //   break;
+      // case 'file':
+      //   break;
+      default:
+        if (isMySend ?? false) {
+          return Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)), color: Colors.blue),
+                child: Text(messageData['data'], style: const TextStyle(color: Colors.white))), //noi dung chat
+          );
+        }
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 15),
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(messageData['user']['displayName']), //ten
               Container(
-                //width: MediaQuery.of(context).size.width / (1.3),
-                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-                margin: const EdgeInsets.only(top: 5.0),
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(30)), color: Colors.grey.withOpacity(0.4)),
-                child: Text(messageData['message']), //noi dung chat
+                margin: const EdgeInsets.only(right: 16.0),
+                child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(messageData['user']['displayName']), //ten
+                  Container(
+                    //width: MediaQuery.of(context).size.width / (1.3),
+                    constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+                    margin: const EdgeInsets.only(top: 5.0),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(30)), color: Colors.grey.withOpacity(0.4)),
+                    child: Text(messageData['data']), //noi dung chat
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-    );
+        );
+    }
   }
 }

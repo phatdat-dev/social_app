@@ -1,15 +1,14 @@
-
 import 'package:flutter/material.dart';
 
 class AppBarIcon extends StatelessWidget {
-  final IconData iconData;
-  final VoidCallback onTap;
+  final Icon icon;
+  final VoidCallback onPressed;
 
-  AppBarIcon({required this.iconData, required this.onTap});
+  AppBarIcon({required this.icon, required this.onPressed});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onPressed,
       child: Container(
         margin: const EdgeInsets.all(5),
         width: 35,
@@ -18,7 +17,7 @@ class AppBarIcon extends StatelessWidget {
           shape: BoxShape.circle,
           color: Colors.grey.withOpacity(0.2),
         ),
-        child: Icon(iconData),
+        child: icon,
       ),
     );
   }

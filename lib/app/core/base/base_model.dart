@@ -5,3 +5,14 @@ abstract class BaseModel<R> {
 
   Map<String, dynamic> toJson();
 }
+
+// abstract class SearchDelegateQueryName {
+//   String get queryName;
+//   set queryName(String value) => queryName = value;
+//   Object? objectt;
+//   String? description;
+// }
+
+abstract class BaseSelectedModel {
+  bool isSelected = false;
+}

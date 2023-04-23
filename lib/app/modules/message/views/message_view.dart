@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/widget/chatcard_widget.dart';
 import 'package:social_app/app/routes/app_pages.dart';
+import 'package:social_app/app/widget/app_bar_icon.dart';
 import 'package:social_app/app/widget/search_widget.dart';
 
+import '../../search_tag_friend/views/search_tag_friend_view.dart';
 import '../controllers/message_controller.dart';
 
 class MessageView extends StatefulWidget {
@@ -17,19 +20,19 @@ class MessageView extends StatefulWidget {
   State<MessageView> createState() => _MessageViewState();
 }
 
-class _MessageViewState extends State<MessageView> {
-  late final MessageController controller;
+class _MessageViewState<T extends MessageController> extends State<MessageView> {
+  late final T controller;
 
   @override
   void initState() {
     super.initState();
-    controller = context.read<MessageController>();
+    controller = context.read<T>();
     controller.onInitData();
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<MessageController>();
+    final controller = context.read<T>();
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -42,8 +45,17 @@ class _MessageViewState extends State<MessageView> {
             ),
             title: const Text('Chats', style: TextStyle(color: Colors.black)),
             actions: [
-              IconButton(icon: const Icon(Icons.camera_alt), onPressed: () {}),
-              IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+              AppBarIcon(icon: const Icon(Icons.camera_alt_outlined), onPressed: () {}),
+              AppBarIcon(
+                icon: const Icon(Icons.group_add_outlined, color: Colors.green),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ChangeNotifierProvider.value(
+                            value: controller,
+                            child: SearchTagFriendView<T>(title: 'New Message'),
+                          )));
+                },
+              ),
             ],
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(50.0),
@@ -64,13 +76,44 @@ class _MessageViewState extends State<MessageView> {
               delegate: SliverChildListDelegate([
             buildListUser(
               onTapUserIndex: (index, user) {
-                context.push(Routes.MESSAGE_DETAIL(user.id!), extra: {
-                  'chatRoomId': controller.generateChatRoomId('${AuthenticationController.userAccount!.id!}', '${user.id!}'),
+                context.push(Routes.MESSAGE_DETAIL(user.id!.toString()), extra: {
+                  'chatRoomId': controller.generateChatRoomId(['${AuthenticationController.userAccount!.id!}', '${user.id!}']),
                   'user': user,
                   'controller': controller,
                 });
               },
             ),
+            StreamBuilder(
+                stream: context.read<FireBaseService>().call_getGroupChatOfUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final groupList = snapshot.data!.docs;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: groupList.length,
+                      itemBuilder: (context, index) {
+                        final item = groupList[index];
+                        return ChatCard(
+                          user: AuthenticationController.userAccount!.copyWith(
+                            displayName: item['name'],
+                          ),
+                          onTap: () {
+                            context.push(Routes.MESSAGE_DETAIL(item['id']), extra: {
+                              'chatRoomId': item['id'],
+                              'user': UsersModel(
+                                id: 0,
+                                displayName: 'asdasd',
+                              ),
+                              'controller': controller,
+                            });
+                          },
+                        );
+                      },
+                    );
+                  }
+                  return const SizedBox.shrink();
+                }),
           ])),
         ],
       ),
@@ -79,7 +122,7 @@ class _MessageViewState extends State<MessageView> {
 
   Widget buildListUser({void Function(int index, UsersModel user)? onTapUserIndex}) {
     return Selector(
-        selector: (context, MessageController controller) => controller.friends,
+        selector: (context, MessageController controller) => controller.listTagFriend,
         builder: (context, value, child) {
           return (value?.isEmpty ?? true)
               ? Column(
@@ -98,18 +141,13 @@ class _MessageViewState extends State<MessageView> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: value!.length,
                   itemBuilder: (context, index) {
-                    final item = value[index];
+                    final item = value[index] as UsersModel;
                     // if (LoginController.userLogin?.id == user.id) {
                     //   return const SizedBox.shrink();
                     // }
-                    final user = UsersModel(
-                      id: item['friendId'],
-                      displayName: item['displayName'],
-                      avatar: item['avatar'],
-                    );
                     return ChatCard(
-                      user: user,
-                      onTap: () => onTapUserIndex != null ? onTapUserIndex(index, user) : null,
+                      user: item,
+                      onTap: () => onTapUserIndex != null ? onTapUserIndex(index, item) : null,
                     );
                   },
                 );

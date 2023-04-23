@@ -33,11 +33,11 @@ extension HomeViewExtension on _HomeViewState {
             ),
       ),
       actions: [
-        AppBarIcon(iconData: Icons.add, onTap: () {}),
-        AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
+        AppBarIcon(icon: const Icon(Icons.add), onPressed: () {}),
+        AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
         AppBarIcon(
-            iconData: MdiIcons.facebookMessenger,
-            onTap: () {
+            icon: const Icon(MdiIcons.facebookMessenger),
+            onPressed: () {
               context.push(Routes.MESSAGE());
             }),
       ],
@@ -67,8 +67,8 @@ extension HomeViewExtension on _HomeViewState {
                     ),
               ),
               actions: [
-                AppBarIcon(iconData: Icons.person_outline, onTap: () {}),
-                AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
+                AppBarIcon(icon: const Icon(Icons.person_outline), onPressed: () {}),
+                AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
               ],
               bottom: TabBar(
                 controller: controller.subTabBarVideoController,
@@ -111,7 +111,7 @@ extension HomeViewExtension on _HomeViewState {
               ),
         ),
         actions: [
-          AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
+          AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
         ],
       ),
     );
@@ -136,11 +136,11 @@ extension HomeViewExtension on _HomeViewState {
         ),
         actions: [
           AppBarIcon(
-              iconData: Icons.settings,
-              onTap: () {
+              icon: const Icon(Icons.settings),
+              onPressed: () {
                 context.push('/viewColorTheme');
               }),
-          AppBarIcon(iconData: MdiIcons.magnify, onTap: () {}),
+          AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
         ],
       ),
     );

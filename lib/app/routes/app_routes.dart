@@ -8,8 +8,5 @@ abstract class Routes {
 
   static String MESSAGE() => '/message';
   static String MESSAGE_SEARCH() => '/message/search';
-  static String MESSAGE_DETAIL(int id) => '/message/detail/$id';
-
-  // static String MOVIE(String slug) => "/${_Path.MOVIE}/$slug";
-  // static String MOVIE_DETAIL(String slug) => "${MOVIE(slug)}/${_Path.DETAIL}";
+  static String MESSAGE_DETAIL(String id) => '/message/detail/$id';
 }

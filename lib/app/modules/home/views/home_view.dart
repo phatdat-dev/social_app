@@ -51,18 +51,18 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
     final fireBaseService = context.read<FireBaseService>();
     switch (state) {
       case AppLifecycleState.resumed:
-        Printt.white('App in resumed');
+        Printt.cyan('App in resumed');
         fireBaseService.call_setStatusUserOnline('Online');
         break;
       case AppLifecycleState.inactive:
-        Printt.white('App in inactive');
+        Printt.cyan('App in inactive');
         break;
       case AppLifecycleState.paused:
         fireBaseService.call_setStatusUserOnline('Offline');
-        Printt.white('App in paused');
+        Printt.cyan('App in paused');
         break;
       case AppLifecycleState.detached:
-        Printt.white('App in detached');
+        Printt.cyan('App in detached');
         break;
     }
   }

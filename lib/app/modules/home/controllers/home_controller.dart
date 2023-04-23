@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/models/response/post_response_model.dart';
+import 'package:social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
 
-class HomeController extends BaseController {
+class HomeController extends BaseController with SearchTagFriendController {
   // final BaseSearchRequestModel searchRequestModel = BaseSearchRequestModel(pageSize: 10);
   late Map<Widget, Widget> tabBarWidget;
   late TabController tabBarController;
@@ -39,6 +40,7 @@ class HomeController extends BaseController {
     });
 
     call_fetchPostData();
+    call_fetchFriendByUserId();
   }
 
   Future<void> call_fetchPostData() async {

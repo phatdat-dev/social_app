@@ -1,6 +1,6 @@
 import '../core/base/base_model.dart';
 
-class UsersModel extends BaseModel<UsersModel> {
+class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
   int? id;
   String? displayName;
   String? email;
