@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/core/services/firebase_service.dart';
+import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/widget/home_drawer_widget.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 import 'package:social_app/app/widget/app_bar_icon.dart';
@@ -22,7 +24,7 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, WidgetsBindingObserver {
   late final HomeController controller;
   @override
   void initState() {
@@ -39,6 +41,36 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     };
 
     controller.tabBarController = TabController(length: controller.tabBarWidget.length, vsync: this);
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    //bắt sự kiện app background hay foreground
+    final fireBaseService = context.read<FireBaseService>();
+    switch (state) {
+      case AppLifecycleState.resumed:
+        Printt.white('App in resumed');
+        fireBaseService.call_setStatusUserOnline('Online');
+        break;
+      case AppLifecycleState.inactive:
+        Printt.white('App in inactive');
+        break;
+      case AppLifecycleState.paused:
+        fireBaseService.call_setStatusUserOnline('Offline');
+        Printt.white('App in paused');
+        break;
+      case AppLifecycleState.detached:
+        Printt.white('App in detached');
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override

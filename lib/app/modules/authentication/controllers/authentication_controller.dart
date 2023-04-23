@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/constants/app_constant.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
+
+import '../../../core/services/firebase_service.dart';
 
 class AuthenticationController extends BaseController {
   static UsersModel? userAccount;
@@ -44,6 +47,8 @@ class AuthenticationController extends BaseController {
         //luu lai username, password
         _saveRememberPassword(userAccount!..password = formSignInKey.currentState?.value['password']);
         Global.navigatorKey.currentContext!.go('/');
+        //set trạng thái Online
+        Global.navigatorKey.currentContext!.read<FireBaseService>().call_setStatusUserOnline('Online');
       });
     }
     // else {
@@ -73,6 +78,7 @@ class AuthenticationController extends BaseController {
   void onSignOut() {
     saveAccount(userAccount?..token = '');
     Global.navigatorKey.currentContext!.go('/authentication');
+    Global.navigatorKey.currentContext!.read<FireBaseService>().call_setStatusUserOnline('Offline');
   }
 
   void onTryApp() {

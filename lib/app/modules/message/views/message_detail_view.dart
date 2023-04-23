@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:social_app/app/widget/textfield_comment_widget.dart';
 
 //code layout tham khao tu` google https://viblo.asia/p/flutter-viet-ung-dung-chat-voi-flutter-p1-GrLZD8GOZk0
 class MessageDetailView extends StatefulWidget {
@@ -17,14 +19,15 @@ class MessageDetailView extends StatefulWidget {
 
 class MessageDetailViewState extends State<MessageDetailView> {
   late final MessageController controller;
+  late final FireBaseService fireBaseService;
   final TextEditingController _textController = TextEditingController();
-  bool _isComposing = false; //dang nhap chu~=false
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     controller = context.read<MessageController>();
+    fireBaseService = context.read<FireBaseService>();
   }
 
   @override
@@ -32,56 +35,12 @@ class MessageDetailViewState extends State<MessageDetailView> {
     super.dispose();
   }
 
-  Widget _buildTextInput() => Container(
-        margin: const EdgeInsets.all(15),
-        padding: const EdgeInsets.only(left: 8),
-        decoration: BoxDecoration(
-          //duong vien`cua textbox
-          //border: Border.all(width: 1.0, color: Colors.black38),
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          children: [
-            Flexible(
-              child: TextField(
-                controller: _textController,
-                onChanged: (String text) {
-                  //neu' co' du lieu trong text thi` nut gui~ se~ dc hien
-                  if (!_isComposing) setState(() => _isComposing = text.isNotEmpty);
-                  if (text.isEmpty) setState(() => _isComposing = false);
-                },
-                keyboardType: TextInputType.multiline, //co the dc nhieu` dong`
-                maxLines: 10, //do dai` toi' da =10
-                minLines: 1,
-                decoration: const InputDecoration.collapsed(hintText: 'Send a message'),
-              ),
-            ),
-            //neu' textfield ko rong~ thi` dc phep nhan' nut, ngc lai thi` nhan' ko dc
-            IconButton(
-                icon: Icon(
-                  Icons.send,
-                  color: _isComposing ? Theme.of(context).colorScheme.primary : Colors.grey,
-                ),
-                onPressed: _isComposing ? () => _handleSubmitted(_textController.text) : null),
-          ],
-        ),
-      );
-
-  Widget _buildTextComposer() {
-    //bottom chat Text o duoi man hinh`
-    return IconTheme(
-        data: IconThemeData(color: Theme.of(context).colorScheme.primary),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            IconButton(padding: const EdgeInsets.only(bottom: 15), icon: const Icon(Icons.more_vert), onPressed: () {}),
-            IconButton(padding: const EdgeInsets.only(bottom: 15), icon: const Icon(Icons.attach_file), onPressed: () {}),
-            IconButton(padding: const EdgeInsets.only(bottom: 15), icon: const Icon(Icons.mic), onPressed: () {}),
-            Expanded(child: _buildTextInput()),
-            IconButton(padding: const EdgeInsets.only(bottom: 15), icon: const Icon(Icons.thumb_up), onPressed: () {}),
-          ],
-        ));
+  void scrollToLastIndex([VoidCallback? callback]) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+      // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      callback?.call();
+    });
   }
 
   //ham` khi nhan' gui~
@@ -96,7 +55,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
     if (text.isNotEmpty) {
       //neu' textField ko rong~ thi` gui tin nhan den fireStore
       //them vao` danh sach tin nhan' o phan tu? dau` tien
-      controller.call_sendMessage(widget.chatRoomId, text);
+      fireBaseService.call_sendMessage(widget.chatRoomId, text);
     }
   }
 
@@ -104,7 +63,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       //huy keyboard khi bam ngoai man hinh
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         appBar: AppBar(
@@ -119,39 +78,48 @@ class MessageDetailViewState extends State<MessageDetailView> {
           title: Row(children: [
             const BackButton(),
             Expanded(
-                child: ListTile(
-              leading: Stack(
-                children: [
-                  CircleAvatar(
-                    //radius: 25,
-                    backgroundImage: NetworkImage(widget.user.avatar!),
-                  ),
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      decoration: BoxDecoration(
-                        //neu dang hoat dong thi` them cai bo tron` nho? nho?
-                        // ignore: dead_code
-                        color: true ? Colors.green : Colors.grey,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 3),
-                      ),
+                child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: fireBaseService.call_getUser('${widget.user.id}'),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data?.data() != null) {
+                  final bool isOnline = snapshot.data!['status'] == 'Online';
+                  return ListTile(
+                    leading: Stack(
+                      children: [
+                        CircleAvatar(
+                          //radius: 25,
+                          backgroundImage: NetworkImage(widget.user.avatar!),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            height: 16,
+                            width: 16,
+                            decoration: BoxDecoration(
+                              //neu dang hoat dong thi` them cai bo tron` nho? nho?
+                              // ignore: dead_code
+                              color: isOnline ? Colors.green : Colors.grey,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 3),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-              title: Text(
-                widget.user.displayName!,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              subtitle: const Text(
-                'online',
-                style: TextStyle(fontSize: 12),
-              ),
-            ))
+                    title: Text(
+                      widget.user.displayName!,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    subtitle: Text(
+                      "${snapshot.data!['status']}", //Online/Offline
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  );
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            )),
           ]),
           actions: [
             IconButton(
@@ -175,7 +143,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
               Flexible(
                 // Flexible dua theo widget, size cua thiet bi ma` thay doi?
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: controller.call_getChatRoom(widget.chatRoomId),
+                  stream: fireBaseService.call_getChatRoom(widget.chatRoomId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final docs = snapshot.data!.docs;
@@ -194,17 +162,11 @@ class MessageDetailViewState extends State<MessageDetailView> {
                 ),
               ),
               // Divider(height: 1.0),
-              Container(
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
-                ),
-                child: SafeArea(
-                  bottom: true,
-                  //bottom chat Text o duoi man hinh`
-                  child: _buildTextComposer(),
-                ),
+              TextFieldCommentWidget(
+                textEditingController: _textController,
+                onSendComment: (value) {
+                  _handleSubmitted(value);
+                },
               ),
             ],
           ),

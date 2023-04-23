@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_app/app/core/config/theme_config.dart';
 import 'package:social_app/app/core/constants/global_constant.dart';
-import 'package:social_app/app/core/services/picker_service.dart';
+import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
