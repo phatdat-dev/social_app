@@ -71,7 +71,8 @@ class AppPages {
             path: 'detail/:id', // /message/detail/:id
             builder: (context, state) {
               final extra = state.extra as Map<String, dynamic>;
-              return ChangeNotifierProvider.value(value: extra['controller'] as MessageController, child: MessageDetailView(extra['user']));
+              return ChangeNotifierProvider.value(
+                  value: extra['controller'] as MessageController, child: MessageDetailView(extra['chatRoomId'], extra['user']));
             },
           ),
           GoRoute(

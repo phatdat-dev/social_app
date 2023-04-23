@@ -2,8 +2,7 @@ import '../core/base/base_model.dart';
 
 class UsersModel extends BaseModel<UsersModel> {
   int? id;
-  String? firstName;
-  String? lastName;
+  String? displayName;
   String? email;
   String? avatar;
   dynamic coverImage;
@@ -19,8 +18,7 @@ class UsersModel extends BaseModel<UsersModel> {
 
   UsersModel({
     this.id,
-    this.firstName,
-    this.lastName,
+    this.displayName,
     this.email,
     this.avatar,
     this.coverImage,
@@ -41,8 +39,7 @@ class UsersModel extends BaseModel<UsersModel> {
     if (json['user'] != null) json = json['user'];
     return UsersModel(
       id: (json['id'] as num?)?.toInt(),
-      firstName: json['first_name'],
-      lastName: json['last_name'],
+      displayName: json['displayName'],
       email: json['email'],
       avatar: json['avatar'],
       coverImage: json['cover_image'],
@@ -64,11 +61,8 @@ class UsersModel extends BaseModel<UsersModel> {
     if (id != null) {
       data['id'] = id;
     }
-    if (firstName != null) {
-      data['first_name'] = firstName;
-    }
-    if (lastName != null) {
-      data['last_name'] = lastName;
+    if (displayName != null) {
+      data['displayName'] = displayName;
     }
     if (email != null) {
       data['email'] = email;
@@ -111,8 +105,7 @@ class UsersModel extends BaseModel<UsersModel> {
 
   UsersModel copyWith({
     int? id,
-    String? firstName,
-    String? lastName,
+    String? displayName,
     String? email,
     String? avatar,
     dynamic coverImage,
@@ -128,8 +121,7 @@ class UsersModel extends BaseModel<UsersModel> {
   }) =>
       UsersModel(
         id: id ?? this.id,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
+        displayName: displayName ?? this.displayName,
         email: email ?? this.email,
         avatar: avatar ?? this.avatar,
         coverImage: coverImage ?? this.coverImage,

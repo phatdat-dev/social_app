@@ -1,41 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/app/models/users_model.dart';
+import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:social_app/app/modules/message/controllers/message_controller.dart';
 
 //code layout tham khao tu` google https://viblo.asia/p/flutter-viet-ung-dung-chat-voi-flutter-p1-GrLZD8GOZk0
 class MessageDetailView extends StatefulWidget {
   final UsersModel user;
-  const MessageDetailView(this.user, {Key? key}) : super(key: key);
+  final String chatRoomId;
+  const MessageDetailView(this.chatRoomId, this.user, {Key? key}) : super(key: key);
 
   @override
   State createState() => MessageDetailViewState();
 }
 
 class MessageDetailViewState extends State<MessageDetailView> {
+  late final MessageController controller;
   final TextEditingController _textController = TextEditingController();
   bool _isComposing = false; //dang nhap chu~=false
-  late List<ChatMessage> messages;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    messages = [
-      ChatMessage(
-          user: widget.user, textedBefore: false, chatString: "Hello my name is${widget.user.firstName!}${widget.user.lastName!}", mySend: false),
-      ChatMessage(user: widget.user, textedBefore: true, chatString: '${widget.user.dateOfBirth} Old', mySend: false),
-      ChatMessage(user: widget.user, textedBefore: true, chatString: '${widget.user.address} my address', mySend: false),
-      ChatMessage(user: widget.user, textedBefore: true, chatString: 'company is ${widget.user.liveIn!} ', mySend: false),
-      ChatMessage(user: widget.user, textedBefore: true, chatString: 'Nice to meet you', mySend: false),
-      ChatMessage(user: widget.user, textedBefore: false, chatString: 'Hello Nice to meet you too', mySend: true),
-      ChatMessage(
-          user: widget.user,
-          textedBefore: false,
-          chatString:
-              'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-          mySend: true),
-      ChatMessage(user: widget.user, textedBefore: false, chatString: '1234567890', mySend: true),
-      ChatMessage(user: widget.user, textedBefore: false, chatString: 'Funny', mySend: false),
-    ];
+    controller = context.read<MessageController>();
   }
 
   @override
@@ -101,26 +90,19 @@ class MessageDetailViewState extends State<MessageDetailView> {
       _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
       // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
-    //textField sẽ clear chu~
+    //textField sẽ clear chu~^
     _textController.clear();
     //dat lai trang thai' dang soan =false
     if (text.isNotEmpty) {
-      //neu' textField ko rong~ thi` tao 1 widget tin nhan' moi'
-      final mess = ChatMessage(chatString: text, mySend: true, user: widget.user, textedBefore: false);
+      //neu' textField ko rong~ thi` gui tin nhan den fireStore
       //them vao` danh sach tin nhan' o phan tu? dau` tien
-      setState(() {
-        //neu la` them tu duoi' len
-        //messages.insert(0, mess);
-        messages.add(mess);
-        _isComposing = false;
-      });
+      controller.call_sendMessage(widget.chatRoomId, text);
     }
   }
 
   @override //new
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: GestureDetector(
+    return GestureDetector(
       //huy keyboard khi bam ngoai man hinh
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -162,7 +144,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
                 ],
               ),
               title: Text(
-                widget.user.firstName! + widget.user.lastName!,
+                widget.user.displayName!,
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               subtitle: const Text(
@@ -187,49 +169,54 @@ class MessageDetailViewState extends State<MessageDetailView> {
             const SizedBox(width: 15 / 2),
           ],
         ),
-        body: Column(
-          children: [
-            Flexible(
-              // Flexible dua theo widget, size cua thiet bi ma` thay doi?
-              child: ListView.builder(
-                controller: _scrollController,
-                padding: const EdgeInsets.all(8.0),
-                //reverse: true, //tu duoi' len
-                itemCount: messages.length,
-                itemBuilder: (context, index) => messages[index],
+        body: SafeArea(
+          child: Column(
+            children: [
+              Flexible(
+                // Flexible dua theo widget, size cua thiet bi ma` thay doi?
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: controller.call_getChatRoom(widget.chatRoomId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final docs = snapshot.data!.docs;
+                      return ListView.builder(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.all(8.0),
+                        //reverse: true, //tu duoi' len
+                        itemCount: docs.length,
+                        itemBuilder: (context, index) {
+                          return _buildChatMessage(docs[index]);
+                        },
+                      );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
-            ),
-            // Divider(height: 1.0),
-            Container(
-              height: 70,
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
+              // Divider(height: 1.0),
+              Container(
+                height: 70,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
+                ),
+                child: SafeArea(
+                  bottom: true,
+                  //bottom chat Text o duoi man hinh`
+                  child: _buildTextComposer(),
+                ),
               ),
-              child: SafeArea(
-                bottom: true,
-                //bottom chat Text o duoi man hinh`
-                child: _buildTextComposer(),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
-}
 
-class ChatMessage extends StatelessWidget {
-  final String chatString;
-  final bool mySend;
-  //
-  final UsersModel user;
-  final bool textedBefore; //thuong` thuong` kophai nhu v, cach' nay` la` che' lai.
-  const ChatMessage({Key? key, required this.chatString, required this.mySend, required this.textedBefore, required this.user}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildChatMessage(QueryDocumentSnapshot messageData) {
     //minh` nhan', xac' dinh no' thong qua thuoc tinh' gi` gi` do', o day cho dai random
-    if (mySend) {
+    final bool isMySend = messageData['user']['id'] == AuthenticationController.userAccount!.id;
+    if (isMySend) {
       return Align(
         alignment: Alignment.centerRight,
         child: Container(
@@ -237,23 +224,7 @@ class ChatMessage extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
             decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)), color: Colors.blue),
-            child: Text(chatString, style: const TextStyle(color: Colors.white))), //noi dung chat
-      );
-    }
-    //ng`khac' nhan'
-    if (textedBefore) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(width: 55),
-          Container(
-            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-            margin: const EdgeInsets.only(bottom: 15),
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(30)), color: Colors.grey.withOpacity(0.4)),
-            child: Text(chatString), //noi dung chat
-          ),
-        ],
+            child: Text(messageData['message'], style: const TextStyle(color: Colors.white))), //noi dung chat
       );
     }
     return Container(
@@ -263,19 +234,19 @@ class ChatMessage extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(backgroundImage: NetworkImage(user.avatar!)), //hinh anh avt
+            child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(user.firstName! + user.lastName!), //ten
+              Text(messageData['user']['displayName']), //ten
               Container(
                 //width: MediaQuery.of(context).size.width / (1.3),
                 constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                 margin: const EdgeInsets.only(top: 5.0),
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                 decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(30)), color: Colors.grey.withOpacity(0.4)),
-                child: Text(chatString), //noi dung chat
+                child: Text(messageData['message']), //noi dung chat
               ),
             ],
           ),

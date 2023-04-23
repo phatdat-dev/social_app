@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/models/response/post_response_model.dart';
-import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:social_app/package/comment_tree/comment_tree.dart';
 import 'package:video_player/video_player.dart';
 
@@ -195,7 +194,7 @@ class FacebookCardPostWidget extends StatelessWidget {
             const Positioned(
               right: 0,
               bottom: 0,
-              child: CircleAvatarWidget(radius: 15),
+              child: CircleAvatar(radius: 15),
             )
           ],
         ),
@@ -210,9 +209,9 @@ class FacebookCardPostWidget extends StatelessWidget {
         children: <Widget>[
           //neu bai viet nam` trong nhom' thi` co' hinh` cua nhom'+ hinh` cua nguoi` dang
           isUserPost
-              ? CircleAvatarWidget(
+              ? CircleAvatar(
                   radius: 25,
-                  image: postResponseModel.avatarUser!,
+                  backgroundImage: NetworkImage(postResponseModel.avatarUser!),
                 )
               : _buildAvatarGroup(),
           Expanded(
@@ -224,14 +223,14 @@ class FacebookCardPostWidget extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(height: 5),
                   Text(
-                    postResponseModel.username!,
+                    postResponseModel.displayName!,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5),
                   Text.rich(TextSpan(children: [
                     if (!isUserPost)
                       TextSpan(
-                          text: '${postResponseModel.username}  · ',
+                          text: '${postResponseModel.displayName}  · ',
                           style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
                     TextSpan(text: '${postResponseModel.createdAt} · ☘', style: Theme.of(context).textTheme.bodySmall),
                   ])),
@@ -436,11 +435,11 @@ class FacebookCardPostWidget extends StatelessWidget {
         ],
         treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
         avatarRoot: (context, data) => const PreferredSize(
-          child: CircleAvatarWidget(radius: 20),
+          child: CircleAvatar(radius: 20),
           preferredSize: Size.fromRadius(20),
         ),
         avatarChild: (context, data) => const PreferredSize(
-          child: CircleAvatarWidget(radius: 14),
+          child: CircleAvatar(radius: 14),
           preferredSize: Size.fromRadius(14),
         ),
         contentRoot: (context, data) {

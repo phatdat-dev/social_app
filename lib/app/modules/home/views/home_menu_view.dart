@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/app/widget/circle_avatar_widget.dart';
 
 class HomeMenuView extends StatefulWidget {
   HomeMenuView({Key? key}) : super(key: key);
@@ -55,7 +54,7 @@ class _HomeMenuViewState extends State<HomeMenuView> {
       children: <Widget>[
         ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: const CircleAvatarWidget(radius: 30),
+          leading: const CircleAvatar(radius: 30),
           title: Text(
             'Nguyen Van A',
             style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold),

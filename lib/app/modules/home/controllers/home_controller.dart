@@ -5,8 +5,8 @@ import 'package:social_app/app/models/response/post_response_model.dart';
 
 class HomeController extends BaseController {
   // final BaseSearchRequestModel searchRequestModel = BaseSearchRequestModel(pageSize: 10);
-  late final Map<Widget, Widget> tabBarWidget;
-  late final TabController tabBarController;
+  late Map<Widget, Widget> tabBarWidget;
+  late TabController tabBarController;
   Map<Widget, Widget>? subTabBarVideoWidget;
   TabController? subTabBarVideoController;
   // Map<String, dynamic> request = {

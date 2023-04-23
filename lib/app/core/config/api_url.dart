@@ -6,4 +6,6 @@ class ApiUrl {
   static String post_auth_login() => '/api/auth/login';
   static String post_auth_forgotPassword() => '/api/auth/forgot-password';
   static String post_auth_register() => '/api/auth/register';
+  static String get_fetchFriendByUserId(int userId, [int? limit]) =>
+      limit != null ? '/api/v1/fetch-friend-by-user-id/$userId/$limit' : '/api/v1/fetch-friend-by-user-id/$userId';
 }

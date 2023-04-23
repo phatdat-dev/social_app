@@ -6,7 +6,6 @@ import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/extension/string_extension.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/views/search_tag_friend_view.dart';
-import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -55,7 +54,8 @@ class CreatePostView extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     // minVerticalPadding: 10,
                     // visualDensity: VisualDensity.compact,
-                    leading: const CircleAvatarWidget(radius: 25),
+                    leading: const CircleAvatar(radius: 25),
+
                     title: const Text('Username Here', style: TextStyle(fontWeight: FontWeight.bold)),
                     // isThreeLine: true,
                     subtitle: Row(

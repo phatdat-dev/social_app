@@ -11,7 +11,7 @@ class PostResponseModel extends BaseModel<PostResponseModel> {
   String? updatedAt;
   String? deletedAt;
   int? status;
-  String? username;
+  String? displayName;
   String? avatarUser;
   int? totalMediaFile;
   int? totalComment;
@@ -32,7 +32,7 @@ class PostResponseModel extends BaseModel<PostResponseModel> {
       this.updatedAt,
       this.deletedAt,
       this.status,
-      this.username,
+      this.displayName,
       this.avatarUser,
       this.totalMediaFile,
       this.totalComment,
@@ -54,7 +54,7 @@ class PostResponseModel extends BaseModel<PostResponseModel> {
         updatedAt: json['updated_at'],
         deletedAt: json['deleted_at'],
         status: (json['status'] as num?)?.toInt(),
-        username: json['username'],
+        displayName: json['displayName'],
         avatarUser: json['avatarUser'],
         totalMediaFile: (json['totalMediaFile'] as num?)?.toInt(),
         totalComment: (json['totalComment'] as num?)?.toInt(),
@@ -98,8 +98,8 @@ class PostResponseModel extends BaseModel<PostResponseModel> {
     if (status != null) {
       data['status'] = status;
     }
-    if (username != null) {
-      data['username'] = username;
+    if (displayName != null) {
+      data['displayName'] = displayName;
     }
     if (avatarUser != null) {
       data['avatarUser'] = avatarUser;
@@ -139,7 +139,7 @@ class PostResponseModel extends BaseModel<PostResponseModel> {
     String? updatedAt,
     String? deletedAt,
     int? status,
-    String? username,
+    String? displayName,
     String? avatarUser,
     int? totalMediaFile,
     int? totalComment,
@@ -160,7 +160,7 @@ class PostResponseModel extends BaseModel<PostResponseModel> {
         updatedAt: updatedAt ?? this.updatedAt,
         deletedAt: deletedAt ?? this.deletedAt,
         status: status ?? this.status,
-        username: username ?? this.username,
+        displayName: displayName ?? this.displayName,
         avatarUser: avatarUser ?? this.avatarUser,
         totalMediaFile: totalMediaFile ?? this.totalMediaFile,
         totalComment: totalComment ?? this.totalComment,

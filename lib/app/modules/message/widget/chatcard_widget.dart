@@ -20,7 +20,6 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = '${user.firstName!} ${user.lastName!}';
     final isActive = Random().nextBool();
     final isSeen = Random().nextBool();
     return ListTile(
@@ -51,14 +50,15 @@ class ChatCard extends StatelessWidget {
       title: txtSearch != null
           ? RichText(
               text: TextSpan(
-                  children: HelperWidget.highlightOccurrences(name, txtSearch!), style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                  children: HelperWidget.highlightOccurrences(user.displayName!, txtSearch!),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
             )
           : Text(
-              name,
+              user.displayName!,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
       subtitle: Text(
-        user.address!, //last message
+        user.address ?? '', //last message
         maxLines: 1,
         overflow: TextOverflow.ellipsis, //text dai` qua' thi` ...
         style: isSeen ? TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold) : null,

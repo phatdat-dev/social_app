@@ -3,15 +3,29 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/models/users_model.dart';
+import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/widget/chatcard_widget.dart';
 import 'package:social_app/app/routes/app_pages.dart';
-import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:social_app/app/widget/search_widget.dart';
 
 import '../controllers/message_controller.dart';
 
-class MessageView extends StatelessWidget {
+class MessageView extends StatefulWidget {
   const MessageView({super.key});
+
+  @override
+  State<MessageView> createState() => _MessageViewState();
+}
+
+class _MessageViewState extends State<MessageView> {
+  late final MessageController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = context.read<MessageController>();
+    controller.onInitData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +38,7 @@ class MessageView extends StatelessWidget {
             automaticallyImplyLeading: false, //tat' cai' back tu dong
             leading: const Padding(
               padding: EdgeInsets.only(left: 15),
-              child: CircleAvatarWidget(radius: 25),
+              child: CircleAvatar(radius: 25),
             ),
             title: const Text('Chats', style: TextStyle(color: Colors.black)),
             actions: [
@@ -50,7 +64,11 @@ class MessageView extends StatelessWidget {
               delegate: SliverChildListDelegate([
             buildListUser(
               onTapUserIndex: (index, user) {
-                context.push(Routes.MESSAGE_DETAIL(user.id!), extra: {'user': user, 'controller': controller});
+                context.push(Routes.MESSAGE_DETAIL(user.id!), extra: {
+                  'chatRoomId': controller.generateChatRoomId('${AuthenticationController.userAccount!.id!}', '${user.id!}'),
+                  'user': user,
+                  'controller': controller,
+                });
               },
             ),
           ])),
@@ -60,8 +78,8 @@ class MessageView extends StatelessWidget {
   }
 
   Widget buildListUser({void Function(int index, UsersModel user)? onTapUserIndex}) {
-    return Selector<MessageController, List<UsersModel>?>(
-        selector: (context, controller) => controller.users,
+    return Selector(
+        selector: (context, MessageController controller) => controller.friends,
         builder: (context, value, child) {
           return (value?.isEmpty ?? true)
               ? Column(
@@ -80,10 +98,15 @@ class MessageView extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: value!.length,
                   itemBuilder: (context, index) {
-                    final user = value[index];
+                    final item = value[index];
                     // if (LoginController.userLogin?.id == user.id) {
                     //   return const SizedBox.shrink();
                     // }
+                    final user = UsersModel(
+                      id: item['friendId'],
+                      displayName: item['displayName'],
+                      avatar: item['avatar'],
+                    );
                     return ChatCard(
                       user: user,
                       onTap: () => onTapUserIndex != null ? onTapUserIndex(index, user) : null,

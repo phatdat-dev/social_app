@@ -6,7 +6,6 @@ import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 import 'package:social_app/app/widget/animated_route.dart';
-import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:social_app/facebook/models/model_story.dart';
 
 import '../widget/facebook_card_story_widget.dart';
@@ -102,7 +101,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
             children: <Widget>[
               const Padding(
                 padding: EdgeInsets.all(10),
-                child: CircleAvatarWidget(radius: 25),
+                child: CircleAvatar(radius: 25),
               ),
               Expanded(
                 child: OutlinedButton(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/app/widget/circle_avatar_widget.dart';
 import 'package:social_app/app/widget/search_widget.dart';
 
 class SearchTagFriendView extends StatelessWidget {
@@ -48,7 +47,7 @@ class SearchTagFriendView extends StatelessWidget {
                         children: [
                           Stack(
                             children: [
-                              const CircleAvatarWidget(radius: 30),
+                              const CircleAvatar(radius: 30),
                               const Positioned(
                                 top: 0,
                                 right: 0,
@@ -89,7 +88,7 @@ class SearchTagFriendView extends StatelessWidget {
                                   isCheck = value!;
                                   setState(() {});
                                 },
-                                secondary: const CircleAvatarWidget(radius: 25),
+                                secondary: const CircleAvatar(radius: 25),
                                 title: Text('Nguyễn Văn A', style: Theme.of(context).textTheme.bodyLarge),
                                 activeColor: Theme.of(context).primaryColor,
                                 contentPadding: EdgeInsets.zero,
