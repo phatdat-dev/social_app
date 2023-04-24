@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:social_app/app/routes/app_pages.dart';
 import 'package:social_app/app/widget/textfield_comment_widget.dart';
 
 //code layout tham khao tu` google https://viblo.asia/p/flutter-viet-ung-dung-chat-voi-flutter-p1-GrLZD8GOZk0
@@ -132,7 +134,9 @@ class MessageDetailViewState extends State<MessageDetailView> {
             ),
             IconButton(
               icon: const Icon(Icons.info),
-              onPressed: () {},
+              onPressed: () {
+                context.push(Routes.MESSAGE_SETTING_PROFILE(widget.chatRoomId), extra: controller);
+              },
             ),
             const SizedBox(width: 15 / 2),
           ],
@@ -147,6 +151,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final docs = snapshot.data!.docs;
+                      scrollToLastIndex();
                       return ListView.builder(
                         controller: _scrollController,
                         padding: const EdgeInsets.all(8.0),

@@ -9,6 +9,7 @@ import 'package:social_app/app/modules/authentication/controllers/authentication
 import 'package:social_app/app/modules/authentication/views/authentication_view.dart';
 import 'package:social_app/app/modules/home/views/home_view.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:social_app/app/modules/message/views/message_setting_profile_view.dart';
 import 'package:social_app/app/modules/message/views/message_view.dart';
 
 import '../modules/message/views/message_detail_view.dart';
@@ -80,6 +81,13 @@ class AppPages {
             builder: (context, state) => ChangeNotifierProvider.value(
               value: state.extra as MessageController,
               child: MessageSearchView(),
+            ),
+          ),
+          GoRoute(
+            path: 'settingProfile/:id', // /message/settingProfile
+            builder: (context, state) => ChangeNotifierProvider.value(
+              value: state.extra as MessageController,
+              child: MessageSettingProfileView(),
             ),
           ),
         ],

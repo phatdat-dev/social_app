@@ -9,4 +9,5 @@ abstract class Routes {
   static String MESSAGE() => '/message';
   static String MESSAGE_SEARCH() => '/message/search';
   static String MESSAGE_DETAIL(String id) => '/message/detail/$id';
+  static String MESSAGE_SETTING_PROFILE(String id) => '/message/settingProfile/$id';
 }
