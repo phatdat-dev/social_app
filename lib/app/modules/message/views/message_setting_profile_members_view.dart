@@ -56,7 +56,7 @@ class _MessageSettingProfileMembersViewState<T extends MessageController> extend
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                    onPressed: () => controller.onAddMemberToGroupMessage(context: context, listMemberSelected: listMemberSelected),
+                    onPressed: () => controller.onAddMemberToGroupMessage<T>(context: context, listMemberSelected: listMemberSelected),
                     child: const Text('Thêm'),
                   ),
                 )

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -84,8 +86,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
         extendBodyBehindAppBar: true,
         drawer: const HomeDrawerWidget(),
         body: RefreshIndicator(
+          notificationPredicate: (notification) {
+            // with NestedScrollView local(depth == 2) OverscrollNotification are not sent
+            if (notification is OverscrollNotification || Platform.isIOS) {
+              return notification.depth == 2;
+            }
+            return notification.depth == 0;
+          },
           onRefresh: () async {
-            await controller.onInitData();
+            await controller.call_fetchPostData();
           },
           child: AnimatedBuilder(
             animation: controller.tabBarController,

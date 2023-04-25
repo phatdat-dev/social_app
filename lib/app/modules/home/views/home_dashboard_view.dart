@@ -54,8 +54,9 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
           selector: (_, controller) => controller.postData,
           builder: (context, data, child) {
             if (data == null) {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             }
+
             return ListView.builder(
                 itemCount: data.length,
                 shrinkWrap: true,

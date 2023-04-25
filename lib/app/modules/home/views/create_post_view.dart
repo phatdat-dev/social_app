@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/extension/string_extension.dart';
+import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
 import 'package:video_player/video_player.dart';
@@ -36,7 +37,20 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: allowPost ? null : Colors.grey.shade200,
                           ),
-                          onPressed: () {},
+                          onPressed: allowPost
+                              ? () => controller
+                                      .call_createPostData(
+                                    content: txtController.text,
+                                    privacy: 1, //get dropdown privacy
+                                    // groupId: 0,
+                                    filesPath: filesPicker?.map((e) => e.path).toList(),
+                                    // images: [],
+                                  )
+                                      .then((value) {
+                                    HelperWidget.showSnackBar(context: context, message: 'Create Success');
+                                    Navigator.pop(context);
+                                  })
+                              : null,
                           child: Text('Đăng', style: TextStyle(color: allowPost ? null : Colors.grey)),
                         );
                       },

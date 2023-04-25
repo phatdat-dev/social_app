@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/config/api_url.dart';
-import 'package:social_app/app/models/response/post_response_model.dart';
+import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
 
-class HomeController extends BaseController with SearchTagFriendController {
+class HomeController extends BaseController with SearchTagFriendController, PostController {
   // final BaseSearchRequestModel searchRequestModel = BaseSearchRequestModel(pageSize: 10);
   late Map<Widget, Widget> tabBarWidget;
   late TabController tabBarController;
@@ -16,7 +15,6 @@ class HomeController extends BaseController with SearchTagFriendController {
   //   "reload_times": 0,
   //   "type": 1,
   // };
-  List<PostResponseModel>? postData = null;
   //bat event scroll chạm đáy sẽ load thêm api
   final GlobalKey<NestedScrollViewState> globalKeyScrollController = GlobalKey();
 
@@ -43,24 +41,5 @@ class HomeController extends BaseController with SearchTagFriendController {
     call_fetchFriendByUserId();
   }
 
-  Future<void> call_fetchPostData() async {
-    apiCall
-        .onRequest(
-      ApiUrl.get_fetchPost(),
-      RequestMethod.GET,
-      // queryParam: request,
-      // isShowLoading: false,
-      baseModel: PostResponseModel(),
-    )
-        .then((value) {
-      if (postData == null) {
-        postData = value;
-      } else {
-        postData = [...postData!, value]; //ko xai` .addAll vi` notifyListeners se k rebuild
-      }
-      notifyListeners();
-    });
-  }
-
-  Future<void> call_createPostData() async {}
+  
 }

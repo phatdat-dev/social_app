@@ -63,9 +63,9 @@ class HelperWidget {
   }) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(iconData, color: color),
+            const SizedBox(width: 10),
             Text(message, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
           ],
         ),
