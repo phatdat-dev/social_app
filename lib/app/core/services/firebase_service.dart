@@ -38,7 +38,7 @@ class FireBaseService with ChangeNotifier {
   }
 
   //create group
-  Future<void> call_createGroupChat({required String chatRoomId, required List<Map<String, dynamic>> members}) async {
+  Future<void> call_createOrUpdateGroupChat({required String chatRoomId, required List<Map<String, dynamic>> members}) async {
     _firestore.collection('chatRoom').doc(chatRoomId).set({
       'updated_at': DateTime.now().millisecondsSinceEpoch,
       'members': members,
@@ -46,7 +46,7 @@ class FireBaseService with ChangeNotifier {
 
     for (var element in members) {
       _firestore.collection('users/${element['id']}/groups').doc(chatRoomId).set({
-        'name': 'groupName ' + StringExtension.randomString(5), //rename later
+        'name': 'groupName ' + chatRoomId, //rename later
         'id': chatRoomId,
       });
     }
@@ -56,5 +56,9 @@ class FireBaseService with ChangeNotifier {
       'type': 'notify',
       'created_at': DateTime.now().millisecondsSinceEpoch,
     });
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> call_getChatRoomDocs(String chatRoomId) {
+    return _firestore.collection('chatRoom').doc(chatRoomId).snapshots();
   }
 }

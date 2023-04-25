@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
+import 'package:social_app/app/core/utils/extension/app_extension.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/widget/chatcard_widget.dart';
@@ -10,7 +11,6 @@ import 'package:social_app/app/routes/app_pages.dart';
 import 'package:social_app/app/widget/app_bar_icon.dart';
 import 'package:social_app/app/widget/search_widget.dart';
 
-import '../../search_tag_friend/views/search_tag_friend_view.dart';
 import '../controllers/message_controller.dart';
 
 class MessageView extends StatefulWidget {
@@ -34,6 +34,7 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
   Widget build(BuildContext context) {
     final controller = context.read<T>();
     return Scaffold(
+      key: controller.key,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -48,13 +49,7 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
               AppBarIcon(icon: const Icon(Icons.camera_alt_outlined), onPressed: () {}),
               AppBarIcon(
                 icon: const Icon(Icons.group_add_outlined, color: Colors.green),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ChangeNotifierProvider.value(
-                            value: controller,
-                            child: SearchTagFriendView<T>(title: 'New Message'),
-                          )));
-                },
+                onPressed: () => controller.onCreateNewGroupMessage<T>(context),
               ),
             ],
             bottom: PreferredSize(
@@ -76,11 +71,11 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
               delegate: SliverChildListDelegate([
             buildListUser(
               onTapUserIndex: (index, user) {
-                context.push(Routes.MESSAGE_DETAIL(user.id!.toString()), extra: {
+                controller.currentChatRoom = controller.currentChatRoom.copyWith({
                   'chatRoomId': controller.generateChatRoomId(['${AuthenticationController.userAccount!.id!}', '${user.id!}']),
                   'user': user,
-                  'controller': controller,
                 });
+                context.push(Routes.MESSAGE_DETAIL(user.id!.toString()), extra: controller);
               },
             ),
             StreamBuilder(
@@ -99,14 +94,14 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
                             displayName: item['name'],
                           ),
                           onTap: () {
-                            context.push(Routes.MESSAGE_DETAIL(item['id']), extra: {
+                            controller.currentChatRoom = controller.currentChatRoom.copyWith({
                               'chatRoomId': item['id'],
                               'user': UsersModel(
                                 id: 0,
                                 displayName: 'asdasd',
                               ),
-                              'controller': controller,
                             });
+                            context.push(Routes.MESSAGE_DETAIL(item['id']), extra: controller);
                           },
                         );
                       },

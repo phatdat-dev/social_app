@@ -9,6 +9,7 @@ import 'package:social_app/app/modules/authentication/controllers/authentication
 import 'package:social_app/app/modules/authentication/views/authentication_view.dart';
 import 'package:social_app/app/modules/home/views/home_view.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:social_app/app/modules/message/views/message_setting_profile_members_view.dart';
 import 'package:social_app/app/modules/message/views/message_setting_profile_view.dart';
 import 'package:social_app/app/modules/message/views/message_view.dart';
 
@@ -71,9 +72,7 @@ class AppPages {
           GoRoute(
             path: 'detail/:id', // /message/detail/:id
             builder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>;
-              return ChangeNotifierProvider.value(
-                  value: extra['controller'] as MessageController, child: MessageDetailView(extra['chatRoomId'], extra['user']));
+              return ChangeNotifierProvider.value(value: state.extra as MessageController, child: const MessageDetailView());
             },
           ),
           GoRoute(
@@ -84,12 +83,22 @@ class AppPages {
             ),
           ),
           GoRoute(
-            path: 'settingProfile/:id', // /message/settingProfile
-            builder: (context, state) => ChangeNotifierProvider.value(
-              value: state.extra as MessageController,
-              child: MessageSettingProfileView(),
-            ),
-          ),
+              path: 'settingProfile/:id', // /message/settingProfile
+              builder: (context, state) => ChangeNotifierProvider.value(
+                    value: state.extra as MessageController,
+                    child: MessageSettingProfileView(),
+                  ),
+              routes: [
+                GoRoute(
+                  path: 'members', // /message/settingProfile/members
+                  builder: (context, state) {
+                    return ChangeNotifierProvider.value(
+                      value: state.extra as MessageController,
+                      child: const MessageSettingProfileMembersView(),
+                    );
+                  },
+                ),
+              ]),
         ],
       ),
     ],

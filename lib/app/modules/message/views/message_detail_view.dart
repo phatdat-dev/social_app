@@ -11,9 +11,7 @@ import 'package:social_app/app/widget/textfield_comment_widget.dart';
 
 //code layout tham khao tu` google https://viblo.asia/p/flutter-viet-ung-dung-chat-voi-flutter-p1-GrLZD8GOZk0
 class MessageDetailView extends StatefulWidget {
-  final UsersModel user;
-  final String chatRoomId;
-  const MessageDetailView(this.chatRoomId, this.user, {Key? key}) : super(key: key);
+  const MessageDetailView({Key? key}) : super(key: key);
 
   @override
   State createState() => MessageDetailViewState();
@@ -29,6 +27,9 @@ class MessageDetailViewState extends State<MessageDetailView> {
   void initState() {
     super.initState();
     controller = context.read<MessageController>();
+    //báo lỗi khi
+    assert(!(controller.currentChatRoom['chatRoomId'] == null));
+    assert(!(controller.currentChatRoom['user'] == null));
     fireBaseService = context.read<FireBaseService>();
   }
 
@@ -57,7 +58,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
     if (text.isNotEmpty) {
       //neu' textField ko rong~ thi` gui tin nhan den fireStore
       //them vao` danh sach tin nhan' o phan tu? dau` tien
-      fireBaseService.call_sendMessage(chatRoomId: widget.chatRoomId, type: 'text', data: text);
+      fireBaseService.call_sendMessage(chatRoomId: controller.currentChatRoom['chatRoomId'], type: 'text', data: text);
     }
   }
 
@@ -81,7 +82,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
             const BackButton(),
             Expanded(
                 child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: fireBaseService.call_getUser('${widget.user.id}'),
+              stream: fireBaseService.call_getUser('${(controller.currentChatRoom['user'] as UsersModel).id}'),
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data?.data() != null) {
                   final bool isOnline = snapshot.data!['status'] == 'Online';
@@ -90,7 +91,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
                       children: [
                         CircleAvatar(
                           //radius: 25,
-                          backgroundImage: NetworkImage(widget.user.avatar!),
+                          backgroundImage: NetworkImage((controller.currentChatRoom['user'] as UsersModel).avatar!),
                         ),
                         Positioned(
                           right: 0,
@@ -110,7 +111,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
                       ],
                     ),
                     title: Text(
-                      widget.user.displayName!,
+                      (controller.currentChatRoom['user'] as UsersModel).displayName!,
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     subtitle: Text(
@@ -135,7 +136,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
             IconButton(
               icon: const Icon(Icons.info),
               onPressed: () {
-                context.push(Routes.MESSAGE_SETTING_PROFILE(widget.chatRoomId), extra: controller);
+                context.push(Routes.MESSAGE_SETTING_PROFILE(controller.currentChatRoom['chatRoomId']), extra: controller);
               },
             ),
             const SizedBox(width: 15 / 2),
@@ -147,7 +148,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
               Flexible(
                 // Flexible dua theo widget, size cua thiet bi ma` thay doi?
                 child: StreamBuilder(
-                  stream: fireBaseService.call_getChatRoom(widget.chatRoomId),
+                  stream: fireBaseService.call_getChatRoom(controller.currentChatRoom['chatRoomId']),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final docs = snapshot.data!.docs;

@@ -79,10 +79,9 @@ extension HomeViewExtension on _HomeViewState {
                 //duong` vien`
                 indicatorPadding: const EdgeInsets.all(8),
                 splashBorderRadius: BorderRadius.circular(100),
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
+                indicator: ShapeDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  border: Border.all(color: Theme.of(context).colorScheme.secondary),
+                  shape: const StadiumBorder(),
                 ),
                 labelColor: Theme.of(context).colorScheme.primary,
                 labelStyle: const TextStyle(fontWeight: FontWeight.bold),

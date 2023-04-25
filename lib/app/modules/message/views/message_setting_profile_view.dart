@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:social_app/app/routes/app_pages.dart';
 import 'package:social_app/app/widget/app_bar_icon.dart';
 
 class MessageSettingProfileView extends StatelessWidget {
   MessageSettingProfileView({super.key});
 
-  final numberFormat = NumberFormat.compact(locale: 'en');
+  final _numberFormat = NumberFormat.compact(locale: 'en');
   @override
   Widget build(BuildContext context) {
+    final controller = context.read<MessageController>();
+    // final FireBaseService fireBaseService = context.read<FireBaseService>();
+
     return Scaffold(
       backgroundColor: Colors.purple,
       body: Stack(
@@ -53,10 +60,11 @@ class MessageSettingProfileView extends StatelessWidget {
                     ),
                     //
                     Text('Thông tin về đoạn chat', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.grey)),
-                    const ListTile(
+                    ListTile(
+                      onTap: () => context.push(Routes.MESSAGE_SETTING_PROFILE_MEMBERS(GoRouterState.of(context).params['id']!), extra: controller),
                       contentPadding: EdgeInsets.zero,
-                      title: Text('Xem thành viên'),
-                      trailing: Icon(Icons.diversity_3, color: Colors.amber),
+                      title: const Text('Xem thành viên'),
+                      trailing: const Icon(Icons.diversity_3, color: Colors.amber),
                     ),
                     const ListTile(
                       contentPadding: EdgeInsets.zero,
@@ -219,7 +227,7 @@ class MessageSettingProfileView extends StatelessWidget {
                           Expanded(
                             child: ListTile(
                               title: Text(
-                                numberFormat.format(421),
+                                _numberFormat.format(421),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
@@ -229,7 +237,7 @@ class MessageSettingProfileView extends StatelessWidget {
                           Expanded(
                             child: ListTile(
                               title: Text(
-                                numberFormat.format(10234),
+                                _numberFormat.format(10234),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
@@ -239,7 +247,7 @@ class MessageSettingProfileView extends StatelessWidget {
                           Expanded(
                             child: ListTile(
                               title: Text(
-                                numberFormat.format(9182),
+                                _numberFormat.format(9182),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),

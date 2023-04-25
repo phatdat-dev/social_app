@@ -8,9 +8,10 @@ import 'package:social_app/app/modules/search_tag_friend/controllers/search_tag_
 import 'package:social_app/app/widget/search_widget.dart';
 
 class SearchTagFriendView<T extends SearchTagFriendController> extends StatefulWidget {
-  const SearchTagFriendView({super.key, required this.title});
+  const SearchTagFriendView({super.key, required this.title, this.minSelected = 2}) : assert(minSelected > 0);
 
   final String title;
+  final int minSelected;
 
   @override
   State<SearchTagFriendView> createState() => _SearchTagFriendViewState<T>();
@@ -37,7 +38,7 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
               padding: const EdgeInsets.all(10),
               child: Builder(builder: (context) {
                 final listTagFriend = context.watch<T>().listTagFriend?.where((element) => element.isSelected).toList() ?? [];
-                if (listTagFriend.length >= 2)
+                if (listTagFriend.length >= widget.minSelected)
                   return ElevatedButton(
                     onPressed: controller.onPresseSearchTagFriendDone,
                     child: const Text('Xong'),

@@ -49,4 +49,6 @@ class Helper {
     if (source == null || target == null) return false;
     return source.toLowerCase().contains(target.toLowerCase());
   }
+
+  static String generateIdFromDateTimeNow() => DateFormat('yyyyMMddHHmmssSSS').format(DateTime.now());
 }
