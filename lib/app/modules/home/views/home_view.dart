@@ -94,7 +94,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
             return notification.depth == 0;
           },
           onRefresh: () async {
-            await controller.call_fetchPostData();
+            await controller.onInitData();
           },
           child: AnimatedBuilder(
             animation: controller.tabBarController,
