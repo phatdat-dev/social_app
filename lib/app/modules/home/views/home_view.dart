@@ -10,9 +10,9 @@ import 'package:social_app/app/modules/home/widget/home_drawer_widget.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 import 'package:social_app/app/widget/app_bar_icon.dart';
 
-import '../../../../facebook/screens/facebook_screen_pages.dart';
 import '../controllers/home_controller.dart';
 import 'home_dashboard_view.dart';
+import 'home_group_view.dart';
 import 'home_menu_view.dart';
 import 'home_notify_view.dart';
 import 'home_video_view.dart';
@@ -37,7 +37,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
     controller.tabBarWidget = {
       const Tab(icon: Icon(Icons.home_outlined, size: 30)): HomeDashBoardView(),
       const Tab(icon: Icon(Icons.ondemand_video_outlined, size: 30)): const HomeVideoView(),
-      const Tab(icon: Icon(Icons.flag_outlined, size: 30)): FacebookScreenPages(),
+      const Tab(icon: Icon(MdiIcons.accountGroupOutline, size: 30)): HomeGroupView(),
       const Tab(icon: Icon(Icons.notifications_outlined, size: 30)): HomeNotifyView(),
       const Tab(icon: Icon(Icons.menu_outlined, size: 30)): HomeMenuView(),
     };

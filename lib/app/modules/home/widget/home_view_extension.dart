@@ -3,6 +3,7 @@ part of '../views/home_view.dart';
 extension HomeViewExtension on _HomeViewState {
   SliverAppBar _buildAppBarDefaultTab() {
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       floating: true, //giuu lau bottom
       pinned: true, //giuu lai bottom
       snap: true,

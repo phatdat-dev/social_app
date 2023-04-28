@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/facebook/components/facebook_button_group.dart';
+import 'package:provider/provider.dart';
+import 'package:social_app/app/core/utils/helper.dart';
+import 'package:social_app/app/modules/home/controllers/home_controller.dart';
+import 'package:social_app/app/modules/home/widget/card_background_widget.dart';
 
-class FacebookScreenPages extends StatefulWidget {
+class HomeGroupView extends StatefulWidget {
   @override
-  _FacebookScreenPagesState createState() => _FacebookScreenPagesState();
+  _HomeGroupViewState createState() => _HomeGroupViewState();
 }
 
-class _FacebookScreenPagesState extends State<FacebookScreenPages> {
+class _HomeGroupViewState extends State<HomeGroupView> {
+  //controller
+  late final HomeController controller;
+
   @override
   void initState() {
     super.initState();
+    controller = context.read<HomeController>();
+    controller.call_fetchGroupJoined();
   }
 
   @override
@@ -32,17 +40,28 @@ class _FacebookScreenPagesState extends State<FacebookScreenPages> {
               style: TextStyle(fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            height: 40,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                FacebookButtonGroup(onPress: () {}, icon: Icons.add_circle_outline, text: 'Create'),
-                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: 'Discover'),
-                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: 'Discover'),
-                FacebookButtonGroup(onPress: () {}, icon: Icons.home, text: 'Liked Pades'),
-              ],
-            ),
+          SizedBox(
+            height: 150,
+            child: Builder(builder: (context) {
+              final groupData = context.select((HomeController value) => value.groupData);
+              return ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  const SizedBox(width: 10),
+                  if (groupData?.isNotEmpty ?? false)
+                    ...Helper.listGenerateSeparated(
+                      groupData!.length,
+                      generator: (index) => CardBackgroundWidget(
+                        data: groupData[index],
+                        width: 150,
+                        height: 150,
+                      ),
+                      separator: (index) => const SizedBox(width: 10),
+                    ),
+                  const SizedBox(width: 10),
+                ],
+              );
+            }),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),

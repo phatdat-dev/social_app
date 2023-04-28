@@ -5,7 +5,6 @@ import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 import 'package:social_app/app/widget/animated_route.dart';
-import 'package:social_app/facebook/models/model_story.dart';
 
 import '../widget/facebook_card_story_widget.dart';
 
@@ -79,12 +78,13 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
             scrollDirection: Axis.horizontal,
             itemCount: story_list.length,
             separatorBuilder: (context, index) => const SizedBox(width: 5),
-            itemBuilder: (context, int index) {
+            itemBuilder: (context, index) {
               return FacebookCardStory(
-                  avatarImage: story_list[index].profile_path,
-                  backgroundImage: story_list[index].image_Path,
-                  showAddButton: index == 0 ? visible = true : false,
-                  user_name: index == 0 ? 'Tạo tin của bạn' : story_list[index].user_name);
+                avatarImage: story_list[index].profile_path,
+                backgroundImage: story_list[index].image_Path,
+                showAddButton: index == 0 ? visible = true : false,
+                user_name: index == 0 ? 'Tạo tin của bạn' : story_list[index].user_name,
+              );
             }),
       ),
     );
@@ -124,4 +124,16 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
       ),
     );
   }
+}
+
+class ModelStory {
+  final String image_Path;
+  final String user_name;
+  final String profile_path;
+
+  ModelStory({
+    required this.image_Path,
+    required this.user_name,
+    required this.profile_path,
+  });
 }

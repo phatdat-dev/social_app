@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/facebook/components/facebook_card_notification.dart';
+import 'package:social_app/app/modules/home/widget/facebook_card_notification.dart';
 
 class HomeNotifyView extends StatefulWidget {
   HomeNotifyView({Key? key}) : super(key: key);

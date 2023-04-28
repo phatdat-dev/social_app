@@ -4,7 +4,7 @@ import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/utils/helper.dart';
 
 abstract class PostController implements BaseController {
-  Map<String, dynamic> request = {
+  Map<String, dynamic> requestPost = {
     'page': 1,
   };
   List<Map<String, dynamic>>? postData = null;
@@ -15,7 +15,7 @@ abstract class PostController implements BaseController {
         .onRequest(
       ApiUrl.get_fetchPost(),
       RequestMethod.GET,
-      queryParam: request,
+      queryParam: requestPost,
       // isShowLoading: false,
     )
         .then((value) {

@@ -11,4 +11,5 @@ class ApiUrl {
   static String post_createPostt() => '/api/v1/create-post';
   static String get_fetchFriendByUserId(int userId, [int? limit]) =>
       limit != null ? '/api/v1/fetch-friend-by-user-id/$userId/$limit' : '/api/v1/fetch-friend-by-user-id/$userId';
+  static String get_fetchGroupJoined() => '/api/v1/fetch-group-joined';
 }

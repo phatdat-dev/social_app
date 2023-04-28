@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/modules/home/controllers/group_controller.dart';
 import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
 
-class HomeController extends BaseController with SearchTagFriendController, PostController {
+class HomeController extends BaseController with SearchTagFriendController, PostController, GroupController {
   // final BaseSearchRequestModel searchRequestModel = BaseSearchRequestModel(pageSize: 10);
   late Map<Widget, Widget> tabBarWidget;
   late TabController tabBarController;
@@ -17,7 +18,7 @@ class HomeController extends BaseController with SearchTagFriendController, Post
   @override
   Future<void> onInitData() async {
     //reset data
-    request.update('page', (value) => 1);
+    requestPost.update('page', (value) => 1);
     globalKeyScrollController = GlobalKey();
     postDataIsMaximum = false;
 
@@ -34,7 +35,7 @@ class HomeController extends BaseController with SearchTagFriendController, Post
           if (tabBarController.index == 0 && isScrollBottom) {
             // Khi scroll đến cuối danh sách
             // Thực hiện tải thêm dữ liệu
-            request = request.copyWith({'page': request['page'] + 1});
+            requestPost = requestPost.copyWith({'page': requestPost['page'] + 1});
             call_fetchPostData();
           }
         }
