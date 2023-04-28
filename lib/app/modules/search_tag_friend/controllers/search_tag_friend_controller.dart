@@ -15,7 +15,7 @@ abstract class SearchTagFriendController implements BaseController {
       RequestMethod.GET,
     )
         .then((value) {
-      listTagFriend = List.from(value)
+      listTagFriend = List.from(value['data'])
           .map((item) => UsersModel(
                 id: item['friendId'],
                 displayName: item['displayName'],

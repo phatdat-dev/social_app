@@ -30,23 +30,28 @@ class HomeDrawerWidget extends StatelessWidget {
                   children: [
                     buildAvatarEdit(context),
                     const SizedBox(width: 15),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 10),
-                        const Text(
-                          'UserName',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        const Text(
-                          'email@gmail.com',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                        const Text(
-                          '012938797',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            AuthenticationController.userAccount?.displayName ?? '',
+                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            AuthenticationController.userAccount?.email ?? '',
+                            style: const TextStyle(fontStyle: FontStyle.italic),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            AuthenticationController.userAccount?.phone ?? '',
+                            style: const TextStyle(fontStyle: FontStyle.italic),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -164,7 +169,7 @@ class HomeDrawerWidget extends StatelessWidget {
 
   Widget buildAvatarEdit(BuildContext context) => Stack(
         children: [
-          const CircleAvatar(radius: 50),
+          CircleAvatar(radius: 50, backgroundImage: NetworkImage(AuthenticationController.userAccount?.avatar ?? '')),
           Positioned(
             right: 5,
             bottom: 5,

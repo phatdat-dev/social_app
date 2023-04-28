@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/models/response/post_response_model.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
@@ -50,7 +49,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
       children: <Widget>[
         _buildInputStory(context),
         _buildListCardStory(),
-        Selector<HomeController, List<PostResponseModel>?>(
+        Selector<HomeController, List<Map<String, dynamic>>?>(
           selector: (_, controller) => controller.postData,
           builder: (context, data, child) {
             if (data == null) {

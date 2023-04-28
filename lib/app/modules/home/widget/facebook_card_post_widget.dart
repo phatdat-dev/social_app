@@ -3,12 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/models/response/post_response_model.dart';
 import 'package:social_app/package/comment_tree/comment_tree.dart';
 import 'package:video_player/video_player.dart';
 
 class FacebookCardPostWidget extends StatelessWidget {
-  final PostResponseModel postResponseModel;
+  final Map<String, dynamic> postResponseModel;
 
   FacebookCardPostWidget(this.postResponseModel);
 
@@ -27,7 +26,7 @@ class FacebookCardPostWidget extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Text.rich(TextSpan(
               children: [
-                TextSpan(text: postResponseModel.postContent),
+                TextSpan(text: postResponseModel['postContent']),
                 TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
               ],
               style: const TextStyle(fontSize: 16),
@@ -139,7 +138,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0, right: 8.0),
                 child: Text(
-                  '${postResponseModel.totalComment} · ${postResponseModel.totalShare}',
+                  '${postResponseModel['totalComment']} · ${postResponseModel['totalShare']}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -162,7 +161,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.only(left: 0.0, top: 15.0),
                   child: Text(
-                    '${postResponseModel.totalLike} likes',
+                    '${postResponseModel['totalLike']} likes',
                     style: Theme.of(context).textTheme.bodySmall,
                   ))),
         ],
@@ -187,7 +186,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                   // shape: BoxShape.circle,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(postResponseModel.avatarUser!),
+                    image: NetworkImage(postResponseModel['avatarUser']!),
                     fit: BoxFit.cover,
                   )),
             ),
@@ -211,7 +210,7 @@ class FacebookCardPostWidget extends StatelessWidget {
           isUserPost
               ? CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(postResponseModel.avatarUser!),
+                  backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
                 )
               : _buildAvatarGroup(),
           Expanded(
@@ -223,16 +222,16 @@ class FacebookCardPostWidget extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(height: 5),
                   Text(
-                    postResponseModel.displayName!,
+                    postResponseModel['displayName']!,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5),
                   Text.rich(TextSpan(children: [
                     if (!isUserPost)
                       TextSpan(
-                          text: '${postResponseModel.displayName}  · ',
+                          text: '${postResponseModel['displayName']}  · ',
                           style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
-                    TextSpan(text: '${postResponseModel.createdAt} · ☘', style: Theme.of(context).textTheme.bodySmall),
+                    TextSpan(text: '${postResponseModel['createdAt']} · ☘', style: Theme.of(context).textTheme.bodySmall),
                   ])),
                   const SizedBox(height: 5),
                 ],
@@ -318,18 +317,18 @@ class FacebookCardPostWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final List<Mediafile> listMedia = postResponseModel.mediafile ?? [];
+    final List<Map<String, dynamic>> listMedia = Helper.convertToListMap(postResponseModel['mediafile'] ?? []);
 
     if (listMedia.isEmpty) return const SizedBox.shrink();
 
-    if (listMedia.length == 1) return buildMedia(listMedia.first.mediaFileName!);
+    if (listMedia.length == 1) return buildMedia(listMedia.first['media_file_name']!);
 
     if (listMedia.length == 2) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildMedia(listMedia.first.mediaFileName!),
-          buildMedia(listMedia.last.mediaFileName!),
+          buildMedia(listMedia.first['media_file_name']!),
+          buildMedia(listMedia.last['media_file_name']!),
         ],
       );
     }
@@ -339,13 +338,13 @@ class FacebookCardPostWidget extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildMedia(listMedia.first.mediaFileName!),
+          buildMedia(listMedia.first['media_file_name']!),
           Row(
             children: [
               Expanded(
                 child: SizedBox(
                   height: 150,
-                  child: buildMedia(listMedia[1].mediaFileName!),
+                  child: buildMedia(listMedia[1]['media_file_name']!),
                 ),
               ),
               Expanded(
@@ -353,7 +352,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 150,
-                      child: buildMedia(listMedia[2].mediaFileName!),
+                      child: buildMedia(listMedia[2]['media_file_name']!),
                     ),
                     Container(
                       height: 150,

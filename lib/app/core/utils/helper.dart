@@ -51,4 +51,7 @@ class Helper {
   }
 
   static String generateIdFromDateTimeNow() => DateFormat('yyyyMMddHHmmssSSS').format(DateTime.now());
+
+  static List<Map<String, dynamic>> convertToListMap(List<dynamic> list) =>
+      List<Map<String, dynamic>>.from(list.map((e) => Map<String, dynamic>.from(e)));
 }

@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
-import 'package:social_app/app/models/response/post_response_model.dart';
+import 'package:social_app/app/core/utils/helper.dart';
 
 abstract class PostController implements BaseController {
   Map<String, dynamic> request = {
     'page': 1,
   };
-  List<PostResponseModel>? postData = null;
+  List<Map<String, dynamic>>? postData = null;
   bool postDataIsMaximum = false;
 
   Future<void> call_fetchPostData() async {
@@ -16,10 +16,10 @@ abstract class PostController implements BaseController {
       ApiUrl.get_fetchPost(),
       RequestMethod.GET,
       queryParam: request,
-      isShowLoading: false,
+      // isShowLoading: false,
     )
         .then((value) {
-      final data = List.from(value['data']).map((e) => PostResponseModel().fromJson(e)).toList();
+      final data = Helper.convertToListMap(value['data']);
       if (postData == null) {
         postData = data;
       } else {
@@ -43,7 +43,7 @@ abstract class PostController implements BaseController {
       'postContent': content,
       'privacy': privacy,
       'groupId': groupId,
-      'files': filesPath?.map((path) => MultipartFile.fromFileSync(path)).toList(),
+      'files[]': filesPath?.map((path) => MultipartFile.fromFileSync(path)).toList(),
       'images': null,
     });
 

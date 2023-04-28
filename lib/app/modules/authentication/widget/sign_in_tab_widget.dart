@@ -36,53 +36,61 @@ class SignInTabWidget extends StatelessWidget {
   }
 }
 
-List<Widget> buildTextField_UserNamePassWord() => [
-      FormBuilderTextField(
-        name: 'email',
-        initialValue: 'eva.brunet@example.com', //
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.zero,
-          prefixIcon: CustomPrefixIconWidget(
-            icon: const Icon(Icons.email, color: Colors.green),
-            color: Colors.greenAccent.withOpacity(0.5),
-          ),
-          // suffixIcon: Icon(
-          //   Icons.check_circle,
-          //   color: Colors.black26,
-          // ),
-          labelText: '${TranslateKeys.Email.tr()}',
-          // hintStyle: const TextStyle(color: Colors.yellow),
-          filled: true,
-          fillColor: Colors.lightBlueAccent.withOpacity(0.1),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0), borderSide: BorderSide.none),
+List<Widget> buildTextField_UserNamePassWord() {
+  bool isVisiblePassword = true;
+  return [
+    FormBuilderTextField(
+      name: 'email',
+      initialValue: 'eva.brunet@example.com', //
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        prefixIcon: CustomPrefixIconWidget(
+          icon: const Icon(Icons.email, color: Colors.green),
+          color: Colors.greenAccent.withOpacity(0.5),
         ),
-        // style: TextStyle(color: Theme.of(context).colorScheme.primary),
-        validator: FormBuilderValidators.compose([
-          FormBuilderValidators.required(),
-        ]),
+        // suffixIcon: Icon(
+        //   Icons.check_circle,
+        //   color: Colors.black26,
+        // ),
+        labelText: '${TranslateKeys.Email.tr()}',
+        // hintStyle: const TextStyle(color: Colors.yellow),
+        filled: true,
+        fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0), borderSide: BorderSide.none),
       ),
-      const SizedBox(height: 15.0),
-      FormBuilderTextField(
-        name: 'password',
-        initialValue: 'password',
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.zero,
-          prefixIcon: CustomPrefixIconWidget(
-            icon: const Icon(Icons.key, color: Colors.pinkAccent),
-            color: Colors.yellowAccent.withOpacity(0.5),
-          ),
-          // suffixIcon: Icon(
-          //   Icons.check_circle,
-          //   color: Colors.black26,
-          // ),
-          labelText: '${TranslateKeys.Password.tr()}',
-          // hintStyle: const TextStyle(color: Colors.yellow),
-          filled: true,
-          fillColor: Colors.lightBlueAccent.withOpacity(0.1),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0), borderSide: BorderSide.none),
-        ),
-        validator: FormBuilderValidators.compose([
-          FormBuilderValidators.required(),
-        ]),
-      ),
-    ];
+      // style: TextStyle(color: Theme.of(context).colorScheme.primary),
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.required(),
+      ]),
+    ),
+    const SizedBox(height: 15.0),
+    StatefulBuilder(
+        builder: (context, setState) => FormBuilderTextField(
+              name: 'password',
+              initialValue: 'password',
+              obscureText: isVisiblePassword,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.zero,
+                prefixIcon: CustomPrefixIconWidget(
+                  icon: const Icon(Icons.key, color: Colors.pinkAccent),
+                  color: Colors.yellowAccent.withOpacity(0.5),
+                ),
+                suffixIcon: IconButton(
+                  onPressed: () => setState(() => isVisiblePassword = !isVisiblePassword),
+                  icon: Icon(
+                    isVisiblePassword ? Icons.visibility : Icons.visibility_off,
+                    size: 24.0,
+                  ),
+                ),
+                labelText: '${TranslateKeys.Password.tr()}',
+                // hintStyle: const TextStyle(color: Colors.yellow),
+                filled: true,
+                fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0), borderSide: BorderSide.none),
+              ),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+              ]),
+            )),
+  ];
+}

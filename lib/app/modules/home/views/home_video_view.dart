@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/app/models/response/post_response_model.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 
@@ -23,7 +22,7 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
       const Tab(text: 'Dành cho bạn'): ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Selector<HomeController, List<PostResponseModel>?>(
+          Selector<HomeController, List<Map<String, dynamic>>?>(
             selector: (_, controller) => controller.postData,
             builder: (context, data, child) {
               if (data == null) {
