@@ -10,6 +10,12 @@ abstract class BaseFetchController implements BaseController {
   List<Map<String, dynamic>>? dataResponse = null;
   bool dataResponseIsMaximum = false;
 
+  @override
+  Future<void> onInitData() async {
+    resetRequest();
+    call_fetchData();
+  }
+
   Future<void> call_fetchData() async {
     apiCall
         .onRequest(

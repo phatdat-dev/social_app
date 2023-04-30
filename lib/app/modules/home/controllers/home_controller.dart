@@ -23,7 +23,7 @@ class HomeController extends BaseController with SearchTagFriendController {
   Future<void> onInitData() async {
     //reset data
     globalKeyScrollController = GlobalKey();
-    postController.resetRequest();
+    postController.onInitData();
 
     //
     //sau khi RenderUI
@@ -39,8 +39,6 @@ class HomeController extends BaseController with SearchTagFriendController {
         }
       });
     });
-
-    postController.call_fetchData();
     call_fetchFriendByUserId();
   }
 }

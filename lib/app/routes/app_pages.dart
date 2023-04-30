@@ -7,6 +7,8 @@ import 'package:social_app/app/core/constants/app_constant.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/authentication/views/authentication_view.dart';
+import 'package:social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:social_app/app/modules/group/views/group_view.dart';
 import 'package:social_app/app/modules/home/views/home_view.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:social_app/app/modules/message/views/message_setting_profile_members_view.dart';
@@ -100,6 +102,12 @@ class AppPages {
                 ),
               ]),
         ],
+      ),
+      GoRoute(
+        path: '/group/:id',
+        builder: (context, state) {
+          return ChangeNotifierProvider.value(value: state.extra as GroupController, child: const GroupView());
+        },
       ),
     ],
   );

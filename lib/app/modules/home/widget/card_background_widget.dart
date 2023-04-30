@@ -6,11 +6,13 @@ class CardBackgroundWidget extends StatelessWidget {
     required this.data,
     required this.width,
     required this.height,
+    this.onTap,
   });
 
   final Map<String, dynamic> data;
   final double width;
   final double height;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class CardBackgroundWidget extends StatelessWidget {
     final String imageUrl = data['avatar'] ?? 'https://i.pinimg.com/originals/81/31/20/8131208cdb98026d71d3f89b8097c522.jpg';
     final String title = data['group_name'] ?? '';
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: SizedBox(
         width: width,
         height: height,

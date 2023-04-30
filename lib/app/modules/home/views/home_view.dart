@@ -80,11 +80,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
     return GestureDetector(
       //huy keyboard khi bam ngoai man hinh
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-      child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider.value(value: controller.postController),
-            ChangeNotifierProvider.value(value: controller.groupController),
-          ],
+      child: ChangeNotifierProvider.value(
+          value: controller.postController,
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             // extendBody: true,

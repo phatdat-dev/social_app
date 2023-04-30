@@ -3,9 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/controllers/post_controller.dart';
-import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
-import 'package:social_app/app/widget/animated_route.dart';
+import 'package:social_app/app/modules/home/widget/input_story_widget.dart';
 
 import '../widget/facebook_card_story_widget.dart';
 
@@ -47,7 +46,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        _buildInputStory(context),
+        const InputStoryWidget(),
         _buildListCardStory(),
         Selector(
           selector: (_, PostController controller) => controller.dataResponse,
@@ -87,41 +86,6 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
                 user_name: index == 0 ? 'Tạo tin của bạn' : story_list[index].user_name,
               );
             }),
-      ),
-    );
-  }
-
-  Widget _buildInputStory(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
-      // width: double.infinity,
-      // color: Theme.of(context).colorScheme.inversePrimary,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: CircleAvatar(radius: 25),
-              ),
-              Expanded(
-                child: OutlinedButton(
-                    onPressed: () async {
-                      await Navigator.of(context).push(AnimatedRoute(const CreatePostView()));
-                    },
-                    child: const Text('Bạn đang nghĩ gì ?', style: TextStyle(color: Colors.black)),
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                      alignment: Alignment.centerLeft,
-                    )),
-              ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.photo_library_outlined, color: Colors.green))
-            ],
-          ),
-        ],
       ),
     );
   }

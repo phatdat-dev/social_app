@@ -6,10 +6,16 @@ import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/package/comment_tree/comment_tree.dart';
 import 'package:video_player/video_player.dart';
 
+// ignore: must_be_immutable
 class FacebookCardPostWidget extends StatelessWidget {
   final Map<String, dynamic> postResponseModel;
+  late bool? isGroupPost;
 
-  FacebookCardPostWidget(this.postResponseModel);
+  FacebookCardPostWidget(this.postResponseModel, {this.isGroupPost}) {
+    if (isGroupPost == null) {
+      isGroupPost = postResponseModel['group_id'] != null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +175,6 @@ class FacebookCardPostWidget extends StatelessWidget {
   }
 
   Padding _buildHeaderPost(BuildContext context) {
-    bool isUserPost = postResponseModel['group_id'] == null;
-
     Container _buildAvatarGroup() {
       return Container(
         width: 55,
@@ -209,12 +213,12 @@ class FacebookCardPostWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           //neu bai viet nam` trong nhom' thi` co' hinh` cua nhom'+ hinh` cua nguoi` dang
-          isUserPost
-              ? CircleAvatar(
+          isGroupPost!
+              ? _buildAvatarGroup()
+              : CircleAvatar(
                   radius: 25,
                   backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
-                )
-              : _buildAvatarGroup(),
+                ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 10),
@@ -224,14 +228,14 @@ class FacebookCardPostWidget extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(height: 5),
                   Text(
-                    (isUserPost) ? postResponseModel['displayName']! : postResponseModel['groupName'],
+                    (isGroupPost!) ? postResponseModel['groupName'] : postResponseModel['displayName']!,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5),
                   Text.rich(
                     TextSpan(
                       children: [
-                        if (!isUserPost)
+                        if (isGroupPost!)
                           TextSpan(
                               text: '${postResponseModel['displayName']}  · ',
                               style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),

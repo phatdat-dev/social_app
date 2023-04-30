@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/extension/string_extension.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
+import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
 import 'package:video_player/video_player.dart';
@@ -16,6 +17,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<T>();
     final txtController = TextEditingController();
+    final groupController = context.read<GroupController?>();
 
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
@@ -25,7 +27,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
             var filesPicker = context.select((PickerService pickerService) => pickerService.files);
             return Scaffold(
               appBar: AppBar(
-                title: const Text('Tạo bài viết'),
+                title: Text(groupController?.currentGroup['group_name'] ?? 'Tạo bài viết'),
                 actions: [
                   Padding(
                     padding: const EdgeInsets.all(10),
@@ -42,7 +44,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                                       .call_createPostData(
                                     content: txtController.text,
                                     privacy: 1, //get dropdown privacy
-                                    // groupId: 0,
+                                    groupId: groupController?.currentGroup['id'] ?? null,
                                     filesPath: filesPicker?.map((e) => e.path).toList(),
                                     // images: [],
                                   )

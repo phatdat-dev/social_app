@@ -7,9 +7,6 @@ class PostController extends BaseController with BaseFetchController {
   @override
   String get apiUrl => ApiUrl.get_fetchPost();
 
-  @override
-  Future<void> onInitData() async {}
-
   Future<void> call_createPostData({
     required String content,
     required int privacy,

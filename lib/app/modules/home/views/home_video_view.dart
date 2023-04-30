@@ -24,7 +24,7 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
         padding: EdgeInsets.zero,
         children: <Widget>[
           Selector(
-            selector: (_,PostController controller) => controller.dataResponse,
+            selector: (_, PostController controller) => controller.dataResponse,
             builder: (context, data, child) {
               if (data == null) {
                 return const CircularProgressIndicator();
@@ -63,7 +63,7 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
         padding: EdgeInsets.zero,
         children: <Widget>[
           Selector(
-            selector: (_,PostController controller) => controller.dataResponse,
+            selector: (_, PostController controller) => controller.dataResponse,
             builder: (context, data, child) {
               if (data == null) {
                 return const CircularProgressIndicator();

@@ -11,4 +11,6 @@ abstract class Routes {
   static String MESSAGE_DETAIL(String id) => '/message/detail/$id';
   static String MESSAGE_SETTING_PROFILE(String id) => '/message/settingProfile/$id';
   static String MESSAGE_SETTING_PROFILE_MEMBERS(String id) => '${MESSAGE_SETTING_PROFILE(id)}/members';
+  //
+  static String GROUP(String id) => '/group/$id';
 }
