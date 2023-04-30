@@ -93,6 +93,50 @@ extension HomeViewExtension on _HomeViewState {
     );
   }
 
+  Widget _buildAppBarGroup(BuildContext context) {
+    // final controller = context.read<HomeController>();
+    return MediaQuery.removePadding(
+      removeTop: true,
+      context: context,
+      child: controller.subTabBarGroupWidget != null
+          ? SliverAppBar(
+              floating: true, //giuu lau bottom
+              pinned: true, //giuu lai bottom
+              snap: true,
+
+              title: Text(
+                'Group',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontSize: 30,
+                      color: Theme.of(context).primaryColor,
+                    ),
+              ),
+              actions: [
+                AppBarIcon(icon: const Icon(Icons.settings), onPressed: () {}),
+                AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
+              ],
+              bottom: TabBar(
+                controller: controller.subTabBarGroupController,
+                tabs: controller.subTabBarGroupWidget!.keys.toList(),
+                // isScrollable: true,
+                indicatorColor: Theme.of(context).colorScheme.secondary,
+                // indicatorSize: TabBarIndicatorSize.label,
+                //duong` vien`
+                indicatorPadding: const EdgeInsets.all(8),
+                splashBorderRadius: BorderRadius.circular(100),
+                indicator: ShapeDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  shape: const StadiumBorder(),
+                ),
+                labelColor: Theme.of(context).colorScheme.primary,
+                labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                // unselectedLabelColor: Theme.of(context).colorScheme.secondary,
+              ),
+            )
+          : const SliverToBoxAdapter(child: SizedBox.shrink()),
+    );
+  }
+
   Widget _buildAppBarNotify(BuildContext context) {
     // final controller = context.read<HomeController>();
     return MediaQuery.removePadding(

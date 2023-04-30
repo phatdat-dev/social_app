@@ -1,36 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
-import 'package:social_app/app/core/utils/helper.dart';
+import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
 
-abstract class PostController implements BaseController {
-  Map<String, dynamic> requestPost = {
-    'page': 1,
-  };
-  List<Map<String, dynamic>>? postData = null;
-  bool postDataIsMaximum = false;
+class PostController extends BaseController with BaseFetchController {
+  @override
+  String get apiUrl => ApiUrl.get_fetchPost();
 
-  Future<void> call_fetchPostData() async {
-    apiCall
-        .onRequest(
-      ApiUrl.get_fetchPost(),
-      RequestMethod.GET,
-      queryParam: requestPost,
-      // isShowLoading: false,
-    )
-        .then((value) {
-      final data = Helper.convertToListMap(value['data']);
-      if (postData == null) {
-        postData = data;
-      } else {
-        if (data.isEmpty)
-          postDataIsMaximum = true;
-        else
-          postData = [...postData!, ...data]; //ko xai` .addAll vi` notifyListeners se k rebuild
-      }
-      notifyListeners();
-    });
-  }
+  @override
+  Future<void> onInitData() async {}
 
   Future<void> call_createPostData({
     required String content,
@@ -52,5 +30,9 @@ abstract class PostController implements BaseController {
       RequestMethod.POST,
       body: formData,
     );
+  }
+
+  Future<void> call_likePost(int postId) async {
+    await apiCall.onRequest(ApiUrl.post_likePost(), RequestMethod.POST, body: {'postId': postId}, isShowLoading: false);
   }
 }

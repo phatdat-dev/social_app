@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
+import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 
 class HomeVideoView extends StatefulWidget {
@@ -22,8 +23,8 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
       const Tab(text: 'Dành cho bạn'): ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Selector<HomeController, List<Map<String, dynamic>>?>(
-            selector: (_, controller) => controller.postData,
+          Selector(
+            selector: (_,PostController controller) => controller.dataResponse,
             builder: (context, data, child) {
               if (data == null) {
                 return const CircularProgressIndicator();
@@ -57,7 +58,37 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
       ),
     };
 
+    controller.subTabBarGroupWidget = {
+      const Tab(text: 'Dành cho bạn'): ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          Selector(
+            selector: (_,PostController controller) => controller.dataResponse,
+            builder: (context, data, child) {
+              if (data == null) {
+                return const CircularProgressIndicator();
+              }
+              return ListView.builder(
+                  itemCount: data.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, int index) {
+                    return FacebookCardPostWidget(data[index]);
+                  });
+            },
+          ),
+        ],
+      ),
+      const Tab(text: 'Nhóm của bạn'): Container(
+        width: 100,
+        height: 100,
+        child: const Text('Nhóm của bạn widget'),
+      ),
+    };
+
     controller.subTabBarVideoController = TabController(length: controller.subTabBarVideoWidget!.length, vsync: this);
+    controller.subTabBarGroupController = TabController(length: controller.subTabBarGroupWidget!.length, vsync: this);
   }
 
   @override

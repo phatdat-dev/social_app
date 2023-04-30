@@ -1,8 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/package/comment_tree/comment_tree.dart';
 import 'package:video_player/video_player.dart';
 
@@ -26,7 +26,7 @@ class FacebookCardPostWidget extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Text.rich(TextSpan(
               children: [
-                TextSpan(text: postResponseModel['postContent']),
+                TextSpan(text: postResponseModel['post_content']),
                 TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
               ],
               style: const TextStyle(fontSize: 16),
@@ -55,7 +55,7 @@ class FacebookCardPostWidget extends StatelessWidget {
   }
 
   Row _buildButtonBar(ValueNotifier<bool> isExpandedNotifier) {
-    bool like = false;
+    bool like = postResponseModel['isLike'] ?? false;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -63,9 +63,8 @@ class FacebookCardPostWidget extends StatelessWidget {
           child: StatefulBuilder(
               builder: (context, setState) => TextButton.icon(
                     onPressed: () {
-                      setState(() {
-                        like = !like;
-                      });
+                      context.read<PostController>().call_likePost(postResponseModel['id']);
+                      setState(() => like = !like);
                     },
                     icon: like
                         ? const Icon(
@@ -170,7 +169,7 @@ class FacebookCardPostWidget extends StatelessWidget {
   }
 
   Padding _buildHeaderPost(BuildContext context) {
-    final bool isUserPost = Random().nextBool();
+    bool isUserPost = postResponseModel['group_id'] == null;
 
     Container _buildAvatarGroup() {
       return Container(
@@ -186,14 +185,17 @@ class FacebookCardPostWidget extends StatelessWidget {
                   // shape: BoxShape.circle,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(postResponseModel['avatarUser']!),
+                    image: NetworkImage(postResponseModel['groupAvatar']!),
                     fit: BoxFit.cover,
                   )),
             ),
-            const Positioned(
+            Positioned(
               right: 0,
               bottom: 0,
-              child: CircleAvatar(radius: 15),
+              child: CircleAvatar(
+                radius: 15,
+                backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
+              ),
             )
           ],
         ),
@@ -222,17 +224,23 @@ class FacebookCardPostWidget extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(height: 5),
                   Text(
-                    postResponseModel['displayName']!,
+                    (isUserPost) ? postResponseModel['displayName']! : postResponseModel['groupName'],
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5),
-                  Text.rich(TextSpan(children: [
-                    if (!isUserPost)
-                      TextSpan(
-                          text: '${postResponseModel['displayName']}  · ',
-                          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
-                    TextSpan(text: '${postResponseModel['createdAt']} · ☘', style: Theme.of(context).textTheme.bodySmall),
-                  ])),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        if (!isUserPost)
+                          TextSpan(
+                              text: '${postResponseModel['displayName']}  · ',
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
+                        TextSpan(
+                            text: '${DateTime.tryParse(postResponseModel['created_at'])?.timeAgoSinceDate()} · ☘',
+                            style: Theme.of(context).textTheme.bodySmall),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 5),
                 ],
               ),

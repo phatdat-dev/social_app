@@ -38,7 +38,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                             backgroundColor: allowPost ? null : Colors.grey.shade200,
                           ),
                           onPressed: allowPost
-                              ? () => controller
+                              ? () => controller.postController
                                       .call_createPostData(
                                     content: txtController.text,
                                     privacy: 1, //get dropdown privacy

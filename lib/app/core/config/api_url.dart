@@ -12,4 +12,6 @@ class ApiUrl {
   static String get_fetchFriendByUserId(int userId, [int? limit]) =>
       limit != null ? '/api/v1/fetch-friend-by-user-id/$userId/$limit' : '/api/v1/fetch-friend-by-user-id/$userId';
   static String get_fetchGroupJoined() => '/api/v1/fetch-group-joined';
+  static String get_fetchPostGroup() => '/api/v1/fetch-post-group';
+  static String post_likePost() => '/api/v1/post/like-post';
 }
