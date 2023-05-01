@@ -30,7 +30,7 @@ class BaseConnect {
     dio = Dio(BaseOptions(
       // Cấu hình đường path để call api, thành phần gồm
       // - options.path: đường dẫn cụ thể API. Ví dụ: "user/user-info"
-      baseUrl: 'http://27.65.49.101:8080',
+      baseUrl: 'http://192.168.1.4:8080',
 
       // Đoạn này dùng để config timeout api từ phía client, tránh việc call 1 API
       // bị lỗi trả response quá lâu.

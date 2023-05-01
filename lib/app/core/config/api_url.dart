@@ -14,5 +14,6 @@ class ApiUrl {
   static String get_fetchGroupJoined() => '/api/v1/fetch-group-joined';
   static String get_fetchPostGroup() => '/api/v1/fetch-post-group';
   static String post_likePost() => '/api/v1/post/like-post';
-  static String post_fetchPostByGroupId(int id) => '/api/v1/fetch-post-by-group-id/$id';
+  static String get_fetchPostByGroupId(int groupId) => '/api/v1/fetch-post-by-group-id/$groupId';
+  static String get_fetchMemberGroup(int groupId) => '/api/v1/fetch-member-group/$groupId';
 }

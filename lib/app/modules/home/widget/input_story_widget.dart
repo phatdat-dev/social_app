@@ -32,7 +32,7 @@ class InputStoryWidget extends StatelessWidget {
                       final groupController = context.read<GroupController?>();
 
                       await Navigator.of(context)
-                          .push(AnimatedRoute(ChangeNotifierProvider.value(value: groupController, child: const CreatePostView())));
+                          .push(AnimatedRoute(ChangeNotifierProvider.value(value: groupController, child:  CreatePostView())));
                     },
                     child: const Text('Bạn đang nghĩ gì ?', style: TextStyle(color: Colors.black)),
                     style: OutlinedButton.styleFrom(

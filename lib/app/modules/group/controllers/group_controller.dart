@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/utils/helper.dart';
+import 'package:social_app/app/models/response/privacy_model.dart';
 import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 
@@ -15,6 +15,7 @@ class GroupController extends BaseController {
   /// group of user
   List<Map<String, dynamic>>? groupData = null;
   Map<String, dynamic> currentGroup = {};
+  List<Map<String, dynamic>>? memberGroupData = null;
 
   @override
   Future<void> onInitData() async {
@@ -39,7 +40,24 @@ class GroupController extends BaseController {
   void redirectToGroup(BuildContext context, Map<String, dynamic> data) {
     currentGroup = data;
     fetchPostByGroupIdController.id = currentGroup['id'];
-    context.push(Routes.GROUP(currentGroup['id'].toString()), extra: context.read<GroupController>());
+    context.push(Routes.GROUP(currentGroup['id'].toString()), extra: this);
+  }
+
+  void redirectToGroupInfomation(BuildContext context) {
+    context.push(Routes.GROUP_INFOMATION(currentGroup['id'].toString()), extra: this);
+  }
+
+  Future<void> call_fetchMemberGroup() async {
+    await apiCall
+        .onRequest(
+      ApiUrl.get_fetchMemberGroup(currentGroup['id']),
+      RequestMethod.GET,
+    )
+        .then((value) {
+      //
+      memberGroupData = Helper.convertToListMap(value);
+      notifyListeners();
+    });
   }
 }
 
@@ -48,7 +66,7 @@ class FetchPostByGroupIdController extends BaseController with BaseFetchControll
   ScrollController scrollController = ScrollController();
 
   @override
-  String get apiUrl => ApiUrl.post_fetchPostByGroupId(id);
+  String get apiUrl => ApiUrl.get_fetchPostByGroupId(id);
 
   @override
   Future<void> onInitData() async {

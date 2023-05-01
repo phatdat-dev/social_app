@@ -53,55 +53,58 @@ class _GroupViewState extends State<GroupView> {
                     automaticallyImplyLeading: false,
                     pinned: true,
                     expandedHeight: 200,
-                    flexibleSpace: FlexibleSpaceBar(
-                      centerTitle: false,
-                      title: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            controller.currentGroup['group_name'] ?? '',
-                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 5),
-                          Text.rich(
-                            const TextSpan(
-                              children: [
-                                WidgetSpan(
-                                  child: Icon(
-                                    Icons.public,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
-                                ),
-                                TextSpan(text: ' Công khai'),
-                                TextSpan(
-                                  text: ' ☘ 100k thành viên',
-                                ),
-                              ],
+                    flexibleSpace: GestureDetector(
+                      onTap: () => controller.redirectToGroupInfomation(context),
+                      child: FlexibleSpaceBar(
+                        centerTitle: false,
+                        title: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              controller.currentGroup['group_name'] ?? '',
+                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
                             ),
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      background: DecoratedBox(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(controller.currentGroup['avatar']),
-                            fit: BoxFit.cover,
-                          ),
+                            const SizedBox(height: 5),
+                            Text.rich(
+                              const TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                    child: Icon(
+                                      Icons.public,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                  TextSpan(text: ' Công khai'),
+                                  TextSpan(
+                                    text: ' ☘ 100k thành viên',
+                                  ),
+                                ],
+                              ),
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                            ),
+                          ],
                         ),
-                        child: Container(
+                        background: DecoratedBox(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.transparent,
-                                Colors.black.withOpacity(0.7),
-                              ],
-                              stops: [0.5, 1],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+                            image: DecorationImage(
+                              image: NetworkImage(controller.currentGroup['avatar']),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.7),
+                                ],
+                                stops: [0.5, 1],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
                             ),
                           ),
                         ),

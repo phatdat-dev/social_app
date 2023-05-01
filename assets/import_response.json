@@ -1,44 +1,6 @@
 {
-  "id": 56,
-  "post_content": "For my sister: I breath for itto\n:) I made your itto:)",
-  "user_id": 1,
-  "privacy": 1,
-  "parent_post": 123,
-  "group_id": 123,
-  "created_at": "2023/04/22 01:04:21",
-  "updated_at": "2023/04/22 01:04:21",
-  "deleted_at": "2023/04/22 01:04:21",
-  "status": 1,
-  "username": "Samanta Cronin Mario Pfannerstill",
-  "avatarUser": "http://192.168.1.6:8000/default/avatar_default_female.png",
-  "totalMediaFile": 1,
-  "totalComment": 0,
-  "totalLike": 0,
-  "totalShare": 0,
-  "isLike": false,
-  "mediafile": [
-    {
-      "id": 84,
-      "media_file_name": "https://upload-os-bbs.hoyolab.com/upload/2023/04/18/263248163/f075f7735ecc7a009c59173480f60ad1_9122747573070903054.jpg",
-      "media_type": "jpg",
-      "post_id": 56,
-      "user_id": 1,
-      "isAvatar": false,
-      "isCover": false,
-      "album_id": 123,
-      "status": 1,
-      "created_at": "2023-04-22 01:51:21",
-      "updated_at": "2023/04/22 01:04:21"
-    }
-  ],
-  "like": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "post_id": 56,
-      "created_at": "2023-04-19 07:01:53",
-      "updated_at": "2023-04-19 07:01:53",
-      "deleted_at": "2023-04-19 07:01:53"
-    }
-  ]
+  "privacy":1,
+  "privacyName":"Public",
+  "privacyDescription":"Anyone can see this content.",
+  "privacyIcon":"public"
 }
