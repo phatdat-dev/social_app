@@ -37,6 +37,10 @@ class HomeController extends BaseController with SearchTagFriendController {
         if ((!postController.dataResponseIsMaximum) && (tabBarController.index == 0 && isScrollBottom)) {
           postController.loadMoreData();
         }
+        //nếu đang ở trang GROUP và scroll đến cuối danh sách
+        if ((!groupController.fetchPostGroupController.dataResponseIsMaximum) && (tabBarController.index == 2 && isScrollBottom)) {
+          groupController.fetchPostGroupController.loadMoreData();
+        }
       });
     });
     call_fetchFriendByUserId();

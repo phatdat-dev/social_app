@@ -45,9 +45,27 @@ class GroupController extends BaseController {
 
 class FetchPostByGroupIdController extends BaseController with BaseFetchController {
   late int id;
+  ScrollController scrollController = ScrollController();
 
   @override
   String get apiUrl => ApiUrl.post_fetchPostByGroupId(id);
+
+  @override
+  Future<void> onInitData() async {
+    super.onInitData();
+
+    //sau khi RenderUI
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //add event
+      scrollController.addListener(() {
+        bool isScrollBottom = scrollController.position.pixels == scrollController.position.maxScrollExtent;
+        //nếu scroll đến cuối danh sách
+        if ((!dataResponseIsMaximum) && isScrollBottom) {
+          loadMoreData();
+        }
+      });
+    });
+  }
 }
 
 class FetchPostGroupController extends BaseController with BaseFetchController {
