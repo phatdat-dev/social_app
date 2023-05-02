@@ -16,4 +16,7 @@ class ApiUrl {
   static String post_likePost() => '/api/v1/post/like-post';
   static String get_fetchPostByGroupId(int groupId) => '/api/v1/fetch-post-by-group-id/$groupId';
   static String get_fetchMemberGroup(int groupId) => '/api/v1/fetch-member-group/$groupId';
+  static String post_removeMemberFromGroup() => '/api/v1/remove-member-from-group';
+  static String post_removeAdminToGroup() => '/api/v1/remove-admin-to-group';
+  static String post_addAdminToGroup() => '/api/v1/add-admin-group';
 }

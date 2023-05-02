@@ -100,7 +100,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                                             children: [
                                               WidgetSpan(child: Icon(value.privacyIcon)),
                                               const WidgetSpan(child: SizedBox(width: 5)),
-                                              TextSpan(text: value.privacyName),
+                                              TextSpan(text: value.privacyPostName),
                                               const WidgetSpan(child: SizedBox(width: 5)),
                                               const WidgetSpan(child: Icon(Icons.arrow_drop_down)),
                                             ],
@@ -368,8 +368,8 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                               activeColor: Theme.of(context).colorScheme.primary,
                               controlAffinity: ListTileControlAffinity.trailing,
                               secondary: Icon(e.privacyIcon),
-                              title: Text(e.privacyName!),
-                              subtitle: Text(e.privacyDescription!),
+                              title: Text(e.privacyPostName!),
+                              subtitle: Text(e.privacyPostDescription!),
                               onChanged: (value) => setState(() => selectedPrivacy = value!),
                             ))
                         .toList(),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/utils/helper.dart';
-import 'package:social_app/app/models/response/privacy_model.dart';
+import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 
@@ -47,6 +47,10 @@ class GroupController extends BaseController {
     context.push(Routes.GROUP_INFOMATION(currentGroup['id'].toString()), extra: this);
   }
 
+  void redirectToGroupMembers(BuildContext context) {
+    context.push(Routes.GROUP_INFOMATION_MEMBERS(currentGroup['id'].toString()), extra: this);
+  }
+
   Future<void> call_fetchMemberGroup() async {
     await apiCall
         .onRequest(
@@ -57,6 +61,36 @@ class GroupController extends BaseController {
       //
       memberGroupData = Helper.convertToListMap(value);
       notifyListeners();
+    });
+  }
+
+  Future<void> call_setRoleAdminGroup({required int userId, required int groupId}) async {
+    await apiCall.onRequest(
+      ApiUrl.post_addAdminToGroup(),
+      RequestMethod.POST,
+      body: {
+        'userId': userId,
+        'groupId': groupId,
+      },
+    ).then((value) {
+      HelperWidget.showSnackBar(context: key.currentContext!, message: 'Success');
+    });
+  }
+
+  Future<void> call_removeMemberFromGroup({bool removeAdminGroup = false, required int userId, required int groupId}) async {
+    await apiCall.onRequest(
+      (removeAdminGroup) ? ApiUrl.post_removeAdminToGroup() : ApiUrl.post_removeMemberFromGroup(),
+      RequestMethod.POST,
+      body: {
+        'userId': userId,
+        'groupId': groupId,
+      },
+    ).then((value) {
+      if (value is String) {
+        HelperWidget.showSnackBar(context: key.currentContext!, message: value);
+      } else {
+        HelperWidget.showSnackBar(context: key.currentContext!, message: 'Success');
+      }
     });
   }
 }

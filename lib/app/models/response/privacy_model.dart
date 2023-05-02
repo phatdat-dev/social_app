@@ -3,17 +3,28 @@ import 'package:social_app/app/core/base/base_project.dart';
 
 class PrivacyModel extends BaseModel<PrivacyModel> {
   int? privacyId;
-  String? privacyName;
-  String? privacyDescription;
+  String? privacyPostName;
+  String? privacyPostDescription;
+  String? privacyGroupName;
+  String? privacyGroupDescription;
   IconData? privacyIcon;
 
-  PrivacyModel({this.privacyId, this.privacyName, this.privacyDescription, this.privacyIcon});
+  PrivacyModel({
+    this.privacyId,
+    this.privacyPostName,
+    this.privacyPostDescription,
+    this.privacyGroupName,
+    this.privacyGroupDescription,
+    this.privacyIcon,
+  });
 
   @override
   PrivacyModel fromJson(Map<String, dynamic> json) => PrivacyModel(
         privacyId: (json['privacyId'] as num?)?.toInt(),
-        privacyName: json['privacyName'],
-        privacyDescription: json['privacyDescription'],
+        privacyPostName: json['privacyPostName'],
+        privacyPostDescription: json['privacyPostDescription'],
+        privacyGroupName: json['privacyGroupName'],
+        privacyGroupDescription: json['privacyGroupDescription'],
         privacyIcon: json['privacyIcon'],
       );
 
@@ -23,11 +34,17 @@ class PrivacyModel extends BaseModel<PrivacyModel> {
     if (privacyId != null) {
       data['privacyId'] = privacyId;
     }
-    if (privacyName != null) {
-      data['privacyName'] = privacyName;
+    if (privacyPostName != null) {
+      data['privacyPostName'] = privacyPostName;
     }
-    if (privacyDescription != null) {
-      data['privacyDescription'] = privacyDescription;
+    if (privacyPostDescription != null) {
+      data['privacyPostDescription'] = privacyPostDescription;
+    }
+    if (privacyPostName != null) {
+      data['privacyGroupName'] = privacyGroupName;
+    }
+    if (privacyGroupDescription != null) {
+      data['privacyGroupDescription'] = privacyGroupDescription;
     }
     if (privacyIcon != null) {
       data['privacyIcon'] = privacyIcon;
@@ -37,14 +54,18 @@ class PrivacyModel extends BaseModel<PrivacyModel> {
 
   PrivacyModel copyWith({
     int? privacy,
-    String? privacyName,
-    String? privacyDescription,
+    String? privacyPostName,
+    String? privacyPostDescription,
+    String? privacyGroupName,
+    String? privacyGroupDescription,
     IconData? privacyIcon,
   }) =>
       PrivacyModel(
         privacyId: privacy ?? this.privacyId,
-        privacyName: privacyName ?? this.privacyName,
-        privacyDescription: privacyDescription ?? this.privacyDescription,
+        privacyPostName: privacyPostName ?? this.privacyPostName,
+        privacyPostDescription: privacyPostDescription ?? this.privacyPostDescription,
+        privacyGroupName: privacyGroupName ?? this.privacyGroupName,
+        privacyGroupDescription: privacyGroupDescription ?? this.privacyGroupDescription,
         privacyIcon: privacyIcon ?? this.privacyIcon,
       );
 
@@ -54,20 +75,26 @@ class PrivacyModel extends BaseModel<PrivacyModel> {
   static List<PrivacyModel> get listPrivacy => [
         PrivacyModel(
           privacyId: 0,
-          privacyName: 'Private',
-          privacyDescription: 'Only you can see your post',
+          privacyPostName: 'Private',
+          privacyPostDescription: 'Only you can see your post',
+          privacyGroupName: 'Private Group',
+          privacyGroupDescription: 'Only members can see everyone in the group and what they post.',
           privacyIcon: Icons.lock,
         ),
         PrivacyModel(
           privacyId: 1,
-          privacyName: 'Public',
-          privacyDescription: 'Anyone can see your post',
+          privacyPostName: 'Public',
+          privacyPostDescription: 'Anyone can see your post',
+          privacyGroupName: 'Public Group',
+          privacyGroupDescription: 'Anyone can see everyone in the group and what they post.',
           privacyIcon: Icons.public,
         ),
         PrivacyModel(
           privacyId: 2,
-          privacyName: 'Friend',
-          privacyDescription: 'Only your friend can see your post',
+          privacyPostName: 'Friend',
+          privacyPostDescription: 'Only your friend can see your post',
+          privacyGroupName: 'Friend Group',
+          privacyGroupDescription: 'Only members can see everyone in the group and what they post.',
           privacyIcon: Icons.people,
         ),
       ];
