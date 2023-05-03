@@ -30,7 +30,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.19.6 <3.0.0"
-  flutter: ^3.7.11
+  flutter: ^3.7.12
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -52,7 +52,7 @@ dependencies:
   #firebase
   firebase_core: ^2.9.0
   firebase_auth: any
-  flutter_local_notifications: any
+  flutter_local_notifications: ^14.0.0+1
   flutter_native_timezone: any
   cloud_firestore: any #dung de load data notify
   firebase_messaging: any

@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -24,6 +26,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //if is Mobile
+  if (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android) {
+    FirebaseMessaging.onBackgroundMessage(NotificationService.firebaseMessagingBackgroundHandler);
+  }
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   //
   SharedPreferences.getInstance().then((value) => Global.sharedPreferences = value);
@@ -36,8 +42,21 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final FireBaseService _fireBaseService;
+  @override
+  void initState() {
+    super.initState();
+    _fireBaseService = FireBaseService();
+    _fireBaseService.notificationServiceInitialize();
+  }
 
   @override
   Widget build(BuildContext context) {

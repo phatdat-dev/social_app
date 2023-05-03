@@ -1,9 +1,9 @@
 part of 'main.dart';
 
-extension MyAppMultiProvider on MyApp {
+extension MyAppMultiProvider on _MyAppState {
   List<SingleChildWidget> get providers => [
         ChangeNotifierProvider(create: (context) => ThemeConfig()),
-        ChangeNotifierProvider(create: (context) => FireBaseService()),
+        ChangeNotifierProvider.value(value: _fireBaseService),
         ChangeNotifierProvider(create: (context) => AuthenticationController()),
         ChangeNotifierProvider(create: (context) => HomeController()),
       ];

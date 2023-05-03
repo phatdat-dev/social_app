@@ -36,14 +36,12 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths" />
         </provider>
 
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
-            </intent-filter>
-        </receiver>
+
         <service android:name="com.dexterous.flutterlocalnotifications.ForegroundService" android:exported="false" android:stopWithTask="false"/>
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+
+
+        <!-- chanel notification -->
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="notify_social_app" />
     </application>
 
 </manifest>

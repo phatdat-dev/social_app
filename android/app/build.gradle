@@ -36,10 +36,13 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33 //flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -58,7 +61,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 19 //flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 33 //flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -106,4 +109,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'androidx.window:window:1.0.0'
     implementation 'androidx.window:window-java:1.0.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    implementation "androidx.work:work-runtime-ktx:2.8.0"
+
 }
