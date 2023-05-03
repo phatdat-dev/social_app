@@ -46,9 +46,14 @@ class AuthenticationController extends BaseController {
         userAccount = result as UsersModel;
         //luu lai username, password
         _saveRememberPassword(userAccount!..password = formSignInKey.currentState?.value['password']);
-        Global.navigatorKey.currentContext!.go('/');
+        final context = Global.navigatorKey.currentContext!;
+        context.go('/');
         //set trạng thái Online
-        Global.navigatorKey.currentContext!.read<FireBaseService>().call_setStatusUserOnline('Online');
+        final fireBaseService = context.read<FireBaseService>();
+        fireBaseService.call_setStatusUserOnline('Online');
+
+        //save device token
+        fireBaseService.getDeviceFirebaseToken().then((token) => saveDeviceToken(token ?? ''));
       });
     }
     // else {
@@ -108,5 +113,11 @@ class AuthenticationController extends BaseController {
         HelperWidget.showSnackBar(message: result.toString(), context: key.currentContext!);
       });
     }
+  }
+
+  void saveDeviceToken(String tokenId) {
+    apiCall.onRequest(ApiUrl.post_saveDeviceToken(), RequestMethod.POST, body: {
+      'deviceToken': tokenId,
+    });
   }
 }

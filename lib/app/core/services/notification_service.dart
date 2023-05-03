@@ -20,7 +20,7 @@ class NotificationService {
 
     await _requestPermissionApp();
 
-    getDeviceFirebaseToken();
+    // getDeviceFirebaseToken();
 
     firebaseMessagingForegroundHandler();
   }
