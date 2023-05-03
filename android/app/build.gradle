@@ -93,6 +93,16 @@ android {
             // signingConfig signingConfigs.release
         }
     }
+
+    //FIX: [INSTALL_FAILED_NO_MATCHING_ABIS: Failed to extract native libraries, res=-113]
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'armeabi', 'mips', 'mips64'
+            universalApk true
+        }
+    }
 }
 
 flutter {
