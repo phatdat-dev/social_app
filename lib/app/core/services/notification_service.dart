@@ -1,7 +1,6 @@
 part of 'firebase_service.dart';
 
 class NotificationService {
-  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final localNotification = FlutterLocalNotificationsPlugin();
   AndroidNotificationChannel get androidNotifiChannel => const AndroidNotificationChannel(
         'notify_social_app',
@@ -53,7 +52,7 @@ class NotificationService {
 
   // gửi yêu cầu đến người dùng cấp quyền cho app
   Future<void> _requestPermissionApp() async {
-    await _messaging.requestPermission(
+    await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
@@ -65,16 +64,22 @@ class NotificationService {
   }
 
   Future<String?> getDeviceFirebaseToken() async {
-    final token = await _messaging.getToken();
+    final token = await FirebaseMessaging.instance.getToken();
     Printt.cyan('TOKEN DEVICE: $token');
     return token;
   }
 
-  Future<void> showNotification({int? id, String? title, String? body, String? payload}) async {
+  Future<void> showNotification(RemoteMessage message) async {
+    ByteArrayAndroidBitmap? imageBitMap = null;
+    if (message.data['image'] != null) {
+      final response = await Dio().get<List<int>>(message.data['image'], options: Options(responseType: ResponseType.bytes));
+      imageBitMap = ByteArrayAndroidBitmap.fromBase64String(base64Encode(response.data!));
+    }
+
     return localNotification.show(
-      id!,
-      title,
-      body,
+      message.messageId.hashCode,
+      message.notification?.title,
+      message.notification?.body,
       NotificationDetails(
         android: AndroidNotificationDetails(
           androidNotifiChannel.id,
@@ -87,24 +92,21 @@ class NotificationService {
           priority: Priority.max,
           sound: androidNotifiChannel.sound,
           icon: '@mipmap/ic_launcher',
-          largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+          // largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+          largeIcon: imageBitMap,
+          styleInformation: imageBitMap != null ? BigPictureStyleInformation(imageBitMap) : null,
         ),
         // iOS: const DarwinNotificationDetails(),
       ),
-      payload: payload,
+      payload: message.data['payload'],
     );
   }
 
   void firebaseMessagingForegroundHandler() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message.notification != null) {
-        Printt.white('show notification');
-        showNotification(
-          id: message.notification?.android.hashCode ?? message.notification?.apple.hashCode ?? 0,
-          body: message.data['body'],
-          title: message.data['title'],
-          payload: message.data['payload'],
-        );
+        Printt.white('show notification from ${message.from}}');
+        showNotification(message);
       }
     });
   }
