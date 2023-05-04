@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
+import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
@@ -240,17 +241,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
               if (messageData['data'] is List)
                 ...List.generate(
                   (messageData['data'] as List).length,
-                  (index) => Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.width * 0.5,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(messageData['data'][index]),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  (index) => HelperWidget.buildImage(messageData['data'][index]),
                 ),
             ],
           ), //noi dung chat
@@ -272,17 +263,48 @@ class MessageDetailViewState extends State<MessageDetailView> {
                 if (messageData['data'] is List)
                   ...List.generate(
                     (messageData['data'] as List).length,
-                    (index) => Container(
-                      margin: const EdgeInsets.only(top: 5.0),
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.width * 0.5,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(messageData['data'][index]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                    (index) => HelperWidget.buildImage(messageData['data'][index]),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget renderAny() {
+      if (isMySend ?? false) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (messageData['data'] is List)
+                ...List.generate(
+                  (messageData['data'] as List).length,
+                  (index) => HelperWidget.buildFile(messageData['data'][index]),
+                ),
+            ],
+          ), //noi dung chat
+        );
+      }
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 16.0),
+              child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(messageData['user']['displayName']), //ten
+                if (messageData['data'] is List)
+                  ...List.generate(
+                    (messageData['data'] as List).length,
+                    (index) => HelperWidget.buildFile(messageData['data'][index]),
                   ),
               ],
             ),
@@ -310,7 +332,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
       // case 'video':
       //   break;
       case 'any':
-        return const SizedBox();
+        return renderAny();
       default:
         return renderText();
     }

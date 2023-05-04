@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../constants/app_constant.dart';
+
 class HelperWidget {
   static void showToast(String message, [BuildContext? context]) {
     if (context == null) {
@@ -77,4 +79,70 @@ class HelperWidget {
         duration: duration,
         //show snackbar animation bottom to top
       ));
+
+  static Widget buildImage(String image) {
+    final context = Global.navigatorKey.currentContext!;
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            //barrierDismissible: false,
+            context: context,
+            builder: (context) => Stack(
+                  children: [
+                    InteractiveViewer(
+                      maxScale: 10,
+                      child: Center(
+                        child: Hero(
+                          tag: image,
+                          child: Image.network(
+                            image,
+                            // fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Material(
+                        child: BackButton(),
+                      ),
+                    ),
+                  ],
+                ));
+      },
+      child: Hero(
+        tag: image,
+        child: Image.network(
+          image,
+          fit: BoxFit.fill,
+          width: MediaQuery.of(context).size.width / 2,
+          // alignment: Alignment.center,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  static Widget buildFile(String file) {
+    return Column(
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Image.asset(
+                    'assets/gif/attachment-file.gif',
+                    width: 100,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  file.split('/').last,
+                  style: const TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 15),
+                ),
+              ],
+            );
+  }
 }
