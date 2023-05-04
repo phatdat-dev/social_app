@@ -7,7 +7,7 @@ class FireStoreService {
     return _firestore.collection('chatRoom/$chatRoomId/chats').orderBy('created_at', descending: false).snapshots();
   }
 
-  Future<void> call_sendMessage({required String chatRoomId, required String data, required String type}) async {
+  Future<void> call_sendMessage({required String chatRoomId, required dynamic data, required String type}) async {
     await _firestore.collection('chatRoom/$chatRoomId/chats').add({
       'type': type,
       'data': data,
@@ -17,7 +17,7 @@ class FireStoreService {
   }
 
   Future<void> call_setStatusUserOnline(String status) async {
-    await _firestore.collection('users').doc('${AuthenticationController.userAccount!.id!}').set({'status': status});
+    await _firestore.collection('users').doc('${AuthenticationController.userAccount!.id!}').set({'onlineStatus': status});
   }
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> call_getUser(String id) {

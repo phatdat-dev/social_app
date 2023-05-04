@@ -20,4 +20,5 @@ class ApiUrl {
   static String post_removeAdminToGroup() => '/api/v1/remove-admin-to-group';
   static String post_addAdminToGroup() => '/api/v1/add-admin-group';
   static String post_saveDeviceToken() => '/api/v1/save-device-token';
+  static String post_messageUploadFile() => '/api/v1/message/upload-file';
 }

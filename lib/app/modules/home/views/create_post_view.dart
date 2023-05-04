@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
-import 'package:social_app/app/core/utils/extension/string_extension.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
+import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/models/response/privacy_model.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
@@ -50,7 +52,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                                     content: txtController.text,
                                     privacy: currentPrivacy.value.privacyId!, //get dropdown privacy
                                     groupId: groupController?.currentGroup['id'] ?? null,
-                                    filesPath: filesPicker?.map((e) => e.path).toList(),
+                                    filesPath: filesPicker,
                                     // images: [],
                                   )
                                       .then((value) {
@@ -174,16 +176,16 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                                 children: List.generate(
                                   filesPicker.length,
                                   (index) {
-                                    final bool isImageFile = filesPicker[index].path.isImageFileName;
-                                    final bool isVideoFile = filesPicker[index].path.isVideoFileName;
+                                    final bool isImageFile = filesPicker[index].isImageFileName;
+                                    final bool isVideoFile = filesPicker[index].isVideoFileName;
 
                                     if (isImageFile) {
                                       return Stack(
                                         children: [
                                           kIsWeb
-                                              ? Image.network(filesPicker[index].path)
+                                              ? Image.network(filesPicker[index])
                                               : Image.file(
-                                                  filesPicker[index],
+                                                  File(filesPicker[index]),
                                                   errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) =>
                                                       const Center(child: Text('This image type is not supported')),
                                                 ),
@@ -206,7 +208,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                                       );
                                     }
                                     if (isVideoFile) {
-                                      VideoPlayerController videoPlayerController = VideoPlayerController.file(filesPicker[index]);
+                                      VideoPlayerController videoPlayerController = VideoPlayerController.file(File(filesPicker[index]));
 
                                       return Stack(
                                         children: [

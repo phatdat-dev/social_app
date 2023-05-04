@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/app/core/utils/utils.dart';
@@ -8,16 +6,17 @@ class PickerService with ChangeNotifier {
   PickerService() {
     Printt.white('Create Service: ${runtimeType}');
   }
-  List<File>? files = null;
+  List<String>? files = null;
 
-  Future<List<File>?> pickMultiFile(FileType type) async {
+  Future<List<String>?> pickMultiFile(FileType type) async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: type,
     );
 
     if (result != null) {
-      files = result.paths.map((path) => File(path!)).toList();
+      // files = result.paths.map((path) => File(path!)).toList();
+      files = result.paths.map((e) => e!).toList();
       Printt.white(files);
       notifyListeners();
 

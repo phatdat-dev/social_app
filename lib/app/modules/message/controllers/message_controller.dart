@@ -1,9 +1,13 @@
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/base/base_project.dart';
+import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
+import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
@@ -63,5 +67,31 @@ class MessageController extends BaseController with SearchTagFriendController {
               value: this,
               child: SearchTagFriendView<T>(title: 'Add member', minSelected: 1),
             )));
+  }
+
+  void onPickFileSend({
+    required BuildContext context,
+    required FileType type,
+  }) async {
+    //pick file
+    final pickerService = PickerService();
+    await pickerService.pickMultiFile(type);
+    if (pickerService.files == null || pickerService.files!.isEmpty) return;
+
+    final formData = FormData.fromMap({
+      'files[]': pickerService.files?.map((path) => MultipartFile.fromFileSync(path)).toList(),
+    });
+
+    final images = await apiCall.onRequest(
+      ApiUrl.post_messageUploadFile(),
+      RequestMethod.POST,
+      body: formData,
+    );
+
+    context.read<FireBaseService>().call_sendMessage(
+          chatRoomId: currentChatRoom['chatRoomId'],
+          type: type.name,
+          data: images,
+        );
   }
 }
