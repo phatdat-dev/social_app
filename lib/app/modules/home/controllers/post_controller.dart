@@ -32,4 +32,16 @@ class PostController extends BaseController with BaseFetchController {
   Future<void> call_likePost(int postId) async {
     await apiCall.onRequest(ApiUrl.post_likePost(), RequestMethod.POST, body: {'postId': postId}, isShowLoading: false);
   }
+
+  Future<void> sharePost({
+    required int postId,
+    required String content,
+    required int privacy,
+  }) async {
+    await apiCall.onRequest(ApiUrl.post_sharePostToProfile(), RequestMethod.POST, body: {
+      'postId': postId,
+      'postContent': content,
+      'privacy': privacy,
+    });
+  }
 }

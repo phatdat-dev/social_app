@@ -10,6 +10,7 @@ import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/models/response/privacy_model.dart';
+import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
@@ -20,11 +21,11 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
   CreatePostView({super.key});
 
   ValueNotifier<PrivacyModel> currentPrivacy = ValueNotifier(PrivacyModel.from(0)); //private
+  final txtController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final controller = context.read<T>();
-    final txtController = TextEditingController();
     final groupController = context.read<GroupController?>();
 
     return GestureDetector(
@@ -74,90 +75,10 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                 // controller: scrollController,
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    // minVerticalPadding: 10,
-                    // visualDensity: VisualDensity.compact,
-                    leading: const CircleAvatar(radius: 25),
-
-                    title: const Text('Username Here', style: TextStyle(fontWeight: FontWeight.bold)),
-                    // isThreeLine: true,
-                    subtitle: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ValueListenableBuilder(
-                            valueListenable: currentPrivacy,
-                            builder: (context, value, child) => InkWell(
-                                  onTap: () => showBottomSheetPrivacy(context),
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: Ink(
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey, width: 0.5),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: IconTheme(
-                                        data: const IconThemeData(size: 18, color: Colors.grey),
-                                        child: Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              WidgetSpan(child: Icon(value.privacyIcon)),
-                                              const WidgetSpan(child: SizedBox(width: 5)),
-                                              TextSpan(text: value.privacyPostName),
-                                              const WidgetSpan(child: SizedBox(width: 5)),
-                                              const WidgetSpan(child: Icon(Icons.arrow_drop_down)),
-                                            ],
-                                          ),
-                                        )),
-                                  ),
-                                )),
-                        const SizedBox(width: 10),
-                        InkWell(
-                          onTap: () {},
-                          borderRadius: BorderRadius.circular(5),
-                          child: Ink(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 0.5),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const IconTheme(
-                                data: IconThemeData(size: 18, color: Colors.grey),
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      WidgetSpan(child: Icon(Icons.add)),
-                                      WidgetSpan(child: SizedBox(width: 5)),
-                                      TextSpan(text: 'Album'),
-                                      WidgetSpan(child: SizedBox(width: 5)),
-                                      WidgetSpan(child: Icon(Icons.arrow_drop_down)),
-                                    ],
-                                  ),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  buildHeader(),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 2.5,
-                    child: Scrollbar(
-                      child: TextFormField(
-                        maxLines: null,
-                        minLines: null,
-                        expands: true,
-                        // scrollController: scrollController,
-                        scrollPhysics: const BouncingScrollPhysics(),
-                        controller: txtController,
-                        decoration: const InputDecoration(
-                          // filled: true,
-                          // fillColor: ,
-                          border: InputBorder.none,
-                          hintText: 'What\'s on your Mind?',
-                          hintStyle: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ),
+                    child: buildTextField(),
                   ),
 
                   const Divider(
@@ -282,6 +203,97 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
               ),
             );
           }),
+    );
+  }
+
+  Scrollbar buildTextField() {
+    return Scrollbar(
+      child: TextFormField(
+        maxLines: null,
+        minLines: null,
+        expands: true,
+        // scrollController: scrollController,
+        scrollPhysics: const BouncingScrollPhysics(),
+        controller: txtController,
+        decoration: const InputDecoration(
+          // filled: true,
+          // fillColor: ,
+          border: InputBorder.none,
+          hintText: 'What\'s on your Mind?',
+          hintStyle: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+
+  ListTile buildHeader() {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      // minVerticalPadding: 10,
+      // visualDensity: VisualDensity.compact,
+      leading: CircleAvatar(
+        radius: 25,
+        backgroundImage: NetworkImage(AuthenticationController.userAccount!.avatar!),
+      ),
+
+      title: Text(AuthenticationController.userAccount!.displayName!, style: const TextStyle(fontWeight: FontWeight.bold)),
+      // isThreeLine: true,
+      subtitle: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ValueListenableBuilder(
+              valueListenable: currentPrivacy,
+              builder: (context, value, child) => InkWell(
+                    onTap: () => showBottomSheetPrivacy(context),
+                    borderRadius: BorderRadius.circular(5),
+                    child: Ink(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 0.5),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: IconTheme(
+                          data: const IconThemeData(size: 18, color: Colors.grey),
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(child: Icon(value.privacyIcon)),
+                                const WidgetSpan(child: SizedBox(width: 5)),
+                                TextSpan(text: value.privacyPostName),
+                                const WidgetSpan(child: SizedBox(width: 5)),
+                                const WidgetSpan(child: Icon(Icons.arrow_drop_down)),
+                              ],
+                            ),
+                          )),
+                    ),
+                  )),
+          const SizedBox(width: 10),
+          InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(5),
+            child: Ink(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 0.5),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const IconTheme(
+                  data: IconThemeData(size: 18, color: Colors.grey),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        WidgetSpan(child: Icon(Icons.add)),
+                        WidgetSpan(child: SizedBox(width: 5)),
+                        TextSpan(text: 'Album'),
+                        WidgetSpan(child: SizedBox(width: 5)),
+                        WidgetSpan(child: Icon(Icons.arrow_drop_down)),
+                      ],
+                    ),
+                  )),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

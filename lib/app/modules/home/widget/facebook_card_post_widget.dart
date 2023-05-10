@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/post_controller.dart';
+import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/package/comment_tree/comment_tree.dart';
 import 'package:video_player/video_player.dart';
 
@@ -17,6 +19,66 @@ class FacebookCardPostWidget extends StatelessWidget {
     }
   }
 
+  void showBottomSheetSharePost(BuildContext context) {
+    final createPostViewWidget = CreatePostView();
+    final postController = context.read<PostController>();
+    showModalBottomSheet<String>(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        builder: (context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    createPostViewWidget.buildHeader(),
+                    SizedBox(
+                      height: 200,
+                      child: createPostViewWidget.buildTextField(),
+                    ),
+                    const Divider(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: AnimatedBuilder(
+                        animation: createPostViewWidget.txtController,
+                        builder: (context, child) {
+                          final bool allowPost = createPostViewWidget.txtController.text.isNotEmpty;
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: allowPost ? null : Colors.grey.shade200,
+                            ),
+                            onPressed: allowPost
+                                ? () => postController
+                                        .sharePost(
+                                      postId: postResponseModel['id'],
+                                      content: createPostViewWidget.txtController.text,
+                                      privacy: createPostViewWidget.currentPrivacy.value.privacyId!, //get dropdown privacy
+                                    )
+                                        .then((value) {
+                                      HelperWidget.showSnackBar(context: context, message: 'Share Success');
+                                      Navigator.pop(context);
+                                    })
+                                : null,
+                            child: Text('Đăng', style: TextStyle(color: allowPost ? null : Colors.grey)),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     ValueNotifier<bool> isExpandedNotifier = ValueNotifier(false);
@@ -26,39 +88,97 @@ class FacebookCardPostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          _buildHeaderPost(context),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: Text.rich(TextSpan(
-              children: [
-                TextSpan(text: postResponseModel['post_content']),
-                TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
-              ],
-              style: const TextStyle(fontSize: 16),
-            )),
-          ),
-          _buildMediaPost(context),
-          _buildNumbericLikeComment(context),
-          const Divider(
-            height: 0, //height spacing of divider
-            thickness: 1, //thickness of divier line
-            indent: 10,
-            endIndent: 10,
-          ),
-          _buildButtonBar(isExpandedNotifier),
-          ValueListenableBuilder(
-              valueListenable: isExpandedNotifier,
-              builder: (context, value, child) => AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 200),
-                    firstChild: const SizedBox.shrink(),
-                    secondChild: _buildComment(context),
-                    crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                  )),
+        children: [
+          if (postResponseModel['parent_post'] == null) ...[
+            _buildPostCard(
+              context: context,
+              isExpandedNotifier: isExpandedNotifier,
+              postResponseModel: postResponseModel,
+            ),
+            ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
+          ]
+          //nếu bài viết được chia sẽ và có parent_post
+          else ...[
+            _buildHeaderPost(context, postResponseModel),
+            _buildPostContentString(
+              context: context,
+              postResponseModel: postResponseModel,
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: _buildPostCard(
+                context: context,
+                isExpandedNotifier: isExpandedNotifier,
+                postResponseModel: postResponseModel['parent_post'],
+              ),
+            ),
+            ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
+          ]
         ],
       ),
     );
   }
+
+  Widget _buildPostCard({
+    required BuildContext context,
+    required ValueNotifier<bool> isExpandedNotifier,
+    required Map<String, dynamic> postResponseModel,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        _buildHeaderPost(context, postResponseModel),
+        _buildPostContentString(
+          context: context,
+          postResponseModel: postResponseModel,
+        ),
+        _buildMediaPost(
+          context: context,
+          postResponseModel: postResponseModel,
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildBottom({
+    required BuildContext context,
+    required ValueNotifier<bool> isExpandedNotifier,
+  }) {
+    return [
+      _buildNumbericLikeComment(context),
+      const Divider(
+        height: 0, //height spacing of divider
+        thickness: 1, //thickness of divier line
+        indent: 10,
+        endIndent: 10,
+      ),
+      _buildButtonBar(isExpandedNotifier),
+      ValueListenableBuilder(
+          valueListenable: isExpandedNotifier,
+          builder: (context, value, child) => AnimatedCrossFade(
+                duration: const Duration(milliseconds: 200),
+                firstChild: const SizedBox.shrink(),
+                secondChild: _buildComment(context),
+                crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              )),
+    ];
+  }
+
+  Widget _buildPostContentString({required BuildContext context, required Map<String, dynamic> postResponseModel}) => Padding(
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+        child: Text.rich(TextSpan(
+          children: [
+            TextSpan(text: postResponseModel['post_content']),
+            TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
+          ],
+          style: const TextStyle(fontSize: 16),
+        )),
+      );
 
   Row _buildButtonBar(ValueNotifier<bool> isExpandedNotifier) {
     bool like = postResponseModel['isLike'] ?? false;
@@ -103,17 +223,18 @@ class FacebookCardPostWidget extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: TextButton.icon(
-            onPressed: () {},
-            icon: const Icon(
-              MdiIcons.shareOutline,
-              color: Colors.grey,
-            ),
-            label: const Text(
-              'Share',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
+          child: Builder(
+              builder: (context) => TextButton.icon(
+                    onPressed: () => showBottomSheetSharePost(context),
+                    icon: const Icon(
+                      MdiIcons.shareOutline,
+                      color: Colors.grey,
+                    ),
+                    label: const Text(
+                      'Share',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )),
         ),
       ],
     );
@@ -174,7 +295,7 @@ class FacebookCardPostWidget extends StatelessWidget {
     );
   }
 
-  Padding _buildHeaderPost(BuildContext context) {
+  Padding _buildHeaderPost(BuildContext context, Map<String, dynamic> postResponseModel) {
     Container _buildAvatarGroup() {
       return Container(
         width: 55,
@@ -227,10 +348,13 @@ class FacebookCardPostWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   const SizedBox(height: 5),
-                  Text(
-                    (isGroupPost!) ? postResponseModel['groupName'] : postResponseModel['displayName']!,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-                  ),
+                  Text.rich(TextSpan(children: [
+                    TextSpan(
+                      text: (isGroupPost!) ? postResponseModel['groupName'] : postResponseModel['displayName']!,
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    if (postResponseModel['parent_post'] != null) const TextSpan(text: ' shared a post')
+                  ])),
                   const SizedBox(height: 5),
                   Text.rich(
                     TextSpan(
@@ -261,7 +385,10 @@ class FacebookCardPostWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMediaPost(BuildContext context) {
+  Widget _buildMediaPost({
+    required BuildContext context,
+    required Map<String, dynamic> postResponseModel,
+  }) {
     Widget buildImage(String url) {
       return url.contains('http')
           ? FadeInImage.assetNetwork(
