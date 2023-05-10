@@ -44,9 +44,7 @@ class NotificationService {
         //bắt sự kiện click vào notification đẩy nó vào stream
         Printt.white('onDidReceiveNotificationResponse ${details.payload}');
       },
-      onDidReceiveBackgroundNotificationResponse: (details) {
-        Printt.white('onDidReceiveBackgroundNotificationResponse ${details.payload}');
-      },
+      onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
     );
   }
 
@@ -118,5 +116,9 @@ class NotificationService {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     Printt.white('Handling a background messagee: ${message.messageId}');
+  }
+
+  static void onDidReceiveBackgroundNotificationResponse(NotificationResponse details) {
+    Printt.white('onDidReceiveBackgroundNotificationResponse ${details.payload}');
   }
 }

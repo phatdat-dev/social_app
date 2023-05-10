@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
+import 'package:social_app/app/core/utils/extension/string_extension.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 import 'package:social_app/app/widget/textfield_comment_widget.dart';
+
+import '../widget/video_play_widget.dart';
 
 //code layout tham khao tu` google https://viblo.asia/p/flutter-viet-ung-dung-chat-voi-flutter-p1-GrLZD8GOZk0
 class MessageDetailView extends StatefulWidget {
@@ -176,7 +179,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
                 onSendComment: (value) {
                   _handleSubmitted(value);
                 },
-                onPickImage: () => controller.onPickFileSend(context: context, type: FileType.image),
+                onPickMedia: () => controller.onPickFileSend(context: context, type: FileType.media),
                 onPickFile: () => controller.onPickFileSend(context: context, type: FileType.any),
               ),
             ],
@@ -231,20 +234,11 @@ class MessageDetailViewState extends State<MessageDetailView> {
       );
     }
 
-    Widget renderImage() {
+    Widget renderImage(String url) {
       if (isMySend ?? false) {
         return Align(
           alignment: Alignment.centerRight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (messageData['data'] is List)
-                ...List.generate(
-                  (messageData['data'] as List).length,
-                  (index) => HelperWidget.buildImage(messageData['data'][index]),
-                ),
-            ],
-          ), //noi dung chat
+          child: HelperWidget.buildImage(url), //noi dung chat
         );
       }
       return Container(
@@ -260,11 +254,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(messageData['user']['displayName']), //ten
-                if (messageData['data'] is List)
-                  ...List.generate(
-                    (messageData['data'] as List).length,
-                    (index) => HelperWidget.buildImage(messageData['data'][index]),
-                  ),
+                HelperWidget.buildImage(url),
               ],
             ),
           ],
@@ -272,20 +262,11 @@ class MessageDetailViewState extends State<MessageDetailView> {
       );
     }
 
-    Widget renderAny() {
+    Widget renderFile(String url) {
       if (isMySend ?? false) {
         return Align(
           alignment: Alignment.centerRight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (messageData['data'] is List)
-                ...List.generate(
-                  (messageData['data'] as List).length,
-                  (index) => HelperWidget.buildFile(messageData['data'][index]),
-                ),
-            ],
-          ), //noi dung chat
+          child: HelperWidget.buildFile(url), //noi dung chat
         );
       }
       return Container(
@@ -301,11 +282,50 @@ class MessageDetailViewState extends State<MessageDetailView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(messageData['user']['displayName']), //ten
-                if (messageData['data'] is List)
-                  ...List.generate(
-                    (messageData['data'] as List).length,
-                    (index) => HelperWidget.buildFile(messageData['data'][index]),
-                  ),
+                HelperWidget.buildFile(url),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget renderVideo(String url) {
+      Widget videoBuilder() => Container(
+            width: 200,
+            height: 200,
+            color: Colors.black,
+            alignment: Alignment.center,
+            child: Material(
+              elevation: 1,
+              shape: const CircleBorder(),
+              child: IconButton(
+                icon: const Icon(Icons.play_arrow),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoPlayWidget(url))),
+              ),
+            ),
+          );
+
+      if (isMySend ?? false) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: videoBuilder(),
+        );
+      }
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 16.0),
+              child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(messageData['user']['displayName']), //ten
+                videoBuilder(),
               ],
             ),
           ],
@@ -327,14 +347,23 @@ class MessageDetailViewState extends State<MessageDetailView> {
             ),
           ), //noi dung chat
         );
-      case 'image':
-        return renderImage();
-      // case 'video':
-      //   break;
-      case 'any':
-        return renderAny();
-      default:
+
+      case 'text':
         return renderText();
+      default:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.generate(
+            (messageData['data'] as List).length,
+            (index) {
+              final String item = messageData['data'][index];
+              if (item.isImageFileName) return renderImage(item);
+              if (item.isVideoFileName) return renderVideo(item);
+
+              return renderFile(item);
+            },
+          ),
+        );
     }
   }
 }

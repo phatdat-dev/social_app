@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chewie/chewie.dart';
 import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -210,58 +211,19 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                                     if (isVideoFile) {
                                       VideoPlayerController videoPlayerController = VideoPlayerController.file(File(filesPicker[index]));
 
-                                      return Stack(
-                                        children: [
-                                          FutureBuilder(
-                                            future: videoPlayerController.initialize(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.done) {
-                                                return AspectRatio(
-                                                  aspectRatio: videoPlayerController.value.aspectRatio,
-                                                  child: VideoPlayer(videoPlayerController),
-                                                );
-                                              }
-                                              return const CircularProgressIndicator();
-                                            },
-                                          ),
-                                          //play button
-                                          Positioned.fill(
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Material(
-                                                elevation: 1,
-                                                shape: const CircleBorder(),
-                                                child: StatefulBuilder(
-                                                  builder: (context, setState) => IconButton(
-                                                    icon: Icon(videoPlayerController.value.isPlaying ? Icons.pause : Icons.play_arrow),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        videoPlayerController.value.isPlaying
-                                                            ? videoPlayerController.pause()
-                                                            : videoPlayerController.play();
-                                                      });
-                                                    },
-                                                  ),
-                                                ),
+                                      return FutureBuilder(
+                                        future: videoPlayerController.initialize(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState == ConnectionState.done) {
+                                            return AspectRatio(
+                                              aspectRatio: videoPlayerController.value.aspectRatio,
+                                              child: Chewie(
+                                                controller: ChewieController(videoPlayerController: videoPlayerController),
                                               ),
-                                            ),
-                                          ),
-                                          Positioned.fill(
-                                            child: Align(
-                                              alignment: Alignment.topRight,
-                                              child: Material(
-                                                elevation: 1,
-                                                shape: const CircleBorder(),
-                                                child: CloseButton(
-                                                  onPressed: () {
-                                                    filesPicker.removeAt(index);
-                                                    setState(() {});
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                            );
+                                          }
+                                          return const CircularProgressIndicator();
+                                        },
                                       );
                                     }
                                     return const SizedBox.shrink();

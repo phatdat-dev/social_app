@@ -68,6 +68,7 @@ dependencies:
   material_design_icons_flutter: any #icon Fb
   file_picker: any #pick file/video/image
   video_player: any #play video
+  chewie: ^1.4.0 #action video
   # animations: any
 
   #
@@ -77,7 +78,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.12.0 # flutter pub run flutter_launcher_icons
+  flutter_launcher_icons: ^0.13.1 # flutter pub run flutter_launcher_icons
 
 flutter_icons:
   android: true # can specify file name here e.g. "ic_launcher"
@@ -102,7 +103,7 @@ flutter_icons:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

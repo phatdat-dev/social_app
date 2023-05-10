@@ -6,14 +6,14 @@ class TextFieldCommentWidget extends StatefulWidget {
     required this.textEditingController,
     this.onChanged,
     this.onSendComment,
-    this.onPickImage,
+    this.onPickMedia,
     this.onPickFile,
   });
 
   final TextEditingController textEditingController;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSendComment;
-  final VoidCallback? onPickImage;
+  final VoidCallback? onPickMedia;
   final VoidCallback? onPickFile;
 
   @override
@@ -90,7 +90,7 @@ class _TextFieldCommentWidgetState extends State<TextFieldCommentWidget> {
                 ),
                 IconButton(icon: const Icon(Icons.alternate_email_outlined), onPressed: () {}),
                 IconButton(icon: const Icon(Icons.attach_file), onPressed: widget.onPickFile),
-                IconButton(icon: const Icon(Icons.image_outlined), onPressed: widget.onPickImage),
+                IconButton(icon: const Icon(Icons.image_outlined), onPressed: widget.onPickMedia),
               ],
             )),
       ),

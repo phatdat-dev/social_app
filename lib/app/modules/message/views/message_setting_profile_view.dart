@@ -61,7 +61,8 @@ class MessageSettingProfileView extends StatelessWidget {
                     //
                     Text('Thông tin về đoạn chat', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.grey)),
                     ListTile(
-                      onTap: () => context.push(Routes.MESSAGE_SETTING_PROFILE_MEMBERS(GoRouterState.of(context).params['id']!), extra: controller),
+                      onTap: () =>
+                          context.push(Routes.MESSAGE_SETTING_PROFILE_MEMBERS(GoRouterState.of(context).pathParameters['id']!), extra: controller),
                       contentPadding: EdgeInsets.zero,
                       title: const Text('Xem thành viên'),
                       trailing: const Icon(Icons.diversity_3, color: Colors.amber),
