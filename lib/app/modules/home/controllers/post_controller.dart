@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
+import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
 
 class PostController extends BaseController with BaseFetchController {
@@ -42,6 +43,28 @@ class PostController extends BaseController with BaseFetchController {
       'postId': postId,
       'postContent': content,
       'privacy': privacy,
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> call_fetchCommentByPost(int postId) async {
+    final result = await apiCall.onRequest(ApiUrl.post_fetchCommentByPost(), RequestMethod.POST, body: {
+      'postId': postId,
+    });
+
+    return Helper.convertToListMap(result);
+  }
+
+  Future<void> call_createCommentPost(int postId, String content) async {
+    await apiCall.onRequest(ApiUrl.post_createCommentPost(), RequestMethod.POST, body: {
+      'postId': postId,
+      'commentContent': content,
+    });
+  }
+  Future<void> call_replyComment(int postId,int commentId, String content ) async {
+    await apiCall.onRequest(ApiUrl.post_replyComment(), RequestMethod.POST, body: {
+      'postId': postId,
+      'commentId': commentId,
+      'commentContent': content,
     });
   }
 }

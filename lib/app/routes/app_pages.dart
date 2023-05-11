@@ -40,7 +40,7 @@ class AppPages {
         if (userAccountString != null) {
           //nếu có thì lấy thông tin đăng nhập
           AuthenticationController.userAccount = UsersModel().fromJson(jsonDecode(userAccountString));
-          return null;
+          return '/';
         }
         //nếu chưa đăng nhập thì chuyển về màn hình đăng nhập
         return '/authentication';

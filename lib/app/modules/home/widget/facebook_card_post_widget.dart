@@ -5,7 +5,7 @@ import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
-import 'package:social_app/package/comment_tree/comment_tree.dart';
+import 'package:social_app/app/modules/home/widget/comment_widget.dart';
 import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable
@@ -160,12 +160,42 @@ class FacebookCardPostWidget extends StatelessWidget {
       _buildButtonBar(isExpandedNotifier),
       ValueListenableBuilder(
           valueListenable: isExpandedNotifier,
-          builder: (context, value, child) => AnimatedCrossFade(
-                duration: const Duration(milliseconds: 200),
-                firstChild: const SizedBox.shrink(),
-                secondChild: _buildComment(context),
-                crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-              )),
+          builder: (context, value, child) {
+            final postController = context.read<PostController>();
+            ValueNotifier<List<Map<String, dynamic>>?> commentsOfPostDataResponse = ValueNotifier(null);
+
+            void loadComment() =>
+                postController.call_fetchCommentByPost(postResponseModel['id']).then((value) => commentsOfPostDataResponse.value = value);
+            if (value) {
+              loadComment();
+            }
+
+            return AnimatedCrossFade(
+              duration: const Duration(milliseconds: 200),
+              firstChild: const SizedBox.shrink(),
+              secondChild: ValueListenableBuilder(
+                  valueListenable: commentsOfPostDataResponse,
+                  builder: (context, data, child) {
+                    if (data == null) return const Center(child: CircularProgressIndicator());
+                    return CommentWidget(
+                      data: data,
+                      onSendComment: (text) {
+                        postController.call_createCommentPost(postResponseModel['id'], text).then((value) {
+                          loadComment();
+                        });
+                      },
+                      onReplyComment: (text, comment) {
+                        int commentId = comment['id'];
+                        if (comment['parent_comment'] != null) commentId = comment['parent_comment'];
+                        postController.call_replyComment(postResponseModel['id'], commentId, text).then((value) {
+                          loadComment();
+                        });
+                      },
+                    );
+                  }),
+              crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            );
+          }),
     ];
   }
 
@@ -515,93 +545,4 @@ class FacebookCardPostWidget extends StatelessWidget {
       );
     }
   }
-
-  Widget _buildComment(BuildContext context) {
-    Widget contentComment(dynamic data) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'userName',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    '${data.content}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-            DefaultTextStyle(
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.grey),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 5),
-                    Text('33p', style: Theme.of(context).textTheme.bodySmall!),
-                    const SizedBox(width: 24),
-                    const Text('Like'),
-                    const SizedBox(width: 24),
-                    const Text('Reply'),
-                  ],
-                ),
-              ),
-            )
-          ],
-        );
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: CommentTreeWidget<Comment, Comment>(
-        root: Comment(avatar: 'null', userName: 'null', content: 'felangel made felangel/cubit_and_beyond public '),
-        replies: [
-          Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
-          Comment(
-              avatar: 'null',
-              userName: 'null',
-              content: 'A Dart template generator which helps teams generator which helps teams generator which helps teams'),
-          Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams'),
-          Comment(avatar: 'null', userName: 'null', content: 'A Dart template generator which helps teams generator which helps teams '),
-        ],
-        treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
-        avatarRoot: (context, data) => const PreferredSize(
-          child: CircleAvatar(radius: 20),
-          preferredSize: Size.fromRadius(20),
-        ),
-        avatarChild: (context, data) => const PreferredSize(
-          child: CircleAvatar(radius: 14),
-          preferredSize: Size.fromRadius(14),
-        ),
-        contentRoot: (context, data) {
-          return contentComment(data);
-        },
-        contentChild: (context, data) {
-          return contentComment(data);
-        },
-      ),
-    );
-  }
-}
-
-class Comment {
-  // ignore: constant_identifier_names
-  static const TAG = 'Comment';
-
-  String? avatar;
-  String? userName;
-  String? content;
-
-  Comment({
-    required this.avatar,
-    required this.userName,
-    required this.content,
-  });
 }
