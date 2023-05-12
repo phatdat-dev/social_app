@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/custom/other/search_controller_custom.dart';
 
+import '../../custom/other/more_dropdown_search_custom.dart';
 import '../constants/app_constant.dart';
 
 class HelperWidget {
@@ -127,22 +130,159 @@ class HelperWidget {
 
   static Widget buildFile(String file) {
     return Column(
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Image.asset(
-                    'assets/gif/attachment-file.gif',
-                    width: 100,
-                    height: 150,
-                    fit: BoxFit.cover,
+      children: [
+        GestureDetector(
+          onTap: () {},
+          child: Image.asset(
+            'assets/gif/attachment-file.gif',
+            width: 100,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          file.split('/').last,
+          style: const TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 15),
+        ),
+      ],
+    );
+  }
+
+  static Future<T?> showSearchDropDown<T extends SearchDelegateQueryName>({
+    required BuildContext context,
+    required Iterable<T> data,
+    String? hintText = 'Search...',
+  }) async {
+    final ValueNotifier<List<T>> search = ValueNotifier(data.toList());
+    final txtController = TextEditingController();
+    return await showDialog<T>(
+        // showGeneralDialog
+        context: context,
+        builder: (context) {
+          final size = MediaQuery.of(context).size;
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            titlePadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            scrollable: true,
+            title: Container(
+              height: 40,
+              margin: const EdgeInsets.all(10),
+              child: TextField(
+                controller: txtController,
+                onChanged: (value) => HelperReflect.search(listOrigin: data, listSearch: search, nameModel: 'queryName', keywordSearch: value),
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  prefixIcon: const Icon(Icons.search_rounded),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ),
+            content: SizedBox(
+              width: size.width,
+              height: size.height / 2,
+              child: ValueListenableBuilder(
+                valueListenable: search,
+                builder: (context, value, child) => ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: value.length,
+                  itemBuilder: (context, index) => ListTile(
+                    title: txtController.text.isEmpty
+                        ? Text(value[index].queryName)
+                        : RichText(
+                            text: TextSpan(
+                                children: highlightOccurrences(value[index].queryName, txtController.text),
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                          ),
+                    onTap: () => Navigator.of(context).pop(value[index]),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  file.split('/').last,
-                  style: const TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 15),
+              ),
+            ),
+          );
+        });
+  }
+
+  /// [initData] mạc định sẽ gọi api
+  /// [moreDropDownSearch] sẽ tạo ra nút dropdown cho chọn, khi click vào sẽ đổi theo api tương ứng
+  static Future<MoreDropDownSearchCustom?> showSearchDropDownApiCall({
+    required BuildContext context,
+    required MoreDropDownSearchCustom initData,
+    String hintText = 'Search...',
+    Iterable<MoreDropDownSearchCustom>? moreDropDownSearch,
+  }) async {
+    final ValueNotifier<List> search = ValueNotifier([]);
+    final txtController = TextEditingController();
+    final Debouncer debouncer = Debouncer(delay: const Duration(seconds: 1));
+    return await showDialog(
+        // showGeneralDialog
+        context: context,
+        builder: (context) {
+          final size = MediaQuery.of(context).size;
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            titlePadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            scrollable: true,
+            title: Container(
+              height: 40,
+              margin: const EdgeInsets.all(10),
+              child: StatefulBuilder(
+                builder: (context, setState) => TextField(
+                  controller: txtController,
+                  onChanged: (value) => debouncer(() async => search.value = await initData.apiCall(value)),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    prefixIcon: const Icon(Icons.search_rounded),
+                    suffixIcon: moreDropDownSearch != null
+                        ? PopupMenuButton<String>(
+                            icon: const Icon(Icons.more_vert_rounded),
+                            onSelected: (key) {
+                              initData = moreDropDownSearch.firstWhere((element) => element.key == key);
+                              setState(() => hintText = key);
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return moreDropDownSearch.map((e) => PopupMenuItem<String>(value: e.key, child: Text(e.key))).toList();
+                            })
+                        : null,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    border: const OutlineInputBorder(),
+                  ),
                 ),
-              ],
-            );
+              ),
+            ),
+            content: SizedBox(
+              width: size.width,
+              height: size.height / 2,
+              child: ValueListenableBuilder(
+                valueListenable: search,
+                builder: (context, value, child) => ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    final item = value[index];
+
+                    return ListTile(
+                      title: txtController.text.isEmpty
+                          ? Text(
+                              item[initData.queryName] ?? '',
+                              maxLines: 2,
+                            )
+                          : RichText(
+                              text: TextSpan(
+                                  children: highlightOccurrences(item[initData.queryName] ?? '', txtController.text),
+                                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                              maxLines: 2,
+                            ),
+                      onTap: () => Navigator.of(context).pop(initData..dataResponse = item),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

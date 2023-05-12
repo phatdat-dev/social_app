@@ -37,7 +37,33 @@ extension HomeViewExtension on _HomeViewState {
         AppBarIconWidget(icon: const Icon(Icons.add), onPressed: () {}),
         AppBarIconWidget(
           icon: const Icon(MdiIcons.magnify),
-          onPressed: () {},
+          onPressed: () async {
+            final searchDropDown = [
+              MoreDropDownSearchCustom(
+                key: 'users',
+                queryName: 'displayName',
+                apiCall: (data) => controller.call_searchUsersAndGroups(data, 'users'),
+              ),
+              MoreDropDownSearchCustom(
+                key: 'groups',
+                queryName: 'group_name',
+                apiCall: (data) => controller.call_searchUsersAndGroups(data, 'groups'),
+              ),
+              MoreDropDownSearchCustom(
+                key: 'posts',
+                queryName: 'post_content',
+                apiCall: (data) => controller.call_searchUsersAndGroups(data, 'posts'),
+              ),
+            ];
+
+            final result = await HelperWidget.showSearchDropDownApiCall(
+              context: context,
+              hintText: 'find your friends...',
+              initData: searchDropDown.first,
+              moreDropDownSearch: searchDropDown,
+            );
+            Printt.white(result?.dataResponse);
+          },
         ),
         AppBarIconWidget(
             icon: const Icon(MdiIcons.facebookMessenger),

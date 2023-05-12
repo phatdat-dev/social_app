@@ -25,4 +25,5 @@ class ApiUrl {
   static String post_fetchCommentByPost() => '/api/fetch-comment-by-post';
   static String post_createCommentPost() => '/api/v1/create-comment-post';
   static String post_replyComment() => '/api/v1/reply-comment';
+  static String get_searchUsersAndGroups(String input) => '/api/v1/search-users-and-groups/$input';
 }
