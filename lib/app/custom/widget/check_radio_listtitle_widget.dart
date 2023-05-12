@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CheckRadioListTile<T> extends StatelessWidget {
+class CheckRadioListTileWidget<T> extends StatelessWidget {
   final T value;
   final T groupValue;
   final Widget title;
@@ -9,7 +9,7 @@ class CheckRadioListTile<T> extends StatelessWidget {
   final Widget? subtitle;
   final bool isThreeLine;
 
-  const CheckRadioListTile({
+  const CheckRadioListTileWidget({
     Key? key,
     required this.value,
     required this.groupValue,

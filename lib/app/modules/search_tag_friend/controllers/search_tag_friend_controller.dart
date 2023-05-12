@@ -3,7 +3,7 @@ import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
-abstract class SearchTagFriendController implements BaseController {
+mixin  SearchTagFriendController implements BaseController {
   List<BaseSelectedModel>? listTagFriend = null;
 
   Future<void> call_fetchFriendByUserId() async {

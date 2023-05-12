@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
+import 'package:social_app/app/custom/widget/search_widget.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
-import 'package:social_app/app/widget/app_bar_icon.dart';
-import 'package:social_app/app/widget/search_widget.dart';
 
 class GroupMembersView extends StatelessWidget {
   const GroupMembersView({super.key});
@@ -23,7 +23,7 @@ class GroupMembersView extends StatelessWidget {
               centerTitle: true,
               title: const Text('Thành viên'),
               actions: [
-                AppBarIcon(
+                AppBarIconWidget(
                   icon: const Icon(Icons.group_add_outlined, color: Colors.green),
                   onPressed: () {},
                 ),
@@ -76,10 +76,10 @@ class GroupMembersView extends StatelessWidget {
                       )),
                       trailing: PopupMenuButton(
                         itemBuilder: (context) => [
-                          PopupMenuItem(
+                          const PopupMenuItem(
                             value: 'profile',
                             child: Row(
-                              children: const [
+                              children: [
                                 Icon(Icons.account_circle_outlined),
                                 SizedBox(width: 10),
                                 Text('Trang cá nhân'),
@@ -87,10 +87,10 @@ class GroupMembersView extends StatelessWidget {
                             ),
                           ),
                           if ((AuthenticationController.userAccount!.id != item['user_id']) && !isAdminGroup)
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               value: 'addMemberToAdminGroup',
                               child: Row(
-                                children: const [
+                                children: [
                                   Icon(Icons.vpn_key_outlined),
                                   SizedBox(width: 10),
                                   Text('Thăng cấp quản trị viên'),
@@ -98,10 +98,10 @@ class GroupMembersView extends StatelessWidget {
                               ),
                             ),
                           if ((AuthenticationController.userAccount!.id != item['user_id']) && isAdminGroup)
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               value: 'removeAdminToGroup',
                               child: Row(
-                                children: const [
+                                children: [
                                   Icon(Icons.vpn_key_off_outlined),
                                   SizedBox(width: 10),
                                   Text('Xóa quyền quản trị viên'),
@@ -109,20 +109,20 @@ class GroupMembersView extends StatelessWidget {
                               ),
                             ),
                           (AuthenticationController.userAccount!.id != item['user_id'])
-                              ? PopupMenuItem(
+                              ? const PopupMenuItem(
                                   value: 'delete',
                                   child: Row(
-                                    children: const [
+                                    children: [
                                       Icon(Icons.person_remove_outlined),
                                       SizedBox(width: 10),
                                       Text('Xóa khỏi nhóm'),
                                     ],
                                   ),
                                 )
-                              : PopupMenuItem(
+                              : const PopupMenuItem(
                                   value: 'delete',
                                   child: Row(
-                                    children: const [
+                                    children: [
                                       Icon(Icons.logout_outlined),
                                       SizedBox(width: 10),
                                       Text('Rời khỏi nhóm'),

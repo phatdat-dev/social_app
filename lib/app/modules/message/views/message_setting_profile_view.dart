@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
-import 'package:social_app/app/widget/app_bar_icon.dart';
 
 class MessageSettingProfileView extends StatelessWidget {
   MessageSettingProfileView({super.key});
@@ -173,7 +173,7 @@ class MessageSettingProfileView extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              AppBarIcon(icon: const Icon(Icons.local_phone), onPressed: () {}),
+                              AppBarIconWidget(icon: const Icon(Icons.local_phone), onPressed: () {}),
                               const Text(
                                 'Gọi thoại',
                                 style: TextStyle(fontSize: 12),
@@ -185,7 +185,7 @@ class MessageSettingProfileView extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              AppBarIcon(icon: const Icon(Icons.videocam), onPressed: () {}),
+                              AppBarIconWidget(icon: const Icon(Icons.videocam), onPressed: () {}),
                               const Text(
                                 'Gọi video',
                                 style: TextStyle(fontSize: 12),
@@ -197,7 +197,7 @@ class MessageSettingProfileView extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              AppBarIcon(icon: const Icon(Icons.person_add), onPressed: () {}),
+                              AppBarIconWidget(icon: const Icon(Icons.person_add), onPressed: () {}),
                               const Text(
                                 'Thêm bạn bè',
                                 style: TextStyle(fontSize: 12),
@@ -209,7 +209,7 @@ class MessageSettingProfileView extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              AppBarIcon(icon: const Icon(Icons.notifications), onPressed: () {}),
+                              AppBarIconWidget(icon: const Icon(Icons.notifications), onPressed: () {}),
                               const Text(
                                 'Tắt thông báo',
                                 style: TextStyle(fontSize: 12),
@@ -262,10 +262,10 @@ class MessageSettingProfileView extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Material(
+                Material(
                   elevation: 5.0,
                   shape: CircleBorder(),
                   child: CircleAvatar(

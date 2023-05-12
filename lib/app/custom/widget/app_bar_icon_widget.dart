@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AppBarIcon extends StatelessWidget {
+class AppBarIconWidget extends StatelessWidget {
   final Icon icon;
   final VoidCallback onPressed;
 
-  AppBarIcon({required this.icon, required this.onPressed});
+  AppBarIconWidget({required this.icon, required this.onPressed});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

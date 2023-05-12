@@ -7,7 +7,7 @@ import 'package:social_app/app/core/base/base_model.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/widget/loadding_widget.dart';
+import 'package:social_app/app/custom/widget/loadding_widget.dart';
 
 import '../constants/app_constant.dart';
 

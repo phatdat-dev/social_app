@@ -14,6 +14,7 @@ class ThemeConfig with ChangeNotifier, ColorConstants {
 
   ThemeData get lightTheme {
     return ThemeData.light().copyWith(
+      // useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: Colors.blue.shade50,
@@ -59,7 +60,9 @@ class ThemeConfig with ChangeNotifier, ColorConstants {
     );
   }
 
-  ThemeData get dartTheme => ThemeData.dark();
+  ThemeData get dartTheme => ThemeData.dark(
+      // useMaterial3: true,
+      );
 }
 
 class ThemeView extends StatelessWidget {

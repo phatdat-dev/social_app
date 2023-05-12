@@ -34,9 +34,12 @@ extension HomeViewExtension on _HomeViewState {
             ),
       ),
       actions: [
-        AppBarIcon(icon: const Icon(Icons.add), onPressed: () {}),
-        AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
-        AppBarIcon(
+        AppBarIconWidget(icon: const Icon(Icons.add), onPressed: () {}),
+        AppBarIconWidget(
+          icon: const Icon(MdiIcons.magnify),
+          onPressed: () {},
+        ),
+        AppBarIconWidget(
             icon: const Icon(MdiIcons.facebookMessenger),
             onPressed: () {
               context.push(Routes.MESSAGE());
@@ -68,8 +71,8 @@ extension HomeViewExtension on _HomeViewState {
                     ),
               ),
               actions: [
-                AppBarIcon(icon: const Icon(Icons.person_outline), onPressed: () {}),
-                AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
+                AppBarIconWidget(icon: const Icon(Icons.person_outline), onPressed: () {}),
+                AppBarIconWidget(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
               ],
               bottom: TabBar(
                 controller: controller.subTabBarVideoController,
@@ -112,8 +115,8 @@ extension HomeViewExtension on _HomeViewState {
                     ),
               ),
               actions: [
-                AppBarIcon(icon: const Icon(Icons.settings), onPressed: () {}),
-                AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
+                AppBarIconWidget(icon: const Icon(Icons.settings), onPressed: () {}),
+                AppBarIconWidget(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
               ],
               bottom: TabBar(
                 controller: controller.subTabBarGroupController,
@@ -155,7 +158,7 @@ extension HomeViewExtension on _HomeViewState {
               ),
         ),
         actions: [
-          AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
+          AppBarIconWidget(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
         ],
       ),
     );
@@ -179,12 +182,12 @@ extension HomeViewExtension on _HomeViewState {
               ),
         ),
         actions: [
-          AppBarIcon(
+          AppBarIconWidget(
               icon: const Icon(Icons.settings),
               onPressed: () {
                 context.push('/viewColorTheme');
               }),
-          AppBarIcon(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
+          AppBarIconWidget(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
         ],
       ),
     );

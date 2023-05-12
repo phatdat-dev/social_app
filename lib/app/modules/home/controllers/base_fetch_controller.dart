@@ -1,7 +1,7 @@
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 
-abstract class BaseFetchController implements BaseController {
+mixin BaseFetchController implements BaseController {
   String get apiUrl;
 
   Map<String, dynamic> request = {

@@ -1,6 +1,6 @@
 part of 'firebase_service.dart';
 
-class NotificationService {
+mixin NotificationService {
   final localNotification = FlutterLocalNotificationsPlugin();
   AndroidNotificationChannel get androidNotifiChannel => const AndroidNotificationChannel(
         'notify_social_app',

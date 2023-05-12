@@ -10,7 +10,7 @@ import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
-import 'package:social_app/app/widget/textfield_comment_widget.dart';
+import 'package:social_app/app/custom/widget/textfield_comment_widget.dart';
 
 import '../widget/video_play_widget.dart';
 

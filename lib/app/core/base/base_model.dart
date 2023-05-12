@@ -13,6 +13,6 @@ abstract class BaseModel<R> {
 //   String? description;
 // }
 
-abstract class BaseSelectedModel {
+mixin BaseSelectedModel {
   bool isSelected = false;
 }

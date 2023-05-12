@@ -1,6 +1,6 @@
 part of 'firebase_service.dart';
 
-class FireStoreService {
+mixin FireStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<QuerySnapshot<Map<String, dynamic>>> call_getChatRoom(String chatRoomId) {

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/constants/translate_key_constant.dart';
 import 'package:social_app/app/core/services/translation_service.dart';
+import 'package:social_app/app/custom/widget/check_radio_listtitle_widget.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/widget/check_radio_listtitle.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
   const HomeDrawerWidget({super.key});
@@ -94,7 +94,7 @@ class HomeDrawerWidget extends StatelessWidget {
                 leading: const Icon(Icons.language_outlined),
                 title: Text(TranslateKeys.Language.tr()),
                 children: TranslationService.locales
-                    .map((e) => CheckRadioListTile<Locale>(
+                    .map((e) => CheckRadioListTileWidget<Locale>(
                           value: e,
                           title: Text(
                             e.toString().tr(),

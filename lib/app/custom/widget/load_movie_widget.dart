@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-import '../core/utils/utils.dart';
+import '../../core/utils/utils.dart';
 
 class LoadMovieWidget extends StatefulWidget {
   const LoadMovieWidget(this.url, {super.key});

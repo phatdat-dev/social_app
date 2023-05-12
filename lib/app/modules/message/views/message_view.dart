@@ -4,12 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/core/utils/extension/app_extension.dart';
+import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
+import 'package:social_app/app/custom/widget/search_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/widget/chatcard_widget.dart';
 import 'package:social_app/app/routes/app_pages.dart';
-import 'package:social_app/app/widget/app_bar_icon.dart';
-import 'package:social_app/app/widget/search_widget.dart';
 
 import '../controllers/message_controller.dart';
 
@@ -46,8 +46,8 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
             ),
             title: const Text('Chats', style: TextStyle(color: Colors.black)),
             actions: [
-              AppBarIcon(icon: const Icon(Icons.camera_alt_outlined), onPressed: () {}),
-              AppBarIcon(
+              AppBarIconWidget(icon: const Icon(Icons.camera_alt_outlined), onPressed: () {}),
+              AppBarIconWidget(
                 icon: const Icon(Icons.group_add_outlined, color: Colors.green),
                 onPressed: () => controller.onCreateNewGroupMessage<T>(context),
               ),

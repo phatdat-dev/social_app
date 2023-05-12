@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/app/core/utils/extension/app_extension.dart';
 
-abstract class ColorConstants {
+mixin ColorConstants {
   //0xFF vao` hex
   // static final MaterialColor blue100 = MaterialColor(0xFFE1EDF9, getSwatch(const Color(0xFFE1EDF9)));
 

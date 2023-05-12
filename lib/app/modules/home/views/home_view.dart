@@ -8,7 +8,7 @@ import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/widget/home_drawer_widget.dart';
 import 'package:social_app/app/routes/app_pages.dart';
-import 'package:social_app/app/widget/app_bar_icon.dart';
+import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
 
 import '../controllers/home_controller.dart';
 import 'home_dashboard_view.dart';
@@ -28,6 +28,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, WidgetsBindingObserver {
   late final HomeController controller;
+
   @override
   void initState() {
     super.initState();

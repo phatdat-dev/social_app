@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app/app/custom/other/animated_route_custom.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
-import 'package:social_app/app/widget/animated_route.dart';
 
 class InputStoryWidget extends StatelessWidget {
   const InputStoryWidget({super.key});
@@ -32,7 +32,7 @@ class InputStoryWidget extends StatelessWidget {
                       final groupController = context.read<GroupController?>();
 
                       await Navigator.of(context)
-                          .push(AnimatedRoute(ChangeNotifierProvider.value(value: groupController, child:  CreatePostView())));
+                          .push(AnimatedRouteCustom(ChangeNotifierProvider.value(value: groupController, child: CreatePostView())));
                     },
                     child: const Text('Bạn đang nghĩ gì ?', style: TextStyle(color: Colors.black)),
                     style: OutlinedButton.styleFrom(
