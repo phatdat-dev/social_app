@@ -4,10 +4,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_app/app/core/base/base_model.dart';
-import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/custom/widget/loadding_widget.dart';
+import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
 import '../constants/app_constant.dart';
 
@@ -30,7 +29,7 @@ class BaseConnect {
     dio = Dio(BaseOptions(
       // Cấu hình đường path để call api, thành phần gồm
       // - options.path: đường dẫn cụ thể API. Ví dụ: "user/user-info"
-      baseUrl: 'http://192.168.1.4:8080',
+      baseUrl: 'http://192.168.1.3:8080',
       // baseUrl: 'http://116.106.23.233:8080',
 
       // Đoạn này dùng để config timeout api từ phía client, tránh việc call 1 API

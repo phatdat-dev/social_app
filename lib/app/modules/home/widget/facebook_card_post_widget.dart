@@ -1,8 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
+import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/comment_widget.dart';
@@ -216,26 +218,52 @@ class FacebookCardPostWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          child: StatefulBuilder(
-              builder: (context, setState) => TextButton.icon(
-                    onPressed: () {
-                      context.read<PostController>().call_likePost(postResponseModel['id']);
-                      setState(() => like = !like);
-                    },
-                    icon: like
-                        ? const Icon(
-                            MdiIcons.thumbUp,
-                            color: Colors.blue,
-                          )
-                        : const Icon(
-                            MdiIcons.thumbUpOutline,
-                            color: Colors.grey,
-                          ),
-                    label: Text(
-                      'Like',
-                      style: TextStyle(color: like ? Colors.blue : Colors.grey),
+          child: Builder(
+            builder: (context) {
+              final controller = context.read<PostController>();
+
+              final typeIdMyUserReaction = (postResponseModel['like'] as List)
+                  .firstWhereOrNull((userReaction) => userReaction['user_id'] == AuthenticationController.userAccount!.id)?['type'] as int?;
+
+              final listReactions = controller.rectionsGif.entries
+                  .mapIndexed(
+                    (index, e) => Reaction<int>(
+                      value: index + 1,
+                      title: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 2.5),
+                        decoration: const ShapeDecoration(shape: StadiumBorder(), color: Colors.pink),
+                        child: Text(e.key, style: const TextStyle(color: Colors.white)),
+                      ),
+                      previewIcon: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3.5, vertical: 5),
+                        child: Image.asset(e.value, height: 40),
+                      ),
+                      icon: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Image.asset(e.value, height: 25),
+                            const SizedBox(width: 10),
+                            Text(
+                              e.key,
+                              style: TextStyle(color: like ? Colors.blue : Colors.grey, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  )),
+                  )
+                  .toList();
+
+              return ReactionButtonToggle<int>(
+                onReactionChanged: (value, isChecked) {
+                  context.read<PostController>().call_likePost(postResponseModel['id'], value!);
+                },
+                initialReaction: listReactions[(typeIdMyUserReaction ?? 1) - 1],
+                reactions: listReactions,
+              );
+            },
+          ),
         ),
         Expanded(
           child: TextButton.icon(
@@ -271,6 +299,8 @@ class FacebookCardPostWidget extends StatelessWidget {
   }
 
   Widget _buildNumbericLikeComment(BuildContext context) {
+    final controller = context.read<PostController>();
+
     Widget circleIcon(String image) {
       return Container(
         margin: const EdgeInsets.only(left: 8.0, top: 12.0),
@@ -283,6 +313,14 @@ class FacebookCardPostWidget extends StatelessWidget {
             image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover)),
       );
     }
+
+    String getAssetRectionsGif(int index) => controller.rectionsGif.entries.elementAt(index - 1).value;
+
+    //return Map<int,List<Map<String,dynamic>>>
+    final groupReactions = (postResponseModel['like'] as List).groupListsBy((element) => element['type']);
+    // sort by value.length
+    final sortValueByLength = groupReactions.entries.sorted((a, b) => b.value.length.compareTo(a.value.length)).take(3).toList();
+    final top3ReactionsId = Map.fromEntries(sortValueByLength).keys.take(3);
 
     return Container(
       height: 50,
@@ -300,24 +338,19 @@ class FacebookCardPostWidget extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
-            left: 2,
-            child: circleIcon('assets/emoji/emoji1.png'),
-          ),
-          Positioned(
-            left: 15,
-            child: circleIcon('assets/emoji/emoji.jpg'),
-          ),
-          Positioned(
-            left: 28,
-            child: circleIcon('assets/emoji/emoji2.png'),
-          ),
+          ...top3ReactionsId
+              .mapIndexed((index, e) => Positioned(
+                    left: 2 + (index * 13),
+                    child: circleIcon(getAssetRectionsGif(e)),
+                  ))
+              .toList(),
+          //
           Positioned(
               left: 65,
               child: Padding(
                   padding: const EdgeInsets.only(left: 0.0, top: 15.0),
                   child: Text(
-                    '${postResponseModel['totalLike']} likes',
+                    '${postResponseModel['totalLike']}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ))),
         ],

@@ -5,6 +5,16 @@ import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
 
 class PostController extends BaseController with BaseFetchController {
+  final Map<String, String> rectionsGif = {
+    'Like': 'assets/emoji/1_like.gif',
+    'Love': 'assets/emoji/2_love.gif',
+    'Sad': 'assets/emoji/3_sad.gif',
+    'Haha': 'assets/emoji/4_haha.gif',
+    'Yay': 'assets/emoji/5_yay.gif',
+    'Wow': 'assets/emoji/6_wow.gif',
+    'Angry': 'assets/emoji/7_angry.gif',
+  };
+
   @override
   String get apiUrl => ApiUrl.get_fetchPost();
 
@@ -30,8 +40,8 @@ class PostController extends BaseController with BaseFetchController {
     );
   }
 
-  Future<void> call_likePost(int postId) async {
-    await apiCall.onRequest(ApiUrl.post_likePost(), RequestMethod.POST, body: {'postId': postId}, isShowLoading: false);
+  Future<void> call_likePost(int postId, [int reactionId = 1]) async {
+    await apiCall.onRequest(ApiUrl.post_likePost(), RequestMethod.POST, body: {'postId': postId, 'reaction': reactionId}, isShowLoading: false);
   }
 
   Future<void> sharePost({
@@ -60,7 +70,8 @@ class PostController extends BaseController with BaseFetchController {
       'commentContent': content,
     });
   }
-  Future<void> call_replyComment(int postId,int commentId, String content ) async {
+
+  Future<void> call_replyComment(int postId, int commentId, String content) async {
     await apiCall.onRequest(ApiUrl.post_replyComment(), RequestMethod.POST, body: {
       'postId': postId,
       'commentId': commentId,
