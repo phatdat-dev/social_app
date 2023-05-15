@@ -15,4 +15,6 @@ abstract class Routes {
   static String GROUP(String id) => '/group/$id';
   static String GROUP_INFOMATION(String id) => '${GROUP(id)}/infomation';
   static String GROUP_INFOMATION_MEMBERS(String id) => '${GROUP_INFOMATION(id)}/members';
+  //
+  static String USER(String id) => '/user/$id';
 }

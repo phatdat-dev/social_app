@@ -5,12 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
-import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/custom/other/search_controller_custom.dart';
+import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
 import 'package:social_app/app/modules/home/widget/home_drawer_widget.dart';
 import 'package:social_app/app/routes/app_pages.dart';
-import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
 
 import '../../../custom/other/more_dropdown_search_custom.dart';
 import '../controllers/home_controller.dart';

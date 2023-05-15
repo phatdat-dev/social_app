@@ -16,6 +16,8 @@ import 'package:social_app/app/modules/message/controllers/message_controller.da
 import 'package:social_app/app/modules/message/views/message_setting_profile_members_view.dart';
 import 'package:social_app/app/modules/message/views/message_setting_profile_view.dart';
 import 'package:social_app/app/modules/message/views/message_view.dart';
+import 'package:social_app/app/modules/user/controllers/user_controller.dart';
+import 'package:social_app/app/modules/user/views/user_view.dart';
 
 import '../modules/message/views/message_detail_view.dart';
 import '../modules/message/views/message_search_view.dart';
@@ -125,6 +127,12 @@ class AppPages {
                   ),
                 ]),
           ]),
+      GoRoute(
+        path: '/user/:id',
+        builder: (context, state) {
+          return ChangeNotifierProvider.value(value: state.extra as UserController, child: const UserView());
+        },
+      ),
     ],
   );
 }
