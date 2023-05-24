@@ -1,5 +1,3 @@
-import 'list_extension.dart';
-
 extension MapExtension<K, V> on Map<K, V> {
   Iterable<MapEntry<K, V>> _filterr(bool Function(MapEntry<K, V> entry) f) sync* {
     for (final entry in entries) {
@@ -80,30 +78,5 @@ extension MapExtension<K, V> on Map<K, V> {
   K? keyOfIndex(int index) {
     if (index < 0 || index >= length) return null;
     return keys.elementAt(index);
-  }
-
-  // from GetX
-
-  void addIf(dynamic condition, K key, V value) {
-    if (condition is Condition) condition = condition();
-    if (condition is bool && condition) {
-      this[key] = value;
-    }
-  }
-
-  void addAllIf(dynamic condition, Map<K, V> values) {
-    if (condition is Condition) condition = condition();
-    if (condition is bool && condition) addAll(values);
-  }
-
-  void assign(K key, V val) {
-    clear();
-    this[key] = val;
-  }
-
-  void assignAll(Map<K, V> val) {
-    if (this == val) return;
-    clear();
-    addAll(val);
   }
 }

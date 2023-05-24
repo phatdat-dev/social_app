@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+
 import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
@@ -23,8 +24,8 @@ class _MessageSettingProfileMembersViewState<T extends MessageController> extend
   @override
   void initState() {
     super.initState();
-    controller = context.read<T>();
-    fireBaseService = context.read<FireBaseService>();
+    controller = Get.find<T>();
+    fireBaseService = Get.find<FireBaseService>();
     listMemberSelected = ValueNotifier<List<UsersModel>>([]);
     tabBarWidget = {
       const Tab(text: 'Tất cả'): MessageSettingProfileMembersTabAllWidget(listMemberSelected: listMemberSelected),
@@ -95,8 +96,8 @@ class MessageSettingProfileMembersTabAllWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<MessageController>();
-    final fireBaseService = context.read<FireBaseService>();
+    final controller = Get.find<MessageController>();
+    final fireBaseService = Get.find<FireBaseService>();
     return StreamBuilder(
         stream: fireBaseService.call_getChatRoomDocs(controller.currentChatRoom['chatRoomId']),
         builder: (context, snapshot) {

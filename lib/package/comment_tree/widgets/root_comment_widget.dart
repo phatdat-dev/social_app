@@ -12,11 +12,7 @@ class RootCommentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: RootPainter(
-        avatar.preferredSize,
-        context.watch<TreeThemeData>().lineColor,
-        context.watch<TreeThemeData>().lineWidth,
-          Directionality.of(context)
-      ),
+          avatar.preferredSize, context.watch<TreeThemeData>().lineColor, context.watch<TreeThemeData>().lineWidth, Directionality.of(context)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,11 +45,9 @@ class RootPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if(textDecoration == TextDirection.rtl)
-    canvas.translate(size.width, 0);
+    if (textDecoration == TextDirection.rtl) canvas.translate(size.width, 0);
     double dx = avatar!.width / 2;
-    if(textDecoration == TextDirection.rtl)
-      dx *= -1;
+    if (textDecoration == TextDirection.rtl) dx *= -1;
     canvas.drawLine(
       Offset(dx, avatar!.height),
       Offset(dx, size.height),

@@ -11,11 +11,11 @@ class WellComeController extends BaseController {
 
   void increment() {
     counter++;
-    notifyListeners();
+    update();
   }
 
   void decrement() {
     counter--;
-    notifyListeners();
+    update();
   }
 }

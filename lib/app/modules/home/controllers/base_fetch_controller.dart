@@ -1,13 +1,13 @@
+import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 
-mixin BaseFetchController implements BaseController {
+abstract class BaseFetchController extends BaseController with StateMixin<List<Map<String, dynamic>>> {
   String get apiUrl;
 
   Map<String, dynamic> request = {
     'page': 1,
   };
-  List<Map<String, dynamic>>? dataResponse = null;
   bool dataResponseIsMaximum = false;
 
   @override
@@ -26,15 +26,14 @@ mixin BaseFetchController implements BaseController {
     )
         .then((value) {
       final data = Helper.convertToListMap(value['data']);
-      if (dataResponse == null) {
-        dataResponse = data;
+      if (state == null) {
+        change(data, status: RxStatus.success());
       } else {
         if (data.isEmpty)
           dataResponseIsMaximum = true;
         else
-          dataResponse = [...dataResponse!, ...data]; //ko xai` .addAll vi` notifyListeners se k rebuild
+          change([...state!, ...data], status: RxStatus.loadingMore());
       }
-      notifyListeners();
     });
   }
 
@@ -47,7 +46,7 @@ mixin BaseFetchController implements BaseController {
 
   void resetRequest() {
     request.update('page', (value) => 1);
-    dataResponse = null;
+    change(null, status: RxStatus.loading());
     dataResponseIsMaximum = false;
   }
 }

@@ -40,13 +40,10 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: any
-  provider: any
-  go_router: any #routing
-  easy_localization: any #translate language
+  get: 4.6.5
   intl: any #number
   shared_preferences: any #local storage
   collection: any #array, List method
-  dio: any #resful api
   fluttertoast: any #show toast error
   flutter_svg: any #using svg image
   #firebase
@@ -73,6 +70,8 @@ dependencies:
   flutter_reaction_button: ^2.0.1+2
 
   #
+  flutter_localizations:
+    sdk: flutter
   flutter:
     sdk: flutter
 

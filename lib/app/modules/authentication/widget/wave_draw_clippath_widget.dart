@@ -22,7 +22,7 @@ class WaveDrawClipPathWidget extends StatelessWidget {
             width: double.infinity,
             height: 250,
             decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.green.shade100, Colors.blue.shade100])),
-            child: Column(),
+            child: const Column(),
           ),
         ),
         ClipPath(

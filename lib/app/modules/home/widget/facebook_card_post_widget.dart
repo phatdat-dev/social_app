@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/home/controllers/post_controller.dart';
@@ -23,7 +23,7 @@ class FacebookCardPostWidget extends StatelessWidget {
 
   void showBottomSheetSharePost(BuildContext context) {
     final createPostViewWidget = CreatePostView();
-    final postController = context.read<PostController>();
+    final postController = Get.find<PostController>();
     showModalBottomSheet<String>(
         context: context,
         isScrollControlled: true,
@@ -64,7 +64,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                                       privacy: createPostViewWidget.currentPrivacy.value.privacyId!, //get dropdown privacy
                                     )
                                         .then((value) {
-                                      HelperWidget.showSnackBar(context: context, message: 'Share Success');
+                                      HelperWidget.showSnackBar( message: 'Share Success');
                                       Navigator.pop(context);
                                     })
                                 : null,
@@ -163,7 +163,7 @@ class FacebookCardPostWidget extends StatelessWidget {
       ValueListenableBuilder(
           valueListenable: isExpandedNotifier,
           builder: (context, value, child) {
-            final postController = context.read<PostController>();
+            final postController = Get.find<PostController>();
             ValueNotifier<List<Map<String, dynamic>>?> commentsOfPostDataResponse = ValueNotifier(null);
 
             void loadComment() =>
@@ -220,7 +220,7 @@ class FacebookCardPostWidget extends StatelessWidget {
         Expanded(
           child: Builder(
             builder: (context) {
-              final controller = context.read<PostController>();
+              final controller = Get.find<PostController>();
 
               final typeIdMyUserReaction = (postResponseModel['like'] as List)
                   .firstWhereOrNull((userReaction) => userReaction['user_id'] == AuthenticationController.userAccount!.id)?['type'] as int?;
@@ -257,7 +257,7 @@ class FacebookCardPostWidget extends StatelessWidget {
 
               return ReactionButtonToggle<int>(
                 onReactionChanged: (value, isChecked) {
-                  context.read<PostController>().call_likePost(postResponseModel['id'], value!);
+                  Get.find<PostController>().call_likePost(postResponseModel['id'], value!);
                 },
                 initialReaction: listReactions[(typeIdMyUserReaction ?? 1) - 1],
                 reactions: listReactions,
@@ -299,7 +299,7 @@ class FacebookCardPostWidget extends StatelessWidget {
   }
 
   Widget _buildNumbericLikeComment(BuildContext context) {
-    final controller = context.read<PostController>();
+    final controller = Get.find<PostController>();
 
     Widget circleIcon(String image) {
       return Container(

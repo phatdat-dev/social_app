@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/utils/helper.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
@@ -15,7 +15,7 @@ class GroupController extends BaseController {
   /// group of user
   List<Map<String, dynamic>>? groupData = null;
   Map<String, dynamic> currentGroup = {};
-  List<Map<String, dynamic>>? memberGroupData = null;
+  RxList<Map<String, dynamic>> memberGroupData = RxList();
 
   @override
   Future<void> onInitData() async {
@@ -33,22 +33,21 @@ class GroupController extends BaseController {
       //
       final data = List.from(value).map((e) => Helper.convertToListMap(e['groups'])).reduce((value, element) => value + element).toList();
       groupData = data;
-      notifyListeners();
     });
   }
 
   void redirectToGroup(BuildContext context, Map<String, dynamic> data) {
     currentGroup = data;
     fetchPostByGroupIdController.id = currentGroup['id'];
-    context.push(Routes.GROUP(currentGroup['id'].toString()), extra: this);
+    Get.toNamed(Routes.GROUP(currentGroup['id'].toString()));
   }
 
   void redirectToGroupInfomation(BuildContext context) {
-    context.push(Routes.GROUP_INFOMATION(currentGroup['id'].toString()), extra: this);
+    Get.toNamed(Routes.GROUP_INFOMATION(currentGroup['id'].toString()));
   }
 
   void redirectToGroupMembers(BuildContext context) {
-    context.push(Routes.GROUP_INFOMATION_MEMBERS(currentGroup['id'].toString()), extra: this);
+    Get.toNamed(Routes.GROUP_INFOMATION_MEMBERS(currentGroup['id'].toString()));
   }
 
   Future<void> call_fetchMemberGroup() async {
@@ -59,8 +58,7 @@ class GroupController extends BaseController {
     )
         .then((value) {
       //
-      memberGroupData = Helper.convertToListMap(value);
-      notifyListeners();
+      memberGroupData = Helper.convertToListMap(value).obs;
     });
   }
 
@@ -73,7 +71,7 @@ class GroupController extends BaseController {
         'groupId': groupId,
       },
     ).then((value) {
-      HelperWidget.showSnackBar(context: key.currentContext!, message: 'Success');
+      HelperWidget.showSnackBar(message: 'Success');
     });
   }
 
@@ -87,15 +85,15 @@ class GroupController extends BaseController {
       },
     ).then((value) {
       if (value is String) {
-        HelperWidget.showSnackBar(context: key.currentContext!, message: value);
+        HelperWidget.showSnackBar(message: value);
       } else {
-        HelperWidget.showSnackBar(context: key.currentContext!, message: 'Success');
+        HelperWidget.showSnackBar(message: 'Success');
       }
     });
   }
 }
 
-class FetchPostByGroupIdController extends BaseController with BaseFetchController {
+class FetchPostByGroupIdController extends BaseFetchController {
   late int id;
   ScrollController scrollController = ScrollController();
 
@@ -120,7 +118,7 @@ class FetchPostByGroupIdController extends BaseController with BaseFetchControll
   }
 }
 
-class FetchPostGroupController extends BaseController with BaseFetchController {
+class FetchPostGroupController extends BaseFetchController {
   @override
   String get apiUrl => ApiUrl.get_fetchPostGroup();
 }

@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../constants/color_constant.dart';
 
-class ThemeConfig with ChangeNotifier, ColorConstants {
-  ThemeMode _defaultThemeMode = ThemeMode.light;
-
-  ThemeMode get defaultThemeMode => _defaultThemeMode;
-  set defaultThemeMode(ThemeMode themeMode) {
-    _defaultThemeMode = themeMode;
-    notifyListeners();
-  }
-
+// https://flutter.github.io/samples/web/material_3_demo/#/
+class ThemeConfig with ColorConstants {
   ThemeData get lightTheme {
     return ThemeData.light().copyWith(
       // useMaterial3: true,
@@ -70,7 +63,7 @@ class ThemeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeConfig = context.read<ThemeConfig>();
+    final themeConfig = ThemeConfig();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -81,10 +74,10 @@ class ThemeView extends StatelessWidget {
               onTap: (value) {
                 switch (value) {
                   case 0:
-                    if (themeConfig.defaultThemeMode != ThemeMode.light) themeConfig.defaultThemeMode = ThemeMode.light;
+                    if (Get.rootController.themeMode != ThemeMode.light) Get.changeThemeMode(ThemeMode.light);
                     break;
                   case 1:
-                    if (themeConfig.defaultThemeMode != ThemeMode.dark) themeConfig.defaultThemeMode = ThemeMode.dark;
+                    if (Get.rootController.themeMode != ThemeMode.dark) Get.changeThemeMode(ThemeMode.dark);
                     break;
                   default:
                 }

@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
@@ -33,8 +32,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
   @override
   void initState() {
     super.initState();
-    controller = context.read<HomeController>();
-    controller.onInitData();
+    controller = Get.find<HomeController>();
 
     controller.tabBarWidget = {
       const Tab(icon: Icon(Icons.home_outlined, size: 30)): HomeDashBoardView(),
@@ -52,7 +50,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     //bắt sự kiện app background hay foreground
-    final fireBaseService = context.read<FireBaseService>();
+    final fireBaseService = Get.find<FireBaseService>();
     switch (state) {
       case AppLifecycleState.resumed:
         Printt.cyan('App in resumed');
@@ -82,68 +80,69 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
     return GestureDetector(
       //huy keyboard khi bam ngoai man hinh
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-      child: ChangeNotifierProvider.value(
-          value: controller.postController,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            // extendBody: true,
-            extendBodyBehindAppBar: true,
-            drawer: const HomeDrawerWidget(),
-            body: RefreshIndicator(
-              notificationPredicate: (notification) {
-                // with NestedScrollView local(depth == 2) OverscrollNotification are not sent
-                if (notification is OverscrollNotification || Platform.isIOS) {
-                  return notification.depth == 2;
-                }
-                return notification.depth == 0;
-              },
-              onRefresh: () async {
-                await controller.onInitData();
-              },
-              child: AnimatedBuilder(
-                animation: controller.tabBarController,
-                builder: (context, child) => NestedScrollView(
-                  key: controller.globalKeyScrollController,
-                  floatHeaderSlivers: true,
-                  headerSliverBuilder: (context, innerBoxIsScrolled) {
-                    switch (controller.tabBarController.index) {
-                      case 0:
-                        return [
-                          _buildAppBarHome(context),
-                        ];
-                      case 1:
-                        return [
-                          _buildAppBarDefaultTab(),
-                          _buildAppBarWatch(context),
-                        ];
-                      case 2:
-                        return [
-                          _buildAppBarDefaultTab(),
-                          _buildAppBarGroup(context),
-                        ];
-                      case 3:
-                        return [
-                          _buildAppBarDefaultTab(),
-                          _buildAppBarNotify(context),
-                        ];
-                      case 4:
-                        return [
-                          _buildAppBarDefaultTab(),
-                          _buildAppBarMenu(context),
-                        ];
-                      default:
-                        return [_buildAppBarDefaultTab()];
-                    }
-                  },
-                  body: TabBarView(
-                    controller: controller.tabBarController,
-                    children: controller.tabBarWidget.values.toList(),
-                  ),
+      child: GetBuilder(
+        init: controller.postController,
+        builder: (postController) => Scaffold(
+          resizeToAvoidBottomInset: false,
+          // extendBody: true,
+          extendBodyBehindAppBar: true,
+          drawer: const HomeDrawerWidget(),
+          body: RefreshIndicator(
+            notificationPredicate: (notification) {
+              // with NestedScrollView local(depth == 2) OverscrollNotification are not sent
+              if (notification is OverscrollNotification || Platform.isIOS) {
+                return notification.depth == 2;
+              }
+              return notification.depth == 0;
+            },
+            onRefresh: () async {
+              await controller.onInitData();
+            },
+            child: AnimatedBuilder(
+              animation: controller.tabBarController,
+              builder: (context, child) => NestedScrollView(
+                key: controller.globalKeyScrollController,
+                floatHeaderSlivers: true,
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  switch (controller.tabBarController.index) {
+                    case 0:
+                      return [
+                        _buildAppBarHome(context),
+                      ];
+                    case 1:
+                      return [
+                        _buildAppBarDefaultTab(),
+                        _buildAppBarWatch(context),
+                      ];
+                    case 2:
+                      return [
+                        _buildAppBarDefaultTab(),
+                        _buildAppBarGroup(context),
+                      ];
+                    case 3:
+                      return [
+                        _buildAppBarDefaultTab(),
+                        _buildAppBarNotify(context),
+                      ];
+                    case 4:
+                      return [
+                        _buildAppBarDefaultTab(),
+                        _buildAppBarMenu(context),
+                      ];
+                    default:
+                      return [_buildAppBarDefaultTab()];
+                  }
+                },
+                body: TabBarView(
+                  controller: controller.tabBarController,
+                  children: controller.tabBarWidget.values.toList(),
                 ),
               ),
             ),
-            //Footer
-          )),
+          ),
+          //Footer
+        ),
+      ),
     );
   }
 }

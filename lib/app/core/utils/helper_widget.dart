@@ -1,40 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/custom/other/search_controller_custom.dart';
 
 import '../../custom/other/more_dropdown_search_custom.dart';
-import '../constants/app_constant.dart';
 
 class HelperWidget {
-  static void showToast(String message, [BuildContext? context]) {
-    if (context == null) {
-      Fluttertoast.showToast(
-        msg: message,
-        gravity: ToastGravity.CENTER,
-        toastLength: Toast.LENGTH_LONG,
-        backgroundColor: Colors.red.shade100,
-        textColor: Colors.black,
-        fontSize: 16.0,
-      );
-    } else {
-      FToast fToast = FToast()..init(context);
-      fToast.showToast(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25.0),
-            color: Colors.red.shade100,
-          ),
-          child: Text(
-            message,
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-          ),
+  static void showToast(String message) {
+    FToast fToast = FToast()..init(Get.context!);
+    fToast.showToast(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25.0),
+          color: Colors.red.shade100,
         ),
-        gravity: ToastGravity.CENTER,
-        toastDuration: const Duration(seconds: 10),
-      );
-    }
+        child: Text(
+          message,
+          style: const TextStyle(fontSize: 16, color: Colors.black),
+        ),
+      ),
+      gravity: ToastGravity.CENTER,
+      toastDuration: const Duration(seconds: 10),
+    );
   }
 
   //hight light occurrentces
@@ -59,14 +48,13 @@ class HelperWidget {
   }
 
   static void showSnackBar({
-    required BuildContext context,
     required String message,
     MaterialColor color = Colors.green,
     IconData iconData = Icons.task_alt,
     Duration duration = const Duration(seconds: 3),
     double? width,
   }) =>
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
         content: Row(
           children: [
             Icon(iconData, color: color),
@@ -84,7 +72,7 @@ class HelperWidget {
       ));
 
   static Widget buildImage(String image) {
-    final context = Global.navigatorKey.currentContext!;
+    final context = Get.context!;
     return GestureDetector(
       onTap: () {
         showDialog(

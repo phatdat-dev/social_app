@@ -68,7 +68,7 @@ extension HomeViewExtension on _HomeViewState {
         AppBarIconWidget(
             icon: const Icon(MdiIcons.facebookMessenger),
             onPressed: () {
-              context.push(Routes.MESSAGE());
+              Get.toNamed(Routes.MESSAGE());
             }),
       ],
       bottom: TabBar(
@@ -211,7 +211,7 @@ extension HomeViewExtension on _HomeViewState {
           AppBarIconWidget(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                context.push('/viewColorTheme');
+                Get.toNamed('/viewColorTheme');
               }),
           AppBarIconWidget(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
         ],

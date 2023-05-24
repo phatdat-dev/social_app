@@ -1,12 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/modules/authentication/widget/forgot_password_tab_widget.dart';
 
-import '../../../core/utils/utils.dart';
+import '../../../../generated/locales.g.dart';
 import '../controllers/authentication_controller.dart';
 
 part '../widget/custom_prefix_icon_widget.dart';
@@ -32,14 +31,13 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
   void initState() {
     // Printt.white("init AuthenticationView");
     listTabBar = [
-      Tab(text: TranslateKeys.SignIn.tr()),
-      Tab(text: TranslateKeys.SignUp.tr()),
-      Tab(text: TranslateKeys.ForgotPassword.tr()),
+      Tab(text: LocaleKeys.SignIn.tr),
+      Tab(text: LocaleKeys.SignUp.tr),
+      Tab(text: LocaleKeys.ForgotPassword.tr),
     ];
     tabController = TabController(length: listTabBar.length, vsync: this);
     //
-    controller = context.read<AuthenticationController>();
-    controller.onInitData();
+    controller = Get.find<AuthenticationController>();
 
     super.initState();
   }
@@ -50,7 +48,6 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
       child: Scaffold(
-        key: controller.key,
         body: ListView(
           children: [
             // FractionallySizedBox(
@@ -122,9 +119,9 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(TranslateKeys.DoYouWantToTryIt.tr(), style: const TextStyle(fontSize: 12)),
+                      Text(LocaleKeys.DoYouWantToTryIt.tr, style: const TextStyle(fontSize: 12)),
                       TextButton(
-                        child: Text(TranslateKeys.TryNow.tr(), style: const TextStyle(fontSize: 14)),
+                        child: Text(LocaleKeys.TryNow.tr, style: const TextStyle(fontSize: 14)),
                         onPressed: () => controller.onTryApp(),
                       ),
                     ],

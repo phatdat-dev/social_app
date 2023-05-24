@@ -1,5 +1,6 @@
 part of 'firebase_service.dart';
 
+/// flutter_local_notifications: ^14.0.0+1
 mixin NotificationService {
   final localNotification = FlutterLocalNotificationsPlugin();
   AndroidNotificationChannel get androidNotifiChannel => const AndroidNotificationChannel(
@@ -32,7 +33,7 @@ mixin NotificationService {
     //
 
     //setting notification
-    final settings = const InitializationSettings(
+    const settings = InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       // iOS: DarwinInitializationSettings(),
     );
@@ -68,10 +69,11 @@ mixin NotificationService {
   }
 
   Future<void> showNotification(RemoteMessage message) async {
-    ByteArrayAndroidBitmap? imageBitMap = null;
+    ByteArrayAndroidBitmap? imageBitMap;
     if (message.data['image'] != null) {
-      final response = await Dio().get<List<int>>(message.data['image'], options: Options(responseType: ResponseType.bytes));
-      imageBitMap = ByteArrayAndroidBitmap.fromBase64String(base64Encode(response.data!));
+      Uint8List bodyBytes = (await NetworkAssetBundle(Uri.parse(message.data['image'])).load(message.data['image'])).buffer.asUint8List();
+
+      imageBitMap = ByteArrayAndroidBitmap.fromBase64String(base64Encode(bodyBytes));
     }
 
     return localNotification.show(

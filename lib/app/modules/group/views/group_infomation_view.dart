@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/models/response/privacy_model.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 
@@ -15,7 +15,7 @@ class _GroupInfomationViewState extends State<GroupInfomationView> {
   @override
   void initState() {
     super.initState();
-    controller = context.read<GroupController>();
+    controller = Get.find<GroupController>();
     controller.call_fetchMemberGroup();
   }
 
@@ -57,35 +57,32 @@ class _GroupInfomationViewState extends State<GroupInfomationView> {
           ),
           SizedBox(
             height: 50,
-            child: Selector(
-              selector: (context, GroupController controller) => controller.memberGroupData,
-              builder: (context, data, child) {
-                if (data == null) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return Stack(
-                  children: List.generate(
-                    data.length,
-                    (index) => Positioned(
-                      left: index * 25,
-                      child: InkWell(
-                        onTap: () {
-                          //view profile here
-                        },
+            child: ObxValue((memberGroupData) {
+              if (memberGroupData.isEmpty) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return Stack(
+                children: List.generate(
+                  memberGroupData.length,
+                  (index) => Positioned(
+                    left: index * 25,
+                    child: InkWell(
+                      onTap: () {
+                        //view profile here
+                      },
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                         child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                          child: CircleAvatar(
-                            radius: 19,
-                            backgroundImage: NetworkImage(data[index]['avatar']),
-                          ),
+                          radius: 19,
+                          backgroundImage: NetworkImage(memberGroupData[index]['avatar']),
                         ),
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            }, controller.memberGroupData),
           ),
           const Divider(),
           Text('Hoạt động trong nhóm', style: Theme.of(context).textTheme.titleLarge),

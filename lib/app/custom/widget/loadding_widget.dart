@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/app/core/constants/global_constant.dart';
+import 'package:get/get.dart';
 
 class Loadding {
   static GlobalKey<_LoaddingWidgetState> key = GlobalKey<_LoaddingWidgetState>();
@@ -10,7 +10,7 @@ class Loadding {
     stacKLoadding.add(true);
     if (key.currentContext == null && stacKLoadding.length == 1) {
       showDialog(
-        context: Global.navigatorKey.currentContext!,
+        context: Get.context!,
         barrierDismissible: true,
         builder: (context) => LoaddingWidget(key: key),
       );

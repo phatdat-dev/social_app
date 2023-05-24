@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
@@ -25,184 +25,185 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<T>();
-    final groupController = context.read<GroupController?>();
+    final controller = Get.find<T>();
+    final groupController = Get.find<GroupController?>();
 
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-      child: ChangeNotifierProvider.value(
-          value: PickerService(),
-          builder: (context, child) {
-            var filesPicker = context.select((PickerService pickerService) => pickerService.files);
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(groupController?.currentGroup['group_name'] ?? 'Tạo bài viết'),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: AnimatedBuilder(
-                      animation: txtController,
-                      builder: (context, child) {
-                        final bool allowPost = txtController.text.isNotEmpty || (filesPicker?.isNotEmpty ?? false);
-                        return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: allowPost ? null : Colors.grey.shade200,
-                          ),
-                          onPressed: allowPost
-                              ? () => controller.postController
-                                      .call_createPostData(
-                                    content: txtController.text,
-                                    privacy: currentPrivacy.value.privacyId!, //get dropdown privacy
-                                    groupId: groupController?.currentGroup['id'] ?? null,
-                                    filesPath: filesPicker,
-                                    // images: [],
-                                  )
-                                      .then((value) {
-                                    HelperWidget.showSnackBar(context: context, message: 'Create Success');
-                                    Navigator.pop(context);
-                                  })
-                              : null,
-                          child: Text('Đăng', style: TextStyle(color: allowPost ? null : Colors.grey)),
-                        );
-                      },
-                    ),
+      child: GetBuilder<PickerService>(
+        init: PickerService(),
+        builder: (pickerService) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(groupController?.currentGroup['group_name'] ?? 'Tạo bài viết'),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: AnimatedBuilder(
+                    animation: txtController,
+                    builder: (context, child) {
+                      final bool allowPost = txtController.text.isNotEmpty || (pickerService.files?.isNotEmpty ?? false);
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: allowPost ? null : Colors.grey.shade200,
+                        ),
+                        onPressed: allowPost
+                            ? () => controller.postController
+                                    .call_createPostData(
+                                  content: txtController.text,
+                                  privacy: currentPrivacy.value.privacyId!, //get dropdown privacy
+                                  groupId: groupController?.currentGroup['id'] ?? null,
+                                  filesPath: pickerService.files,
+                                  // images: [],
+                                )
+                                    .then((value) {
+                                  HelperWidget.showSnackBar(message: 'Create Success');
+                                  Navigator.pop(context);
+                                })
+                            : null,
+                        child: Text('Đăng', style: TextStyle(color: allowPost ? null : Colors.grey)),
+                      );
+                    },
                   ),
-                ],
-              ),
-              body: ListView(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                shrinkWrap: true,
-                // controller: scrollController,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  buildHeader(),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 2.5,
-                    child: buildTextField(),
-                  ),
+                ),
+              ],
+            ),
+            body: ListView(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+              shrinkWrap: true,
+              // controller: scrollController,
+              physics: const BouncingScrollPhysics(),
+              children: [
+                buildHeader(),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 2.5,
+                  child: buildTextField(),
+                ),
 
-                  const Divider(
-                    indent: 20,
-                    endIndent: 20,
-                    thickness: 1,
-                  ),
-                  //show image when push complete
+                const Divider(
+                  indent: 20,
+                  endIndent: 20,
+                  thickness: 1,
+                ),
+                //show image when push complete
 
-                  Builder(
-                    builder: (context) {
-                      if (filesPicker == null) return const SizedBox.shrink();
+                Builder(
+                  builder: (context) {
+                    final filesPicker = pickerService.files;
+                    if (filesPicker == null) return const SizedBox.shrink();
 
-                      return StatefulBuilder(
-                          builder: (context, setState) => Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(
-                                  filesPicker.length,
-                                  (index) {
-                                    final bool isImageFile = filesPicker[index].isImageFileName;
-                                    final bool isVideoFile = filesPicker[index].isVideoFileName;
+                    return StatefulBuilder(
+                        builder: (context, setState) => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(
+                                filesPicker.length,
+                                (index) {
+                                  final bool isImageFile = filesPicker[index].isImageFileName;
+                                  final bool isVideoFile = filesPicker[index].isVideoFileName;
 
-                                    if (isImageFile) {
-                                      return Stack(
-                                        children: [
-                                          kIsWeb
-                                              ? Image.network(filesPicker[index])
-                                              : Image.file(
-                                                  File(filesPicker[index]),
-                                                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) =>
-                                                      const Center(child: Text('This image type is not supported')),
-                                                ),
-                                          Positioned.fill(
-                                            child: Align(
-                                              alignment: Alignment.topRight,
-                                              child: Material(
-                                                elevation: 1,
-                                                shape: const CircleBorder(),
-                                                child: CloseButton(
-                                                  onPressed: () {
-                                                    filesPicker.removeAt(index);
-                                                    setState(() {});
-                                                  },
-                                                ),
+                                  if (isImageFile) {
+                                    return Stack(
+                                      children: [
+                                        kIsWeb
+                                            ? Image.network(filesPicker[index])
+                                            : Image.file(
+                                                File(filesPicker[index]),
+                                                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) =>
+                                                    const Center(child: Text('This image type is not supported')),
+                                              ),
+                                        Positioned.fill(
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Material(
+                                              elevation: 1,
+                                              shape: const CircleBorder(),
+                                              child: CloseButton(
+                                                onPressed: () {
+                                                  filesPicker.removeAt(index);
+                                                  setState(() {});
+                                                },
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    }
-                                    if (isVideoFile) {
-                                      VideoPlayerController videoPlayerController = VideoPlayerController.file(File(filesPicker[index]));
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  if (isVideoFile) {
+                                    VideoPlayerController videoPlayerController = VideoPlayerController.file(File(filesPicker[index]));
 
-                                      return FutureBuilder(
-                                        future: videoPlayerController.initialize(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState == ConnectionState.done) {
-                                            return AspectRatio(
-                                              aspectRatio: videoPlayerController.value.aspectRatio,
-                                              child: Chewie(
-                                                controller: ChewieController(videoPlayerController: videoPlayerController),
-                                              ),
-                                            );
-                                          }
-                                          return const CircularProgressIndicator();
-                                        },
-                                      );
-                                    }
-                                    return const SizedBox.shrink();
-                                  },
-                                ),
-                              ));
-                    },
-                  )
-                ],
-              ),
-              bottomSheet: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: Colors.grey.shade300),
-                  ),
+                                    return FutureBuilder(
+                                      future: videoPlayerController.initialize(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.done) {
+                                          return AspectRatio(
+                                            aspectRatio: videoPlayerController.value.aspectRatio,
+                                            child: Chewie(
+                                              controller: ChewieController(videoPlayerController: videoPlayerController),
+                                            ),
+                                          );
+                                        }
+                                        return const CircularProgressIndicator();
+                                      },
+                                    );
+                                  }
+                                  return const SizedBox.shrink();
+                                },
+                              ),
+                            ));
+                  },
+                )
+              ],
+            ),
+            bottomSheet: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.grey.shade300),
                 ),
-                child: Builder(builder: (context) {
-                  final List<Widget> children = [
-                    InkWell(
-                      onTap: () async {
-                        context.read<PickerService>().pickMultiFile(FileType.media);
-                      },
-                      customBorder: const StadiumBorder(),
-                      child: const Icon(
-                        Icons.photo_library_outlined,
-                        color: Colors.green,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Gắn thẻ bạn bè')));
-                      },
-                      customBorder: const StadiumBorder(),
-                      child: const Icon(
-                        Icons.loyalty_outlined,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    const Icon(
-                      Icons.tag_faces,
-                      color: Colors.amber,
-                    ),
-                    const Icon(
-                      Icons.location_on_outlined,
-                      color: Colors.red,
-                    ),
-                    const Icon(Icons.more_outlined),
-                  ];
-                  return IconTheme(
-                      data: const IconThemeData(size: 30),
-                      child: Row(
-                        children: children.map((e) => Expanded(child: e)).toList(),
-                      ));
-                }),
               ),
-            );
-          }),
+              child: Builder(builder: (context) {
+                final List<Widget> children = [
+                  InkWell(
+                    onTap: () async {
+                      pickerService.pickMultiFile(FileType.media);
+                    },
+                    customBorder: const StadiumBorder(),
+                    child: const Icon(
+                      Icons.photo_library_outlined,
+                      color: Colors.green,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Gắn thẻ bạn bè')));
+                    },
+                    customBorder: const StadiumBorder(),
+                    child: const Icon(
+                      Icons.loyalty_outlined,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.tag_faces,
+                    color: Colors.amber,
+                  ),
+                  const Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.red,
+                  ),
+                  const Icon(Icons.more_outlined),
+                ];
+                return IconTheme(
+                    data: const IconThemeData(size: 30),
+                    child: Row(
+                      children: children.map((e) => Expanded(child: e)).toList(),
+                    ));
+              }),
+            ),
+          );
+        },
+      ),
     );
   }
 

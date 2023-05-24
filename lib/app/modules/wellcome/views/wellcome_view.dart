@@ -1,26 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/modules/wellcome/controller/wellcome_controller.dart';
+import 'package:social_app/generated/locales.g.dart';
 
-class WellcomeView extends StatefulWidget {
+import '../../../routes/app_pages.dart';
+
+class WellcomeView extends GetView<WellComeController> {
   const WellcomeView({super.key});
-
-  @override
-  State<WellcomeView> createState() => _WellcomeViewState();
-}
-
-class _WellcomeViewState<T extends WellComeController> extends State<WellcomeView> {
-  late final T controller;
-
-  @override
-  void initState() {
-    controller = context.read<T>();
-    controller.onInitData();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +19,9 @@ class _WellcomeViewState<T extends WellComeController> extends State<WellcomeVie
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text('You have pushed the button this many times:'),
-          Text('PleaseWait'.tr()),
-          Consumer<WellComeController>(
-            builder: (context, controller, child) {
-              return Text(
-                '${controller.counter}',
-              );
-            },
+          Text(LocaleKeys.PleaseWait.tr),
+          Text(
+            '${controller.counter}',
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +47,7 @@ class _WellcomeViewState<T extends WellComeController> extends State<WellcomeVie
           ),
           ElevatedButton.icon(
             onPressed: () {
-              context.push('/');
+              Get.offAllNamed(Routes.HOME());
             },
             icon: const Icon(Icons.dangerous),
             label: const Text('fetchData'),

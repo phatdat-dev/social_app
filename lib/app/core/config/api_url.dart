@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 class ApiUrl {
-  static String get get_base_url => 'https://animehay.live'; //baseUrl Image from crawl data
+  static String get base_url => 'https://127.0.0.1'; //baseUrl
   //auth
   static String post_auth_login() => '/api/auth/login';
   static String post_auth_forgotPassword() => '/api/auth/forgot-password';

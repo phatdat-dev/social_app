@@ -1,11 +1,10 @@
 part of '../views/authentication_view.dart';
 
-class SignInTabWidget extends StatelessWidget {
+class SignInTabWidget extends GetView<AuthenticationController> {
   const SignInTabWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<AuthenticationController>();
     return FormBuilder(
       key: controller.formSignInKey,
       child: ListView(
@@ -17,7 +16,7 @@ class SignInTabWidget extends StatelessWidget {
           StatefulBuilder(
               builder: (context, setState) => CheckboxListTile(
                     activeColor: Colors.green,
-                    title: Text(TranslateKeys.RememberPassword.tr()),
+                    title: Text(LocaleKeys.RememberPassword.tr),
                     value: controller.isRememberPassword,
                     onChanged: (value) => setState(() => controller.isRememberPassword = value!),
                   )),
@@ -27,7 +26,7 @@ class SignInTabWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: ElevatedButton(
               onPressed: () => controller.onSignIn(),
-              child: Text(TranslateKeys.SignIn.tr()),
+              child: Text(LocaleKeys.SignIn.tr),
             ),
           ),
         ],
@@ -52,7 +51,7 @@ List<Widget> buildTextField_UserNamePassWord() {
         //   Icons.check_circle,
         //   color: Colors.black26,
         // ),
-        labelText: '${TranslateKeys.Email.tr()}',
+        labelText: '${LocaleKeys.Email.tr}',
         // hintStyle: const TextStyle(color: Colors.yellow),
         filled: true,
         fillColor: Colors.lightBlueAccent.withOpacity(0.1),
@@ -82,7 +81,7 @@ List<Widget> buildTextField_UserNamePassWord() {
                     size: 24.0,
                   ),
                 ),
-                labelText: '${TranslateKeys.Password.tr()}',
+                labelText: '${LocaleKeys.Password.tr}',
                 // hintStyle: const TextStyle(color: Colors.yellow),
                 filled: true,
                 fillColor: Colors.lightBlueAccent.withOpacity(0.1),

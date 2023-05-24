@@ -1,10 +1,14 @@
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app/app/core/constants/global_constant.dart';
-import 'package:social_app/app/core/constants/storage_constant.dart';
+import 'package:get/get.dart';
 
-class TranslationService {
+import '../../../generated/locales.g.dart';
+import '../constants/app_constant.dart';
+
+// get generate locales assets/translations
+//nguồn: https://viblo.asia/p/getx-flutter-multiple-language-support-with-getx-part-3-GrLZDDqBZk0
+class TranslationService extends Translations {
+  // locale sẽ được get mỗi khi mới mở app (phụ thuộc vào locale hệ thống hoặc bạn có thể cache lại locale mà người dùng đã setting và set nó ở đây)
+  static Locale locale = Get.deviceLocale!;
   // fallbackLocale là locale default nếu locale được set không nằm trong những Locale support
   static const fallbackLocale = Locale('en', 'US');
   // các Locale được support
@@ -16,20 +20,23 @@ class TranslationService {
 
   // function change language
   static void changeLocale(Locale localeee) {
-    Global.navigatorKey.currentContext!.setLocale(localeee);
+    Get.updateLocale(localeee);
+    locale = localeee;
     Global.sharedPreferences.setString(StorageConstants.langCode, localeee.languageCode);
   }
 
   static Locale getLocaleFromLanguage() {
     final langCode = Global.sharedPreferences.getString(StorageConstants.langCode);
-    final context = Global.navigatorKey.currentContext!;
 
-    if (langCode == null) return context.deviceLocale;
+    if (langCode == null) return Get.deviceLocale!;
 
     for (int i = 0; i < locales.length; i++) {
       if (langCode == locales[i].languageCode) return locales[i];
     }
 
-    return context.deviceLocale;
+    return Get.deviceLocale!;
   }
+
+  @override
+  Map<String, Map<String, String>> get keys => AppTranslation.translations;
 }

@@ -1,21 +1,18 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:provider/provider.dart';
-import 'package:social_app/app/core/constants/translate_key_constant.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
+import '../../../../generated/locales.g.dart';
 import '../views/authentication_view.dart';
 
-class ForgotPasswordTapWidget extends StatelessWidget {
+class ForgotPasswordTapWidget extends GetView<AuthenticationController> {
   const ForgotPasswordTapWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<AuthenticationController>();
-
     return FormBuilder(
       key: controller.formForgotPasswordKey,
       child: ListView(
@@ -39,7 +36,7 @@ class ForgotPasswordTapWidget extends StatelessWidget {
               //   Icons.check_circle,
               //   color: Colors.black26,
               // ),
-              labelText: '${TranslateKeys.Email.tr()}',
+              labelText: LocaleKeys.Email.tr,
               // hintStyle: const TextStyle(color: Colors.yellow),
               filled: true,
               fillColor: Colors.lightBlueAccent.withOpacity(0.1),

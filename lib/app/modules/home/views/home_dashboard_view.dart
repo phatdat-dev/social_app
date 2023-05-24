@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
-import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 import 'package:social_app/app/modules/home/widget/input_story_widget.dart';
 
@@ -22,7 +21,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
   @override
   void initState() {
     super.initState();
-    controller = context.read<HomeController>();
+    controller = Get.find<HomeController>();
   }
 
   @override
@@ -48,22 +47,18 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
       children: <Widget>[
         const InputStoryWidget(),
         _buildListCardStory(),
-        Selector(
-          selector: (_, PostController controller) => controller.dataResponse,
-          builder: (context, data, child) {
-            if (data == null) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
+        GetBuilder(
+          init: controller.postController,
+          builder: (postController) => postController.obx((state) {
             return ListView.builder(
-                itemCount: data.length,
+                itemCount: state!.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, int index) {
-                  return FacebookCardPostWidget(data[index]);
+                  return FacebookCardPostWidget(state[index]);
                 });
-          },
+          }),
         ),
       ],
     );

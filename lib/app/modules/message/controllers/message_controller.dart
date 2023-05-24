@@ -1,9 +1,8 @@
-import 'package:collection/collection.dart';
-import 'package:dio/dio.dart';
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
@@ -32,8 +31,7 @@ class MessageController extends BaseController with SearchTagFriendController {
 
   @override
   void onPresseSearchTagFriendDone() async {
-    final context = key.currentContext!;
-    final fireBaseService = context.read<FireBaseService>();
+    final fireBaseService = Get.find<FireBaseService>();
     final listSelected = listTagFriend!.where((element) => element.isSelected).toList();
 
     await fireBaseService.call_createOrUpdateGroupChat(
@@ -41,16 +39,12 @@ class MessageController extends BaseController with SearchTagFriendController {
       members: [AuthenticationController.userAccount!.toJson(), ...listSelected.map((e) => (e as UsersModel).toJson())],
     );
 
-    context.pop();
+    Get.back();
   }
 
   void onCreateNewGroupMessage<T extends SearchTagFriendController>(BuildContext context) {
     currentChatRoom.update('chatRoomId', (value) => null);
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ChangeNotifierProvider.value(
-              value: this,
-              child: SearchTagFriendView<T>(title: 'New Message'),
-            )));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'New Message')));
   }
 
   void onAddMemberToGroupMessage<T extends SearchTagFriendController>({
@@ -62,15 +56,10 @@ class MessageController extends BaseController with SearchTagFriendController {
       listTagFriend?.firstWhereOrNull((e) => (e as UsersModel).id == element.id)?.isSelected = true;
     });
 
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ChangeNotifierProvider.value(
-              value: this,
-              child: SearchTagFriendView<T>(title: 'Add member', minSelected: 1),
-            )));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Add member', minSelected: 1)));
   }
 
   void onPickFileSend({
-    required BuildContext context,
     required FileType type,
   }) async {
     //pick file
@@ -78,8 +67,8 @@ class MessageController extends BaseController with SearchTagFriendController {
     await pickerService.pickMultiFile(type);
     if (pickerService.files == null || pickerService.files!.isEmpty) return;
 
-    final formData = FormData.fromMap({
-      'files[]': pickerService.files?.map((path) => MultipartFile.fromFileSync(path)).toList(),
+    final formData = FormData({
+      'files[]': pickerService.files?.map((path) => MultipartFile(File(path), filename: path)).toList(),
     });
 
     final images = await apiCall.onRequest(
@@ -88,10 +77,10 @@ class MessageController extends BaseController with SearchTagFriendController {
       body: formData,
     );
 
-    context.read<FireBaseService>().call_sendMessage(
-          chatRoomId: currentChatRoom['chatRoomId'],
-          type: type.name,
-          data: images,
-        );
+    Get.find<FireBaseService>().call_sendMessage(
+      chatRoomId: currentChatRoom['chatRoomId'],
+      type: type.name,
+      data: images,
+    );
   }
 }

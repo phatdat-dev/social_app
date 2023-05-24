@@ -1,4 +1,4 @@
-export '../constants/translate_key_constant.dart';
+export '../../../generated/locales.g.dart';
 export 'all_flutter_icon.dart';
 export 'debouncer.dart';
 export 'extension/app_extension.dart';

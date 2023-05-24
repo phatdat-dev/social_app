@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
-import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
 
 class HomeVideoView extends StatefulWidget {
@@ -17,28 +16,20 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
   @override
   void initState() {
     super.initState();
-    controller = context.read<HomeController>();
+    controller = Get.find<HomeController>();
 
     controller.subTabBarVideoWidget = {
       const Tab(text: 'Dành cho bạn'): ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Selector(
-            selector: (_, PostController controller) => controller.dataResponse,
-            builder: (context, data, child) {
-              if (data == null) {
-                return const CircularProgressIndicator();
-              }
-              return ListView.builder(
-                  itemCount: data.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, int index) {
-                    return FacebookCardPostWidget(data[index]);
-                  });
-            },
-          ),
+          controller.postController.obx((state) => ListView.builder(
+              itemCount: state!.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, int index) {
+                return FacebookCardPostWidget(state[index]);
+              })),
         ],
       ),
       const Tab(text: 'Trực tiếp'): Container(
@@ -62,22 +53,14 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
       const Tab(text: 'Dành cho bạn'): ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Selector(
-            selector: (_, PostController controller) => controller.dataResponse,
-            builder: (context, data, child) {
-              if (data == null) {
-                return const CircularProgressIndicator();
-              }
-              return ListView.builder(
-                  itemCount: data.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, int index) {
-                    return FacebookCardPostWidget(data[index]);
-                  });
-            },
-          ),
+          controller.postController.obx((state) => ListView.builder(
+              itemCount: state!.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, int index) {
+                return FacebookCardPostWidget(state[index]);
+              })),
         ],
       ),
       const Tab(text: 'Nhóm của bạn'): Container(

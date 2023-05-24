@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
-import 'package:social_app/app/core/utils/extension/app_extension.dart';
+import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
 import 'package:social_app/app/custom/widget/search_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
@@ -13,28 +12,12 @@ import 'package:social_app/app/routes/app_pages.dart';
 
 import '../controllers/message_controller.dart';
 
-class MessageView extends StatefulWidget {
+class MessageView<T extends MessageController> extends GetView<T> {
   const MessageView({super.key});
 
   @override
-  State<MessageView> createState() => _MessageViewState();
-}
-
-class _MessageViewState<T extends MessageController> extends State<MessageView> {
-  late final T controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = context.read<T>();
-    controller.onInitData();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final controller = context.read<T>();
     return Scaffold(
-      key: controller.key,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -60,7 +43,7 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
                   controller: TextEditingController(),
                   hintText: 'Search Anyone',
                   onTap: () {
-                    context.push(Routes.MESSAGE_SEARCH(), extra: controller);
+                    Get.toNamed(Routes.MESSAGE_SEARCH());
                     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                   },
                 ),
@@ -75,11 +58,11 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
                   'chatRoomId': controller.generateChatRoomId(['${AuthenticationController.userAccount!.id!}', '${user.id!}']),
                   'user': user,
                 });
-                context.push(Routes.MESSAGE_DETAIL(user.id!.toString()), extra: controller);
+                Get.toNamed(Routes.MESSAGE_DETAIL(user.id!.toString()));
               },
             ),
             StreamBuilder(
-                stream: context.read<FireBaseService>().call_getGroupChatOfUser(),
+                stream: Get.find<FireBaseService>().call_getGroupChatOfUser(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final groupList = snapshot.data!.docs;
@@ -101,7 +84,7 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
                                 displayName: 'asdasd',
                               ),
                             });
-                            context.push(Routes.MESSAGE_DETAIL(item['id']), extra: controller);
+                            Get.toNamed(Routes.MESSAGE_DETAIL(item['id']));
                           },
                         );
                       },
@@ -116,36 +99,32 @@ class _MessageViewState<T extends MessageController> extends State<MessageView> 
   }
 
   Widget buildListUser({void Function(int index, UsersModel user)? onTapUserIndex}) {
-    return Selector(
-        selector: (context, MessageController controller) => controller.listTagFriend,
-        builder: (context, value, child) {
-          return (value?.isEmpty ?? true)
-              ? Column(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/svg/search_2.svg',
-                      width: 200,
-                      height: 200,
-                    ),
-                    const Text('Not found'),
-                  ],
-                )
-              : ListView.builder(
-                  shrinkWrap: true, //tranh' loi~ view SingleChildScrollView-column
-                  //ngan chan ListView no' cuon xuong' duoc, xai` cho SingleChildScrollView-column
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: value!.length,
-                  itemBuilder: (context, index) {
-                    final item = value[index] as UsersModel;
-                    // if (LoginController.userLogin?.id == user.id) {
-                    //   return const SizedBox.shrink();
-                    // }
-                    return ChatCard(
-                      user: item,
-                      onTap: () => onTapUserIndex != null ? onTapUserIndex(index, item) : null,
-                    );
-                  },
-                );
-        });
+    return (controller.listTagFriend?.isEmpty ?? true)
+        ? Column(
+            children: [
+              SvgPicture.asset(
+                'assets/svg/search_2.svg',
+                width: 200,
+                height: 200,
+              ),
+              const Text('Not found'),
+            ],
+          )
+        : ListView.builder(
+            shrinkWrap: true, //tranh' loi~ view SingleChildScrollView-column
+            //ngan chan ListView no' cuon xuong' duoc, xai` cho SingleChildScrollView-column
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: controller.listTagFriend!.length,
+            itemBuilder: (context, index) {
+              final item = controller.listTagFriend![index] as UsersModel;
+              // if (LoginController.userLogin?.id == user.id) {
+              //   return const SizedBox.shrink();
+              // }
+              return ChatCard(
+                user: item,
+                onTap: () => onTapUserIndex != null ? onTapUserIndex(index, item) : null,
+              );
+            },
+          );
   }
 }

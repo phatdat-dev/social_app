@@ -1,18 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:social_app/app/core/constants/translate_key_constant.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/services/translation_service.dart';
 import 'package:social_app/app/custom/widget/check_radio_listtitle_widget.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 
-class GroupDrawerWidget extends StatelessWidget {
+import '../../../../generated/locales.g.dart';
+
+class GroupDrawerWidget extends GetView<GroupController> {
   const GroupDrawerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<GroupController>();
     return Drawer(
       child: Stack(
         children: [
@@ -78,7 +77,7 @@ class GroupDrawerWidget extends StatelessWidget {
               ListTile(
                 style: ListTileStyle.drawer,
                 leading: const Icon(Icons.favorite_outline),
-                title: Text(TranslateKeys.Favorite.tr()),
+                title: Text(LocaleKeys.Favorite.tr),
                 trailing: const Icon(Icons.navigate_next_outlined),
               ),
               //download
@@ -111,15 +110,15 @@ class GroupDrawerWidget extends StatelessWidget {
 
               ExpansionTile(
                 leading: const Icon(Icons.language_outlined),
-                title: Text(TranslateKeys.Language.tr()),
+                title: Text(LocaleKeys.Language.tr),
                 children: TranslationService.locales
                     .map((e) => CheckRadioListTileWidget<Locale>(
                           value: e,
                           title: Text(
-                            e.toString().tr(),
+                            e.toString().tr,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          groupValue: context.locale,
+                          groupValue: TranslationService.locale,
                           onChanged: (value) => TranslationService.changeLocale(value!),
                         ))
                     .toList(),
@@ -128,7 +127,7 @@ class GroupDrawerWidget extends StatelessWidget {
               ListTile(
                 style: ListTileStyle.drawer,
                 leading: const Icon(Icons.settings_outlined),
-                title: Text(TranslateKeys.Setting.tr()),
+                title: Text(LocaleKeys.Setting.tr),
                 trailing: const Icon(Icons.navigate_next_outlined),
               ),
             ],
@@ -139,10 +138,11 @@ class GroupDrawerWidget extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(10),
               child: ElevatedButton.icon(
-                  onPressed: () => context.read<AuthenticationController>().onSignOut(),
-                  icon: const Icon(Icons.logout_outlined),
-                  label: Text(TranslateKeys.LogOut.tr()),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.pinkAccent)),
+                onPressed: () => Get.find<AuthenticationController>().onSignOut(),
+                icon: const Icon(Icons.logout_outlined),
+                label: Text(LocaleKeys.LogOut.tr),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.pinkAccent),
+              ),
             ),
           ),
         ],

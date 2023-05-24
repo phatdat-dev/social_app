@@ -1,87 +1,63 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
-import 'package:go_router/go_router.dart';
-import 'package:social_app/app/core/base/base_model.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/custom/widget/loadding_widget.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 
+import '/app/core/base/base_model.dart';
+import '/app/core/config/api_url.dart';
+import '/app/core/utils/utils.dart';
+import '/app/custom/widget/loadding_widget.dart';
+import '/app/modules/authentication/controllers/authentication_controller.dart';
+import '../../routes/app_pages.dart';
 import '../constants/app_constant.dart';
 
+// ignore: constant_identifier_names
 enum RequestMethod { GET, POST, PUT, DELETE }
 
-class BaseConnect {
-  //create instance
-  static final BaseConnect _instance = BaseConnect._internal();
-  factory BaseConnect() => _instance;
-  static BaseConnect get instance => _instance;
-
-  //create dio
-  late final Dio dio;
+class BaseConnect extends GetConnect {
   int get requestAgainSecond => 10; //neu request loi~ thi` se tu dong goi call api sau khoang thoi gian nao` do'
   int get timeOutSecond => 60;
   bool isShowLoading = true;
 
-  //instance iniit dio
-  BaseConnect._internal() {
-    dio = Dio(BaseOptions(
-      // Cấu hình đường path để call api, thành phần gồm
-      // - options.path: đường dẫn cụ thể API. Ví dụ: "user/user-info"
-      baseUrl: 'http://192.168.1.6:8080',
-      // baseUrl: 'http://116.106.23.233:8080',
+  @override
+  void onInit() {
+    super.onInit();
+    httpClient.baseUrl = ApiUrl.base_url;
+    httpClient.timeout = Duration(seconds: timeOutSecond);
+    // httpClient.addAuthenticator(authInterceptor);
+    httpClient.addRequestModifier(requestInterceptor);
+    httpClient.addResponseModifier(responseInterceptor);
+  }
 
-      // Đoạn này dùng để config timeout api từ phía client, tránh việc call 1 API
-      // bị lỗi trả response quá lâu.
-      sendTimeout: Duration(seconds: timeOutSecond),
-      // connectTimeout = Duration(seconds: timeOutSecond);
-      // receiveTimeout = Duration(seconds: timeOutSecond);
+  FutureOr<Request> requestInterceptor(Request request) async {
+    request.headers['Authorization'] = 'Bearer ${AuthenticationController.userAccount?.token}';
 
-      // Gắn access_token vào header, gửi kèm access_token trong header mỗi khi call API
-      headers: {
-        // "Authorization": "Bearer ${AuthenticationController.userAccount?.token}", //setup Sau
-        'Accept': 'application/json, text/plain, */*',
-        // "Content-Type":"application/json;charset=UTF-8",
-        'Charset': 'utf-8',
-      },
+    request.headers['Accept'] = 'application/json, text/plain, */*';
+    request.headers['Charset'] = 'utf-8';
+    // request.headers['Content-Type'] = 'application/json;charset=UTF-8';
 
-      // contentType: "application/json;charset=UTF-8"
-      // headers['Content-Type'] = 'application/json;charset=UTF-8';
-    ));
+    // tự động mở loadding khi Request
+    if (isShowLoading) Loadding.show();
+    Printt.yellow('${request.method}:  ${request.url.toString()}                           ------------request');
+    return request;
+  }
 
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          //debug
-          if (isShowLoading) Loadding.show();
-          Printt.yellow('${options.method}:  ${options.uri.toString()}                           ------------request');
+  FutureOr<dynamic> responseInterceptor(Request request, Response response) async {
+    // tự động tắt loadding khi có response
+    Loadding.dismiss();
 
-          //add token
-          if (AuthenticationController.userAccount != null) {
-            options.headers['Authorization'] = 'Bearer ${AuthenticationController.userAccount?.token}';
-          }
+    if (response.hasError) {
+      handleErrorStatus(response);
+      return;
+    }
 
-          return handler.next(options);
-        },
-        onResponse: (Response response, handler) {
-          Loadding.dismiss();
-
-          return handler.next(response);
-        },
-        onError: (DioError error, handler) async {
-          Loadding.dismiss();
-          Printt.red(error.error ?? error.message);
-          handleErrorStatus(error.response!);
-          return handler.next(error);
-        },
-      ),
-    );
+    return response;
   }
 
   FutureOr<T> onTimeout<T>() {
     throw TimeoutException(
-        'Không có phản hồi từ máy chủ trong ${dio.options.sendTimeout?.inSeconds} giây, yêu cầu có thể đã được gửi đi, xin hãy kiểm tra lại');
+        'Không có phản hồi từ máy chủ trong ${httpClient.timeout.inSeconds} giây, yêu cầu có thể đã được gửi đi, xin hãy kiểm tra lại');
   }
 
   void handleErrorStatus(Response response) {
@@ -90,8 +66,7 @@ class BaseConnect {
       case 404:
       case 500:
         //
-        final Map<String, dynamic> errorMessage = response.data!;
-        // ignore: prefer_interpolation_to_compose_strings
+        final Map<String, dynamic> errorMessage = jsonDecode(response.bodyString!);
 
         String message = '';
         if (errorMessage.containsKey('error') || errorMessage.containsKey('message')) {
@@ -103,10 +78,11 @@ class BaseConnect {
           }
         } else {
           errorMessage.forEach((key, value) {
-            if (value is List)
-              message += value.join('\n') + '\n';
-            else
+            if (value is List) {
+              message += '${value.join('\n')}\n';
+            } else {
               message += value.toString();
+            }
           });
         }
         HelperWidget.showToast('CODE (${response.statusCode}):\n$message');
@@ -114,13 +90,13 @@ class BaseConnect {
         break;
       case 401:
         //401: Print token expired
-        String message = 'CODE (${response.statusCode}):\n${response.statusMessage}';
+        String message = 'CODE (${response.statusCode}):\n${response.statusText}';
         HelperWidget.showToast(message);
         Printt.red(message);
+        AuthenticationController.userAccount = null;
         //Remove token
         Global.sharedPreferences.remove(StorageConstants.userAccount);
-        AuthenticationController.userAccount = null;
-        Global.navigatorKey.currentContext!.go('/authentication');
+        Get.offAllNamed(Routes.AUTHENTICATION());
         break;
       default:
         break;
@@ -129,10 +105,11 @@ class BaseConnect {
 
   // -------------------------
 
-  void onError(Object error) {
-    print('has error, request again after ${requestAgainSecond}s ----- \x1B[31m${error.toString()}\x1B[0m');
-  }
-
+  /// [body] gửi request cho các phương thức POST, PUT, PATCH
+  ///
+  /// [queryParam] gửi request dạng queryParam cho các phương thức GET
+  ///
+  /// [baseModel] dùng để parse dữ liệu mong muốn trả về
   Future<dynamic> onRequest<T extends BaseModel>(
     String url,
     RequestMethod method, {
@@ -151,43 +128,34 @@ class BaseConnect {
         body = body.toJson();
       }
 
-      //xuat' cai da~ gui~ len sv
-
       if (body is FormData) {
         Printt.green(jsonEncode(Map.fromEntries(body.fields)));
       } else {
         Printt.green(jsonEncode(body));
       }
 
-      final res = await dio
-          .request(
-            url,
-            data: body,
-            options: Options(
-              method: method.name,
-              // contentType: Headers.jsonContentType,
-              // responseType: ResponseType.json,
-            ),
-            queryParameters: queryParam?.map((key, value) => MapEntry(key, value.toString())),
-          )
-          .timeout(dio.options.sendTimeout!, onTimeout: onTimeout)
-          .then((value) {
-        //response
-        Printt.magenta(jsonEncode(value.data));
-
-        //decoder
-        if (baseModel == null) return value.data; //return Response<dynamic>
-        if (value.data is List) return (value.data as List).map((e) => baseModel.fromJson(e)).toList();
-        return baseModel.fromJson(value.data);
+      final res = await request(
+        url,
+        method.name,
+        body: body,
+        query: queryParam?.map((key, value) => MapEntry(key, value.toString())),
+        decoder: (data) {
+          if (baseModel == null) return data; //return Response<dynamic>
+          if (data is List) return data.map((e) => baseModel.fromJson(e)).toList();
+          if (data is Map<String, dynamic>) return baseModel.fromJson(data);
+          return null;
+        },
+      ).timeout(httpClient.timeout, onTimeout: onTimeout).then((value) {
+        Printt.magenta(value.bodyString.toString());
+        return value;
       });
-
-      return res;
+      //
+      return res.body;
     } on TimeoutException catch (_) {
       HelperWidget.showToast(_.message!);
       // catch timeout here..
     } catch (e) {
-      // onError(e);
-      //tu dng goi lai api sau khoang thoi gian nao` do'
+      //? tự động gọi lại api
       // return await Future.delayed(
       //     Duration(seconds: requestAgainSecond),
       //     () => onRequest(

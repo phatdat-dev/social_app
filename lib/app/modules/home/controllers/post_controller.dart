@@ -1,10 +1,12 @@
-import 'package:dio/dio.dart';
+import 'dart:io';
+
+import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
 
-class PostController extends BaseController with BaseFetchController {
+class PostController extends BaseFetchController {
   final Map<String, String> rectionsGif = {
     'Like': 'assets/emoji/1_like.gif',
     'Love': 'assets/emoji/2_love.gif',
@@ -25,11 +27,11 @@ class PostController extends BaseController with BaseFetchController {
     List<String>? filesPath,
     List<String>? images, //image url https not file
   }) async {
-    final formData = FormData.fromMap({
+    final formData = FormData({
       'postContent': content,
       'privacy': privacy,
       'groupId': groupId,
-      'files[]': filesPath?.map((path) => MultipartFile.fromFileSync(path)).toList(),
+      'files[]': filesPath?.map((path) => MultipartFile(File(path), filename: path)).toList(),
       'images': null,
     });
 

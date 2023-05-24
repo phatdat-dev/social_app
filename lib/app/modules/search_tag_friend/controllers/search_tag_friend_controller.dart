@@ -22,12 +22,21 @@ mixin SearchTagFriendController implements BaseController {
                 avatar: item['avatar'],
               ))
           .toList();
-      notifyListeners();
     });
   }
 
   void onPresseSearchTagFriendDone() async {}
 
-  Future<List> call_searchUsersAndGroups(String input, String getObjectList) async =>
-      await apiCall.onRequest(ApiUrl.get_searchUsersAndGroups(input), RequestMethod.GET, isShowLoading: false).then((value) => value[getObjectList]);
+  Future<List> call_searchUsersAndGroups(String input, String getObjectList) async {
+    //json {users: [], groups: [], posts: []}
+    return await apiCall
+        .onRequest(
+          ApiUrl.get_searchUsersAndGroups(input),
+          RequestMethod.GET,
+          isShowLoading: false,
+        )
+        .then(
+          (value) => value[getObjectList],
+        );
+  }
 }

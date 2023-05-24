@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
 import 'package:social_app/app/custom/widget/search_widget.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 
-class GroupMembersView extends StatelessWidget {
+class GroupMembersView extends GetView<GroupController> {
   const GroupMembersView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<GroupController>();
-    ValueNotifier<List<Map<String, dynamic>>> memberGroupDataSearch = ValueNotifier(controller.memberGroupData ?? []);
+    ValueNotifier<List<Map<String, dynamic>>> memberGroupDataSearch = ValueNotifier(controller.memberGroupData);
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -37,7 +36,7 @@ class GroupMembersView extends StatelessWidget {
                     hintText: 'Search Anyone',
                     onChanged: (value) {
                       memberGroupDataSearch.value =
-                          controller.memberGroupData?.where((element) => Helper.containsToLowerCase(element['displayName'], value)).toList() ?? [];
+                          controller.memberGroupData.where((element) => Helper.containsToLowerCase(element['displayName'], value)).toList();
                     },
                   ),
                 ),
@@ -131,7 +130,7 @@ class GroupMembersView extends StatelessWidget {
                                 ),
                         ],
                         onSelected: (value) {
-                          void refresh() => memberGroupDataSearch.value = List.from(controller.memberGroupData ?? []);
+                          void refresh() => memberGroupDataSearch.value = List.from(controller.memberGroupData);
 
                           switch (value) {
                             case 'addMemberToAdminGroup':
@@ -153,7 +152,7 @@ class GroupMembersView extends StatelessWidget {
                             case 'delete':
                               controller.call_removeMemberFromGroup(userId: item['user_id'], groupId: item['group_id']).then((value) {
                                 //
-                                controller.memberGroupData?.remove(item);
+                                controller.memberGroupData.remove(item);
                                 refresh();
                               });
                               break;

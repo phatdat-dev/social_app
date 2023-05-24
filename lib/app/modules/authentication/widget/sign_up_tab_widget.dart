@@ -1,11 +1,10 @@
 part of '../views/authentication_view.dart';
 
-class SignUpTapWidget extends StatelessWidget {
+class SignUpTapWidget extends GetView<AuthenticationController> {
   const SignUpTapWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<AuthenticationController>();
     return FormBuilder(
       key: controller.formSignUpKey,
       child: ListView(
@@ -26,7 +25,7 @@ class SignUpTapWidget extends StatelessWidget {
               //   Icons.check_circle,
               //   color: Colors.black26,
               // ),
-              labelText: '${TranslateKeys.ConfirmPassword.tr()}',
+              labelText: '${LocaleKeys.ConfirmPassword.tr}',
               // hintStyle: const TextStyle(color: Colors.yellow),
               filled: true,
               fillColor: Colors.lightBlueAccent.withOpacity(0.1),
@@ -42,7 +41,7 @@ class SignUpTapWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: ElevatedButton(
               onPressed: () => controller.onSignUp(),
-              child: Text(TranslateKeys.SignUp.tr()),
+              child: Text(LocaleKeys.SignUp.tr),
             ),
           ),
         ],

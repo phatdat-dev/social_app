@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 
-class MessageSettingProfileView extends StatelessWidget {
+class MessageSettingProfileView extends GetView<MessageController> {
   MessageSettingProfileView({super.key});
 
   final _numberFormat = NumberFormat.compact(locale: 'en');
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<MessageController>();
-    // final FireBaseService fireBaseService = context.read<FireBaseService>();
+    // final FireBaseService fireBaseService = Get.find<FireBaseService>();
 
     return Scaffold(
       backgroundColor: Colors.purple,
@@ -61,8 +59,7 @@ class MessageSettingProfileView extends StatelessWidget {
                     //
                     Text('Thông tin về đoạn chat', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.grey)),
                     ListTile(
-                      onTap: () =>
-                          context.push(Routes.MESSAGE_SETTING_PROFILE_MEMBERS(GoRouterState.of(context).pathParameters['id']!), extra: controller),
+                      onTap: () => Get.toNamed(Routes.MESSAGE_SETTING_PROFILE_MEMBERS(Get.parameters['id']!)),
                       contentPadding: EdgeInsets.zero,
                       title: const Text('Xem thành viên'),
                       trailing: const Icon(Icons.diversity_3, color: Colors.amber),

@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/constants/app_constant.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
+import 'package:social_app/app/routes/app_pages.dart';
 
 import '../../../core/services/firebase_service.dart';
 
@@ -46,10 +46,10 @@ class AuthenticationController extends BaseController {
         userAccount = result as UsersModel;
         //luu lai username, password
         _saveRememberPassword(userAccount!..password = formSignInKey.currentState?.value['password']);
-        final context = Global.navigatorKey.currentContext!;
-        context.go('/');
+
+        Get.offAllNamed(Routes.HOME());
         //set trạng thái Online
-        final fireBaseService = context.read<FireBaseService>();
+        final fireBaseService = Get.find<FireBaseService>();
         fireBaseService.call_setStatusUserOnline('Online');
 
         //save device token
@@ -75,19 +75,19 @@ class AuthenticationController extends BaseController {
         },
       ).then((result) {
         if (result == null) return;
-        HelperWidget.showSnackBar(context: key.currentContext!, message: result['message']);
+        HelperWidget.showSnackBar(message: result['message']);
       });
     }
   }
 
   void onSignOut() {
     saveAccount(userAccount?..token = '');
-    Global.navigatorKey.currentContext!.go('/authentication');
-    Global.navigatorKey.currentContext!.read<FireBaseService>().call_setStatusUserOnline('Offline');
+    Get.offAllNamed(Routes.AUTHENTICATION());
+    Get.find<FireBaseService>().call_setStatusUserOnline('Offline');
   }
 
   void onTryApp() {
-    Global.navigatorKey.currentContext!.go('/');
+    Get.offAllNamed(Routes.HOME());
   }
 
   void saveAccount(UsersModel? user) {
@@ -110,7 +110,7 @@ class AuthenticationController extends BaseController {
       )
           .then((result) {
         if (result == null) return;
-        HelperWidget.showSnackBar(message: result.toString(), context: key.currentContext!);
+        HelperWidget.showSnackBar(message: result.toString());
       });
     }
   }

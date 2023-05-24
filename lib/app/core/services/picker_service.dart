@@ -1,8 +1,8 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 
-class PickerService with ChangeNotifier {
+class PickerService extends GetxController {
   PickerService() {
     Printt.white('Create Service: ${runtimeType}');
   }
@@ -18,7 +18,6 @@ class PickerService with ChangeNotifier {
       // files = result.paths.map((path) => File(path!)).toList();
       files = result.paths.map((e) => e!).toList();
       Printt.white(files);
-      notifyListeners();
 
       return files;
 

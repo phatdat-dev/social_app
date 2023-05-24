@@ -1,16 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
-import 'package:social_app/app/core/utils/extension/string_extension.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
+import 'package:social_app/app/custom/widget/textfield_comment_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:social_app/app/routes/app_pages.dart';
-import 'package:social_app/app/custom/widget/textfield_comment_widget.dart';
 
 import '../widget/video_play_widget.dart';
 
@@ -31,11 +29,11 @@ class MessageDetailViewState extends State<MessageDetailView> {
   @override
   void initState() {
     super.initState();
-    controller = context.read<MessageController>();
+    controller = Get.find<MessageController>();
     //báo lỗi khi
     assert(!(controller.currentChatRoom['chatRoomId'] == null));
     assert(!(controller.currentChatRoom['user'] == null));
-    fireBaseService = context.read<FireBaseService>();
+    fireBaseService = Get.find<FireBaseService>();
   }
 
   @override
@@ -142,7 +140,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
             IconButton(
               icon: const Icon(Icons.info),
               onPressed: () {
-                context.push(Routes.MESSAGE_SETTING_PROFILE(controller.currentChatRoom['chatRoomId']), extra: controller);
+                Get.toNamed(Routes.MESSAGE_SETTING_PROFILE(controller.currentChatRoom['chatRoomId']));
               },
             ),
             const SizedBox(width: 15 / 2),
@@ -179,8 +177,8 @@ class MessageDetailViewState extends State<MessageDetailView> {
                 onSendComment: (value) {
                   _handleSubmitted(value);
                 },
-                onPickMedia: () => controller.onPickFileSend(context: context, type: FileType.media),
-                onPickFile: () => controller.onPickFileSend(context: context, type: FileType.any),
+                onPickMedia: () => controller.onPickFileSend(type: FileType.media),
+                onPickFile: () => controller.onPickFileSend(type: FileType.any),
               ),
             ],
           ),
