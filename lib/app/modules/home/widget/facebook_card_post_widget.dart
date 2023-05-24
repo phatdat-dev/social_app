@@ -10,6 +10,8 @@ import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/comment_widget.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../routes/app_pages.dart';
+
 // ignore: must_be_immutable
 class FacebookCardPostWidget extends StatelessWidget {
   final Map<String, dynamic> postResponseModel;
@@ -64,7 +66,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                                       privacy: createPostViewWidget.currentPrivacy.value.privacyId!, //get dropdown privacy
                                     )
                                         .then((value) {
-                                      HelperWidget.showSnackBar( message: 'Share Success');
+                                      HelperWidget.showSnackBar(message: 'Share Success');
                                       Navigator.pop(context);
                                     })
                                 : null,
@@ -380,9 +382,12 @@ class FacebookCardPostWidget extends StatelessWidget {
             Positioned(
               right: 0,
               bottom: 0,
-              child: CircleAvatar(
-                radius: 15,
-                backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
+              child: InkWell(
+                onTap: () => Get.toNamed(Routes.USER("${postResponseModel['user_id']}")),
+                child: CircleAvatar(
+                  radius: 15,
+                  backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
+                ),
               ),
             )
           ],
@@ -399,9 +404,12 @@ class FacebookCardPostWidget extends StatelessWidget {
           //neu bai viet nam` trong nhom' thi` co' hinh` cua nhom'+ hinh` cua nguoi` dang
           isGroupPost!
               ? _buildAvatarGroup()
-              : CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
+              : InkWell(
+                  onTap: () => Get.toNamed(Routes.USER("${postResponseModel['user_id']}")),
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
+                  ),
                 ),
           Expanded(
             child: Padding(

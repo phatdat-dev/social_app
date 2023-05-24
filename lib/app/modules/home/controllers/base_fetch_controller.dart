@@ -22,7 +22,7 @@ abstract class BaseFetchController extends BaseController with StateMixin<List<M
       apiUrl,
       RequestMethod.GET,
       queryParam: request,
-      // isShowLoading: false,
+      isShowLoading: false,
     )
         .then((value) {
       final data = Helper.convertToListMap(value['data']);

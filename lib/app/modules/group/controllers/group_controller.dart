@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/utils/helper.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
@@ -10,10 +9,10 @@ import '../../../core/base/base_project.dart';
 
 class GroupController extends BaseController {
   final FetchPostGroupController fetchPostGroupController = FetchPostGroupController();
-  final FetchPostByGroupIdController fetchPostByGroupIdController = FetchPostByGroupIdController();
+  late FetchPostByGroupIdController fetchPostByGroupIdController;
 
   /// group of user
-  List<Map<String, dynamic>>? groupData = null;
+  RxList<Map<String, dynamic>> groupData = RxList.empty();
   Map<String, dynamic> currentGroup = {};
   RxList<Map<String, dynamic>> memberGroupData = RxList();
 
@@ -28,17 +27,18 @@ class GroupController extends BaseController {
         .onRequest(
       ApiUrl.get_fetchGroupJoined(),
       RequestMethod.GET,
+      isShowLoading: false,
     )
         .then((value) {
       //
       final data = List.from(value).map((e) => Helper.convertToListMap(e['groups'])).reduce((value, element) => value + element).toList();
-      groupData = data;
+      groupData.value = data;
     });
   }
 
   void redirectToGroup(BuildContext context, Map<String, dynamic> data) {
     currentGroup = data;
-    fetchPostByGroupIdController.id = currentGroup['id'];
+    fetchPostByGroupIdController = FetchPostByGroupIdController(id: currentGroup['id']);
     Get.toNamed(Routes.GROUP(currentGroup['id'].toString()));
   }
 
@@ -94,7 +94,8 @@ class GroupController extends BaseController {
 }
 
 class FetchPostByGroupIdController extends BaseFetchController {
-  late int id;
+  final int id;
+  FetchPostByGroupIdController({required this.id});
   ScrollController scrollController = ScrollController();
 
   @override

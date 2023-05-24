@@ -4,13 +4,12 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 
-import '/app/core/base/base_model.dart';
-import '/app/core/config/api_url.dart';
 import '/app/core/utils/utils.dart';
 import '/app/custom/widget/loadding_widget.dart';
 import '/app/modules/authentication/controllers/authentication_controller.dart';
 import '../../routes/app_pages.dart';
 import '../constants/app_constant.dart';
+import 'base_project.dart';
 
 // ignore: constant_identifier_names
 enum RequestMethod { GET, POST, PUT, DELETE }
@@ -118,55 +117,55 @@ class BaseConnect extends GetConnect {
     Map<String, dynamic>? queryParam,
     bool? isShowLoading,
   }) async {
-    try {
-      this.isShowLoading = isShowLoading ??= true;
+    // try {
+    this.isShowLoading = isShowLoading ??= true;
 
-      if (body is List<BaseModel>) {
-        //cho no' theo kieu? nhu vay` [{},{},{}...]
-        body = body.map((e) => e.toJson()).toList();
-      } else if (body != null && body is BaseModel) {
-        body = body.toJson();
-      }
-
-      if (body is FormData) {
-        Printt.green(jsonEncode(Map.fromEntries(body.fields)));
-      } else {
-        Printt.green(jsonEncode(body));
-      }
-
-      final res = await request(
-        url,
-        method.name,
-        body: body,
-        query: queryParam?.map((key, value) => MapEntry(key, value.toString())),
-        decoder: (data) {
-          if (baseModel == null) return data; //return Response<dynamic>
-          if (data is List) return data.map((e) => baseModel.fromJson(e)).toList();
-          if (data is Map<String, dynamic>) return baseModel.fromJson(data);
-          return null;
-        },
-      ).timeout(httpClient.timeout, onTimeout: onTimeout).then((value) {
-        Printt.magenta(value.bodyString.toString());
-        return value;
-      });
-      //
-      return res.body;
-    } on TimeoutException catch (_) {
-      HelperWidget.showToast(_.message!);
-      // catch timeout here..
-    } catch (e) {
-      //? tự động gọi lại api
-      // return await Future.delayed(
-      //     Duration(seconds: requestAgainSecond),
-      //     () => onRequest(
-      //           url,
-      //           method,
-      //           body: body,
-      //           baseModel: baseModel,
-      //           queryParam: queryParam,
-      //           isShowLoading: isShowLoading,
-      //         ));
+    if (body is List<BaseModel>) {
+      //cho no' theo kieu? nhu vay` [{},{},{}...]
+      body = body.map((e) => e.toJson()).toList();
+    } else if (body != null && body is BaseModel) {
+      body = body.toJson();
     }
-    return null;
+
+    if (body is FormData) {
+      Printt.green(jsonEncode(Map.fromEntries(body.fields)));
+    } else {
+      Printt.green(jsonEncode(body));
+    }
+
+    final res = await request(
+      url,
+      method.name,
+      body: body,
+      query: queryParam?.map((key, value) => MapEntry(key, value.toString())),
+      decoder: (data) {
+        if (baseModel == null) return data; //return Response<dynamic>
+        if (data is List) return data.map((e) => baseModel.fromJson(e)).toList();
+        if (data is Map<String, dynamic>) return baseModel.fromJson(data);
+        return null;
+      },
+    ).timeout(httpClient.timeout, onTimeout: onTimeout).then((value) {
+      Printt.magenta(value.bodyString.toString());
+      return value;
+    });
+    //
+    return res.body;
+    // } on TimeoutException catch (_) {
+    //   HelperWidget.showToast(_.message!);
+    //   // catch timeout here..
+    // } catch (e) {
+    //   //? tự động gọi lại api
+    //   // return await Future.delayed(
+    //   //     Duration(seconds: requestAgainSecond),
+    //   //     () => onRequest(
+    //   //           url,
+    //   //           method,
+    //   //           body: body,
+    //   //           baseModel: baseModel,
+    //   //           queryParam: queryParam,
+    //   //           isShowLoading: isShowLoading,
+    //   //         ));
+    // }
+    // return null;
   }
 }

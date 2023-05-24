@@ -9,8 +9,8 @@ abstract class BaseController extends GetxController {
   Future<void> onInitData();
 
   @override
-  void onReady() {
-    super.onReady();
+  void onInit() {
+    super.onInit();
     onInitData();
   }
 }

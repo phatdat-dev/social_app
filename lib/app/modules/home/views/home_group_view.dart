@@ -35,27 +35,29 @@ class _HomeGroupViewState extends State<HomeGroupView> {
         children: <Widget>[
           SizedBox(
             height: 125,
-            child: Builder(builder: (context) {
-              final groupData = groupController.groupData;
-              return ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  const SizedBox(width: 10),
-                  if (groupData?.isNotEmpty ?? false)
-                    ...Helper.listGenerateSeparated(
-                      groupData!.length,
-                      generator: (index) => CardBackgroundWidget(
-                        data: groupData[index],
-                        width: 125,
-                        height: 125,
-                        onTap: () => controller.groupController.redirectToGroup(context, groupData[index]),
+            child: Obx(
+              () {
+                final groupData = groupController.groupData;
+                return ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    const SizedBox(width: 10),
+                    if (groupData.isNotEmpty)
+                      ...Helper.listGenerateSeparated(
+                        groupData.length,
+                        generator: (index) => CardBackgroundWidget(
+                          data: groupData[index],
+                          width: 125,
+                          height: 125,
+                          onTap: () => controller.groupController.redirectToGroup(context, groupData[index]),
+                        ),
+                        separator: (index) => const SizedBox(width: 10),
                       ),
-                      separator: (index) => const SizedBox(width: 10),
-                    ),
-                  const SizedBox(width: 10),
-                ],
-              );
-            }),
+                    const SizedBox(width: 10),
+                  ],
+                );
+              },
+            ),
           ),
 
           //

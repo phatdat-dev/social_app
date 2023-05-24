@@ -26,7 +26,9 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<T>();
-    final groupController = Get.find<GroupController?>();
+    GroupController? groupController = null;
+    if (Get.isRegistered<GroupController>()) groupController = Get.find<GroupController?>();
+    //  = Get.find<GroupController?>();
 
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../authentication/controllers/authentication_controller.dart';
+
 class HomeMenuView extends StatefulWidget {
   HomeMenuView({Key? key}) : super(key: key);
 
@@ -54,9 +56,9 @@ class _HomeMenuViewState extends State<HomeMenuView> {
       children: <Widget>[
         ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: const CircleAvatar(radius: 30),
+          leading: CircleAvatar(radius: 30, backgroundImage: NetworkImage(AuthenticationController.userAccount?.avatar ?? '')),
           title: Text(
-            'Nguyen Van A',
+            AuthenticationController.userAccount?.displayName ?? '',
             style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(

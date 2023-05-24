@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/custom/other/animated_route_custom.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
+import 'package:social_app/app/routes/app_pages.dart';
 
 class InputStoryWidget extends StatelessWidget {
   const InputStoryWidget({super.key});
@@ -18,11 +20,14 @@ class InputStoryWidget extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: CircleAvatar(
-                    radius: 25,
-                    backgroundImage: NetworkImage(
-                      AuthenticationController.userAccount!.avatar!,
-                    )),
+                child: InkWell(
+                  onTap: () => Get.toNamed(Routes.USER('${AuthenticationController.userAccount!.id!}')),
+                  child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: NetworkImage(
+                        AuthenticationController.userAccount!.avatar!,
+                      )),
+                ),
               ),
               Expanded(
                 child: OutlinedButton(

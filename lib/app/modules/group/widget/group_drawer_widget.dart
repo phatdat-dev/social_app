@@ -138,7 +138,7 @@ class GroupDrawerWidget extends GetView<GroupController> {
               width: double.infinity,
               padding: const EdgeInsets.all(10),
               child: ElevatedButton.icon(
-                onPressed: () => Get.find<AuthenticationController>().onSignOut(),
+                onPressed: () => AuthenticationController.onSignOut(),
                 icon: const Icon(Icons.logout_outlined),
                 label: Text(LocaleKeys.LogOut.tr),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.pinkAccent),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/constants/app_constant.dart';
 import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/models/users_model.dart';
@@ -80,7 +79,7 @@ class AuthenticationController extends BaseController {
     }
   }
 
-  void onSignOut() {
+  static void onSignOut() {
     saveAccount(userAccount?..token = '');
     Get.offAllNamed(Routes.AUTHENTICATION());
     Get.find<FireBaseService>().call_setStatusUserOnline('Offline');
@@ -90,7 +89,7 @@ class AuthenticationController extends BaseController {
     Get.offAllNamed(Routes.HOME());
   }
 
-  void saveAccount(UsersModel? user) {
+  static void saveAccount(UsersModel? user) {
     (user == null)
         ? Global.sharedPreferences.remove(StorageConstants.userAccount)
         : Global.sharedPreferences.setString(StorageConstants.userAccount, jsonEncode(user.toJson()));

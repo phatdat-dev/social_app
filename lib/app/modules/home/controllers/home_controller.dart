@@ -45,6 +45,4 @@ class HomeController extends BaseController with SearchTagFriendController {
     });
     call_fetchFriendByUserId();
   }
-
-  
 }

@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/config/api_url.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
 import 'package:social_app/app/core/utils/utils.dart';
@@ -32,7 +31,7 @@ class MessageController extends BaseController with SearchTagFriendController {
   @override
   void onPresseSearchTagFriendDone() async {
     final fireBaseService = Get.find<FireBaseService>();
-    final listSelected = listTagFriend!.where((element) => element.isSelected).toList();
+    final listSelected = listFriendOfUser.where((element) => element.isSelected).toList();
 
     await fireBaseService.call_createOrUpdateGroupChat(
       chatRoomId: currentChatRoom['chatRoomId'] ?? Helper.generateIdFromDateTimeNow(),
@@ -53,7 +52,7 @@ class MessageController extends BaseController with SearchTagFriendController {
   }) {
     //member đã chọn
     listMemberSelected.value.forEach((element) {
-      listTagFriend?.firstWhereOrNull((e) => (e as UsersModel).id == element.id)?.isSelected = true;
+      listFriendOfUser.firstWhereOrNull((e) => (e as UsersModel).id == element.id)?.isSelected = true;
     });
 
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Add member', minSelected: 1)));

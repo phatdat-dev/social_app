@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../core/config/theme_config.dart';
@@ -22,6 +23,7 @@ import '../modules/message/views/message_view.dart';
 import '../modules/user/controllers/user_controller.dart';
 import '../modules/user/views/user_view.dart';
 
+part 'app_middleware.dart';
 // ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
@@ -38,10 +40,10 @@ class AppPages {
       binding: BindingsBuilder(() => Get.lazyPut(() => AuthenticationController())),
     ),
     GetPage(
-      name: _Paths.HOME,
-      page: () => const HomeView(),
-      binding: BindingsBuilder(() => Get.lazyPut(() => HomeController())),
-    ),
+        name: _Paths.HOME,
+        page: () => const HomeView(),
+        binding: BindingsBuilder(() => Get.lazyPut(() => HomeController())),
+        middlewares: [AuthenticationMiddleware()]),
     GetPage(
       name: '/viewColorTheme',
       page: () => const ThemeView(),
@@ -87,22 +89,11 @@ class AppPages {
         ]),
     GetPage(
       name: '${_Paths.USER}/:id',
-      page: () => const UserView(),
-      binding: BindingsBuilder(() => Get.lazyPut(() => UserController())),
+      page: () => UserView(int.tryParse(Get.parameters['id'] ?? '') ?? 0),
+      binding: BindingsBuilder(() {
+        final id = int.tryParse(Get.parameters['id'] ?? '') ?? 0;
+        Get.lazyPut(() => UserController(id), tag: '$id');
+      }),
     ),
   ];
-
-  static void routingCallback(Routing? routing) {
-    if (AuthenticationController.userAccount == null) {
-      //kiểm tra xem bộ nhớ có lưu thông tin đăng nhập trước hay không
-      final userAccountString = Global.sharedPreferences.getString(StorageConstants.userAccount);
-      if (userAccountString != null) {
-        //nếu có thì lấy thông tin đăng nhập
-        AuthenticationController.userAccount = UsersModel().fromJson(jsonDecode(userAccountString));
-        Get.offAllNamed(Routes.HOME());
-      }
-      //nếu chưa đăng nhập thì chuyển về màn hình đăng nhập
-      Get.offNamed(Routes.AUTHENTICATION());
-    }
-  }
 }

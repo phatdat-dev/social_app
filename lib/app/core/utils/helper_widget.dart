@@ -8,7 +8,7 @@ import '../../custom/other/more_dropdown_search_custom.dart';
 
 class HelperWidget {
   static void showToast(String message) {
-    FToast fToast = FToast()..init(Get.context!);
+    FToast fToast = FToast()..init(Get.overlayContext!);
     fToast.showToast(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),

@@ -15,7 +15,7 @@ abstract class Routes {
   static String GROUP(String id) => _Paths.GROUP + '/$id';
   static String GROUP_INFOMATION(String id) => GROUP(id) + _Paths.INFOMATION;
   static String GROUP_INFOMATION_MEMBERS(String id) => GROUP_INFOMATION(id) + _Paths.MEMBERS;
-  static String USER(String id) => _Paths.USER + '$id';
+  static String USER(String id) => _Paths.USER + '/$id';
 }
 
 abstract class _Paths {

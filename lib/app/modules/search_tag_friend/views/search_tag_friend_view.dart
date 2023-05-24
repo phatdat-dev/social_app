@@ -36,8 +36,8 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
           actions: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Builder(builder: (context) {
-                final listTagFriend = controller.listTagFriend?.where((element) => element.isSelected).toList() ?? [];
+              child: Obx(() {
+                final listTagFriend = controller.listFriendOfUser.where((element) => element.isSelected).toList();
                 if (listTagFriend.length >= widget.minSelected)
                   return ElevatedButton(
                     onPressed: controller.onPresseSearchTagFriendDone,
@@ -73,9 +73,8 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
             Container(
               height: 100,
               margin: const EdgeInsets.only(top: 10),
-              child: Builder(builder: (context) {
-                final listTagFriend = controller.listTagFriend;
-                if (listTagFriend == null) return const SizedBox.shrink();
+              child: Obx(() {
+                final listTagFriend = controller.listFriendOfUser;
                 final getListSelected = listTagFriend.where((element) => element.isSelected).toList();
                 return ListView.separated(
                   scrollDirection: Axis.horizontal,
@@ -124,31 +123,29 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
             AnimatedBuilder(
               animation: txtController,
               builder: (context, child) {
-                final listSearch = controller.listTagFriend
-                    ?.where((element) => Helper.containsToLowerCase((element as UsersModel).displayName, txtController.text))
+                final listSearch = controller.listFriendOfUser
+                    .where((element) => Helper.containsToLowerCase((element as UsersModel).displayName, txtController.text))
                     .toList();
                 return Expanded(
-                  child: listSearch != null
-                      ? ListView.separated(
-                          itemCount: listSearch.length,
-                          // shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          separatorBuilder: (context, index) => const SizedBox(height: 10),
-                          itemBuilder: (context, index) {
-                            final item = listSearch[index] as UsersModel;
-                            return CheckboxListTile(
-                              value: item.isSelected,
-                              onChanged: (value) {
-                                item.isSelected = value!;
-                              },
-                              secondary: CircleAvatar(radius: 25, backgroundImage: NetworkImage(item.avatar!)),
-                              title: Text(item.displayName!, style: Theme.of(context).textTheme.bodyLarge),
-                              activeColor: Theme.of(context).primaryColor,
-                              contentPadding: EdgeInsets.zero,
-                            );
-                          },
-                        )
-                      : const Center(child: CircularProgressIndicator()),
+                  child: ListView.separated(
+                    itemCount: listSearch.length,
+                    // shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    separatorBuilder: (context, index) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final item = listSearch[index] as UsersModel;
+                      return CheckboxListTile(
+                        value: item.isSelected,
+                        onChanged: (value) {
+                          item.isSelected = value!;
+                        },
+                        secondary: CircleAvatar(radius: 25, backgroundImage: NetworkImage(item.avatar!)),
+                        title: Text(item.displayName!, style: Theme.of(context).textTheme.bodyLarge),
+                        activeColor: Theme.of(context).primaryColor,
+                        contentPadding: EdgeInsets.zero,
+                      );
+                    },
+                  ),
                 );
               },
             ),

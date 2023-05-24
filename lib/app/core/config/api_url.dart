@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 class ApiUrl {
-  static String get base_url => 'https://127.0.0.1'; //baseUrl
+  static String get base_url => 'http://192.168.1.5:8080'; //baseUrl
   //auth
   static String post_auth_login() => '/api/auth/login';
   static String post_auth_forgotPassword() => '/api/auth/forgot-password';
@@ -9,8 +9,11 @@ class ApiUrl {
   //
   static String get_fetchPost() => '/api/v1/fetch-post';
   static String post_createPostt() => '/api/v1/create-post';
-  static String get_fetchFriendByUserId(int userId, [int? limit]) =>
-      limit != null ? '/api/v1/fetch-friend-by-user-id/$userId/$limit' : '/api/v1/fetch-friend-by-user-id/$userId';
+  //
+  static String get_fetchFriendByUserId(int userId, [int? limit]) => '/api/v1/fetch-friend-by-user-id/$userId' + (limit != null ? '/$limit' : '');
+  static String get_fetchImageUpload(int userId, [int? limit]) => '/api/v1/fetch-image-uploaded/userId=$userId' + (limit != null ? '/$limit' : '');
+  static String get_profileUser(int userId) => '/api/profile-user/userId=$userId';
+  //
   static String get_fetchGroupJoined() => '/api/v1/fetch-group-joined';
   static String get_fetchPostGroup() => '/api/v1/fetch-post-group';
   static String post_likePost() => '/api/v1/post/like-post';

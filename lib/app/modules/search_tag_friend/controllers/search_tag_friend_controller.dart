@@ -1,27 +1,44 @@
+import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/config/api_url.dart';
+import 'package:social_app/app/core/utils/helper.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
 mixin SearchTagFriendController implements BaseController {
-  List<BaseSelectedModel>? listTagFriend = null;
+  RxList<BaseSelectedModel> listFriendOfUser = RxList.empty();
+  RxList<Map<String, dynamic>> listImageUploadOfUser = RxList.empty();
 
-  Future<void> call_fetchFriendByUserId() async {
+  Future<void> call_fetchFriendByUserId([int? userId, int? limit]) async {
     apiCall
         .onRequest(
-      ApiUrl.get_fetchFriendByUserId(
-        AuthenticationController.userAccount!.id!,
-      ),
+      ApiUrl.get_fetchFriendByUserId(userId ?? AuthenticationController.userAccount!.id!, limit),
       RequestMethod.GET,
     )
         .then((value) {
-      listTagFriend = List.from(value['data'])
+      final data;
+      if (value is Map && value['data'] != null) {
+        data = value['data'];
+      } else {
+        data = value;
+      }
+      listFriendOfUser.value = List.from(data) //api viet sida
           .map((item) => UsersModel(
                 id: item['friendId'],
                 displayName: item['displayName'],
                 avatar: item['avatar'],
               ))
           .toList();
+    });
+  }
+
+  Future<void> call_fetchImageUploadByUserId([int? userId, int? limit]) async {
+    apiCall
+        .onRequest(
+      ApiUrl.get_fetchImageUpload(userId ?? AuthenticationController.userAccount!.id!, limit),
+      RequestMethod.GET,
+    )
+        .then((value) {
+      listImageUploadOfUser.value = Helper.convertToListMap(value);
     });
   }
 

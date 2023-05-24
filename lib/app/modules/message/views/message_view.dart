@@ -99,32 +99,34 @@ class MessageView<T extends MessageController> extends GetView<T> {
   }
 
   Widget buildListUser({void Function(int index, UsersModel user)? onTapUserIndex}) {
-    return (controller.listTagFriend?.isEmpty ?? true)
-        ? Column(
-            children: [
-              SvgPicture.asset(
-                'assets/svg/search_2.svg',
-                width: 200,
-                height: 200,
-              ),
-              const Text('Not found'),
-            ],
-          )
-        : ListView.builder(
-            shrinkWrap: true, //tranh' loi~ view SingleChildScrollView-column
-            //ngan chan ListView no' cuon xuong' duoc, xai` cho SingleChildScrollView-column
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.listTagFriend!.length,
-            itemBuilder: (context, index) {
-              final item = controller.listTagFriend![index] as UsersModel;
-              // if (LoginController.userLogin?.id == user.id) {
-              //   return const SizedBox.shrink();
-              // }
-              return ChatCard(
-                user: item,
-                onTap: () => onTapUserIndex != null ? onTapUserIndex(index, item) : null,
-              );
-            },
-          );
+    return Obx(() {
+      return (controller.listFriendOfUser.isEmpty)
+          ? Column(
+              children: [
+                SvgPicture.asset(
+                  'assets/svg/search_2.svg',
+                  width: 200,
+                  height: 200,
+                ),
+                const Text('Not found'),
+              ],
+            )
+          : ListView.builder(
+              shrinkWrap: true, //tranh' loi~ view SingleChildScrollView-column
+              //ngan chan ListView no' cuon xuong' duoc, xai` cho SingleChildScrollView-column
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: controller.listFriendOfUser.length,
+              itemBuilder: (context, index) {
+                final item = controller.listFriendOfUser[index] as UsersModel;
+                // if (LoginController.userLogin?.id == user.id) {
+                //   return const SizedBox.shrink();
+                // }
+                return ChatCard(
+                  user: item,
+                  onTap: () => onTapUserIndex != null ? onTapUserIndex(index, item) : null,
+                );
+              },
+            );
+    });
   }
 }

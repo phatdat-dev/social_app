@@ -27,7 +27,7 @@ void main() async {
   }
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   //
-  SharedPreferences.getInstance().then((value) => Global.sharedPreferences = value);
+  Global.sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(const MyApp());
 
@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
       //routing
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      routingCallback: AppPages.routingCallback,
       initialBinding: BindingsBuilder(() {
         Get.put(BaseConnect());
         Get.put(FireBaseService()).notificationServiceInitialize();
