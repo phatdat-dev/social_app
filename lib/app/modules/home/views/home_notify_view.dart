@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_notification.dart';
 
+import '../../user/widget/user_friend_card_widget.dart';
+
 class HomeNotifyView extends StatefulWidget {
   HomeNotifyView({Key? key}) : super(key: key);
 
@@ -27,69 +29,8 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        Container(
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: const BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                          image: DecorationImage(image: AssetImage('assets/images/china.jpg'), fit: BoxFit.cover)),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Text(
-                          'Wung Chang',
-                          style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 3.0),
-                          child: Text(
-                            '15 Mutual friends',
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            //Add Friends
-                            FilledButton.tonal(
-                              onPressed: () {},
-                              child: Text('Add Friends',
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.inverseSurface,
-                                  )),
-                            ),
-
-                            const SizedBox(width: 10),
-
-                            //Remove
-                            OutlinedButton(
-                              onPressed: () {},
-                              child: Text('Remove',
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.inverseSurface,
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        UserFriendCardWidget(
+          title: 'Wung Chang',
         ),
         // ElevatedButton(onPressed: () {}, child: Text("See All")),
         const Divider(),

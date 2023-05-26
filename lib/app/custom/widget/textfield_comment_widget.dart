@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:social_app/generated/locales.g.dart';
 
 class TextFieldCommentWidget extends StatefulWidget {
   TextFieldCommentWidget({
@@ -61,7 +63,7 @@ class _TextFieldCommentWidgetState extends State<TextFieldCommentWidget> {
                       minLines: 1,
 
                       decoration: InputDecoration(
-                          hintText: 'Write something...',
+                          hintText: LocaleKeys.WriteAComment.tr,
                           // hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                           enabledBorder: borderInput(Theme.of(context).colorScheme.secondary),
                           focusedBorder: borderInput(Colors.green),

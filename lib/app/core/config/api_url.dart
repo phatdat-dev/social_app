@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 class ApiUrl {
-  static String get base_url => 'http://192.168.1.5:8080'; //baseUrl
+  static String get base_url => 'http://192.168.1.6:8080'; //baseUrl
   //auth
   static String post_auth_login() => '/api/auth/login';
   static String post_auth_forgotPassword() => '/api/auth/forgot-password';
@@ -29,4 +29,5 @@ class ApiUrl {
   static String post_createCommentPost() => '/api/v1/create-comment-post';
   static String post_replyComment() => '/api/v1/reply-comment';
   static String get_searchUsersAndGroups(String input) => '/api/v1/search-users-and-groups/$input';
+  static String post_unfriend() => '/api/v1/unfriend';
 }

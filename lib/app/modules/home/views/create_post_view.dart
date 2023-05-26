@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_app/app/core/services/picker_service.dart';
-import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/models/response/privacy_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
@@ -178,7 +177,7 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Gắn thẻ bạn bè')));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: LocaleKeys.TagAFriend.tr)));
                     },
                     customBorder: const StadiumBorder(),
                     child: const Icon(
@@ -218,12 +217,12 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
         // scrollController: scrollController,
         scrollPhysics: const BouncingScrollPhysics(),
         controller: txtController,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           // filled: true,
           // fillColor: ,
           border: InputBorder.none,
-          hintText: 'What\'s on your Mind?',
-          hintStyle: TextStyle(fontSize: 20),
+          hintText: LocaleKeys.WhatOnYourMind.tr,
+          hintStyle: const TextStyle(fontSize: 20),
         ),
       ),
     );
@@ -326,11 +325,11 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Who can see your post?',
+                        LocaleKeys.WhoCanSeeYourPost.tr,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       Text(
-                        'Select the audience for this post.',
+                        LocaleKeys.SelectTheAudienceForThisPost.tr,
                         style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
                     ],

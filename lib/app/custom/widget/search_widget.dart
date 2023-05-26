@@ -9,16 +9,16 @@ class SearchWidget extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
   final bool readOnly;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final Color? backgroundColor;
   final double? elevation;
 
   SearchWidget({
     Key? key,
-    required this.hintText,
+    this.hintText = 'Search...',
     this.onChanged,
     this.onTap,
-    required this.controller,
+    this.controller,
     this.readOnly = false,
     this.backgroundColor,
     this.elevation,
@@ -56,7 +56,7 @@ class SearchWidget extends StatelessWidget {
             borderRadius: borderRadius,
             child: InkWell(
               onTap: () {
-                controller.clear();
+                controller?.clear();
                 onChanged != null ? onChanged!('') : null;
               },
               borderRadius: borderRadius,

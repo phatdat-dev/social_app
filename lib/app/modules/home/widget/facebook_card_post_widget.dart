@@ -234,7 +234,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                       title: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 2.5),
                         decoration: const ShapeDecoration(shape: StadiumBorder(), color: Colors.pink),
-                        child: Text(e.key, style: const TextStyle(color: Colors.white)),
+                        child: Text(e.key.tr, style: const TextStyle(color: Colors.white)),
                       ),
                       previewIcon: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3.5, vertical: 5),
@@ -247,7 +247,7 @@ class FacebookCardPostWidget extends StatelessWidget {
                             Image.asset(e.value, height: 25),
                             const SizedBox(width: 10),
                             Text(
-                              e.key,
+                              e.key.tr,
                               style: TextStyle(color: like ? Colors.blue : Colors.grey, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -276,9 +276,9 @@ class FacebookCardPostWidget extends StatelessWidget {
               MdiIcons.commentOutline,
               color: Colors.grey,
             ),
-            label: const Text(
-              'Comment',
-              style: TextStyle(color: Colors.grey),
+            label: Text(
+              LocaleKeys.Comment.tr,
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
         ),
@@ -290,9 +290,9 @@ class FacebookCardPostWidget extends StatelessWidget {
                       MdiIcons.shareOutline,
                       color: Colors.grey,
                     ),
-                    label: const Text(
-                      'Share',
-                      style: TextStyle(color: Colors.grey),
+                    label: Text(
+                      LocaleKeys.Share.tr,
+                      style: const TextStyle(color: Colors.grey),
                     ),
                   )),
         ),

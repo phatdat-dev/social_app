@@ -16,6 +16,7 @@ abstract class Routes {
   static String GROUP_INFOMATION(String id) => GROUP(id) + _Paths.INFOMATION;
   static String GROUP_INFOMATION_MEMBERS(String id) => GROUP_INFOMATION(id) + _Paths.MEMBERS;
   static String USER(String id) => _Paths.USER + '/$id';
+  static String USER_FRIEND(String id) => USER(id) + _Paths.FRIEND;
 }
 
 abstract class _Paths {
@@ -30,4 +31,5 @@ abstract class _Paths {
   static const GROUP = '/group';
   static const INFOMATION = '/infomation';
   static const USER = '/user';
+  static const FRIEND = '/friend';
 }

@@ -22,4 +22,14 @@ class UserController extends BaseController with SearchTagFriendController, Stat
       baseModel: UsersModel(),
     );
   }
+
+  Future<void> call_unFriend(int userId) async {
+    await apiCall.onRequest(
+      ApiUrl.post_unfriend(),
+      RequestMethod.POST,
+      body: {
+        'userId': userId,
+      },
+    );
+  }
 }

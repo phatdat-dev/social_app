@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_app/app/core/utils/helper.dart';
 import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/user/controllers/user_controller.dart';
+import 'package:social_app/generated/locales.g.dart';
 
 import '../../../routes/app_pages.dart';
 
 class UserView extends GetView<UserController> {
-  final int userId;
-  const UserView(this.userId, {super.key});
+  const UserView({super.key});
 
   @override
-  String? get tag => '$userId';
+  String? get tag => '${int.tryParse(Get.parameters['id'] ?? '') ?? 0}';
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class UserView extends GetView<UserController> {
                                     fit: BoxFit.cover,
                                     image: NetworkImage(state!.avatar!),
                                   ),
-                                  border: Border.all(color: Colors.white, width: 6.0)),
+                                  border: Border.all(color: Theme.of(context).colorScheme.inversePrimary, width: 6.0)),
                             ),
                           ),
                         ],
@@ -76,7 +78,7 @@ class UserView extends GetView<UserController> {
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                 child: Column(
                   children: <Widget>[
-                    ..._buildInfomation(),
+                    controller.obx((state) => _buildInfomation()),
                     const Divider(),
                     _buildPhotos(),
                     const Divider(),
@@ -102,10 +104,7 @@ class UserView extends GetView<UserController> {
               padding: const EdgeInsets.all(10.0),
               child: const Row(
                 children: <Widget>[
-                  Icon(
-                    Icons.feedback,
-                    color: Colors.black,
-                  ),
+                  Icon(Icons.feedback),
                   SizedBox(
                     width: 10.0,
                   ),
@@ -120,10 +119,7 @@ class UserView extends GetView<UserController> {
               padding: const EdgeInsets.all(10.0),
               child: const Row(
                 children: <Widget>[
-                  Icon(
-                    Icons.block,
-                    color: Colors.black,
-                  ),
+                  Icon(Icons.block),
                   SizedBox(
                     width: 10.0,
                   ),
@@ -138,10 +134,7 @@ class UserView extends GetView<UserController> {
               padding: const EdgeInsets.all(10.0),
               child: const Row(
                 children: <Widget>[
-                  Icon(
-                    Icons.link,
-                    color: Colors.black,
-                  ),
+                  Icon(Icons.link),
                   SizedBox(
                     width: 10.0,
                   ),
@@ -156,10 +149,7 @@ class UserView extends GetView<UserController> {
               padding: const EdgeInsets.all(10.0),
               child: const Row(
                 children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    color: Colors.black,
-                  ),
+                  Icon(Icons.search),
                   SizedBox(
                     width: 10.0,
                   ),
@@ -176,149 +166,78 @@ class UserView extends GetView<UserController> {
     );
   }
 
-  List<Widget> _buildInfomation() => [
-        const Row(
-          children: <Widget>[
-            Icon(Icons.work),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'Founder and CEO at',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'SignBox',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Row(
-          children: <Widget>[
-            Icon(Icons.work),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'Works at',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'SignBox',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Row(
-          children: <Widget>[
-            Icon(Icons.school),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'Studied Computer Science at',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-          ],
-        ),
-        const Wrap(
-          children: <Widget>[
-            Text(
-              'Abc University',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Row(
-          children: <Widget>[
-            Icon(Icons.home),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'Lives in',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'Pakistan',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Row(
-          children: <Widget>[
-            Icon(Icons.location_on),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'From',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'Lahore',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Row(
-          children: <Widget>[
-            Icon(Icons.list),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'Followed by',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              '100K people',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-        const SizedBox(height: 10.0),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('see more about Mohsin'),
+  Widget _buildInfomation() {
+    final data = [
+      {
+        'title': LocaleKeys.WentFrom.tr,
+        'value': 'went_to',
+        'icon': Icons.place_outlined,
+      },
+      {
+        'title': LocaleKeys.LiveIn.tr,
+        'value': 'live_in',
+        'icon': Icons.home_outlined,
+      },
+      {
+        'title': LocaleKeys.Relationship.tr,
+        'value': 'relationship',
+        'icon': Icons.favorite_outline,
+      },
+      {
+        'title': LocaleKeys.Phone.tr,
+        'value': 'phone',
+        'icon': Icons.phone_outlined,
+      },
+      {
+        'title': LocaleKeys.Birthday.tr,
+        'value': 'date_of_birth',
+        'icon': Icons.date_range_outlined,
+      },
+      {
+        'title': LocaleKeys.Address.tr,
+        'value': 'address',
+        'icon': Icons.location_city_outlined,
+      },
+    ];
+
+    final userJson = controller.state!.toJson();
+
+    return Builder(
+      builder: (context) => Column(
+        children: [
+          ...Helper.listGenerateSeparated(
+            data.length,
+            generator: (index) {
+              final item = data[index];
+              return Row(
+                children: <Widget>[
+                  Icon(item['icon'] as IconData),
+                  const SizedBox(width: 5.0),
+                  Text("${item['title']}:"),
+                  const SizedBox(width: 5.0),
+                  Text(
+                    Helper.tryFormatDateTime(userJson[item['value']] ?? ''),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              );
+            },
+            separator: (index) => const SizedBox(width: 5.0),
           ),
-        ),
-      ];
+          // const SizedBox(height: 10.0),
+          // SizedBox(
+          //   width: double.infinity,
+          //   child: ElevatedButton(
+          //     onPressed: () {},
+          //     child: const Text('see more about Mohsin'),
+          //   ),
+          // ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildColumnActionIcon() => Builder(
       builder: (context) => Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -339,10 +258,10 @@ class UserView extends GetView<UserController> {
                 children: <Widget>[
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.message, color: Colors.black),
+                    icon: const Icon(MdiIcons.facebookMessenger),
                   ),
-                  const Text(
-                    'Message',
+                  Text(
+                    LocaleKeys.Message.tr,
                     // style: TextStyle(color: Colors.black),
                   )
                 ],
@@ -350,7 +269,7 @@ class UserView extends GetView<UserController> {
               Column(
                 children: <Widget>[
                   IconButton(
-                    icon: const Icon(Icons.more_vert, color: Colors.black),
+                    icon: const Icon(Icons.more_vert),
                     onPressed: () {
                       _showMoreOption(context);
                     },
@@ -367,12 +286,16 @@ class UserView extends GetView<UserController> {
   Widget _buildPhotos() => Builder(
         builder: (context) => Column(
           children: [
-            Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Photos',
+            Row(
+              children: [
+                Text(
+                  LocaleKeys.Photo.tr,
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
-                )),
+                ),
+                const Spacer(),
+                _buildViewMoreButton(() {}),
+              ],
+            ),
             ObxValue(
                 (listImageUploadOfUser) => GridView.builder(
                       shrinkWrap: true,
@@ -405,22 +328,20 @@ class UserView extends GetView<UserController> {
   Widget _buildFriends() => Builder(
       builder: (context) => Column(
             children: [
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Friends',
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const Text('123 friend'),
-                    ],
-                  ),
-                  const Spacer(),
-                  Text('Search Friends >', style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.blue)),
-                ],
-              ),
+              Row(children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      LocaleKeys.Friend.tr,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const Text('123 friend'),
+                  ],
+                ),
+                const Spacer(),
+                _buildViewMoreButton(() => Get.toNamed(Routes.USER_FRIEND('${controller.userId}'))),
+              ]),
               ObxValue(
                   (listFriendOfUser) => GridView.builder(
                         shrinkWrap: true,
@@ -460,4 +381,13 @@ class UserView extends GetView<UserController> {
                   controller.listFriendOfUser)
             ],
           ));
+
+  Widget _buildViewMoreButton(VoidCallback onPressed) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: TextButton.icon(
+          onPressed: onPressed,
+          icon: const Icon(Icons.navigate_before_outlined),
+          label: Text(LocaleKeys.ViewMore.tr),
+        ),
+      );
 }

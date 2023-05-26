@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 
 import '../../../../package/comment_tree/comment_tree.dart';
@@ -73,7 +74,7 @@ class CommentWidget extends StatelessWidget {
             minLines: 1,
 
             decoration: InputDecoration(
-                hintText: 'Write something...',
+                hintText: LocaleKeys.WriteAComment.tr,
                 // hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                 enabledBorder: borderInput(Theme.of(context).colorScheme.secondary),
                 focusedBorder: borderInput(Colors.green),

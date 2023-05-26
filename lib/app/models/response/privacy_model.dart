@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
+import 'package:social_app/generated/locales.g.dart';
 
 class PrivacyModel extends BaseModel<PrivacyModel> {
   int? privacyId;
@@ -75,24 +77,24 @@ class PrivacyModel extends BaseModel<PrivacyModel> {
   static List<PrivacyModel> get listPrivacy => [
         PrivacyModel(
           privacyId: 0,
-          privacyPostName: 'Private',
-          privacyPostDescription: 'Only you can see your post',
+          privacyPostName: LocaleKeys.Private.tr,
+          privacyPostDescription: LocaleKeys.OnlyYouCanSeeYourPost.tr,
           privacyGroupName: 'Private Group',
           privacyGroupDescription: 'Only members can see everyone in the group and what they post.',
           privacyIcon: Icons.lock,
         ),
         PrivacyModel(
           privacyId: 1,
-          privacyPostName: 'Public',
-          privacyPostDescription: 'Anyone can see your post',
+          privacyPostName: LocaleKeys.Public.tr,
+          privacyPostDescription: LocaleKeys.AnyoneCanSeeYourPost.tr,
           privacyGroupName: 'Public Group',
           privacyGroupDescription: 'Anyone can see everyone in the group and what they post.',
           privacyIcon: Icons.public,
         ),
         PrivacyModel(
           privacyId: 2,
-          privacyPostName: 'Friend',
-          privacyPostDescription: 'Only your friend can see your post',
+          privacyPostName: LocaleKeys.Friend.tr,
+          privacyPostDescription: LocaleKeys.OnlyYourFriendCanSeeYourPost.tr,
           privacyGroupName: 'Friend Group',
           privacyGroupDescription: 'Only members can see everyone in the group and what they post.',
           privacyIcon: Icons.people,

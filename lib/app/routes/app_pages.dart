@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_app/app/modules/user/views/user_friend_view.dart';
 
 import '../core/config/theme_config.dart';
 import '../core/constants/app_constant.dart';
@@ -88,12 +89,17 @@ class AppPages {
               ]),
         ]),
     GetPage(
-      name: '${_Paths.USER}/:id',
-      page: () => UserView(int.tryParse(Get.parameters['id'] ?? '') ?? 0),
-      binding: BindingsBuilder(() {
-        final id = int.tryParse(Get.parameters['id'] ?? '') ?? 0;
-        Get.lazyPut(() => UserController(id), tag: '$id');
-      }),
-    ),
+        name: '${_Paths.USER}/:id', // /user/:id
+        page: () => const UserView(),
+        binding: BindingsBuilder(() {
+          final id = int.tryParse(Get.parameters['id'] ?? '') ?? 0;
+          Get.lazyPut(() => UserController(id), tag: '$id');
+        }),
+        children: [
+          GetPage(
+            name: _Paths.FRIEND, // /user/:id/friend
+            page: () => const UserFriendView(),
+          )
+        ]),
   ];
 }

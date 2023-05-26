@@ -78,7 +78,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
                 avatarImage: story_list[index].profile_path,
                 backgroundImage: story_list[index].image_Path,
                 showAddButton: index == 0 ? visible = true : false,
-                user_name: index == 0 ? 'Tạo tin của bạn' : story_list[index].user_name,
+                user_name: index == 0 ? LocaleKeys.CreateYourStories.tr : story_list[index].user_name,
               );
             }),
       ),
