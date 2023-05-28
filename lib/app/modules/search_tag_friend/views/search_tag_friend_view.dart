@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/custom/widget/search_widget.dart';
-import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
 
 class SearchTagFriendView<T extends SearchTagFriendController> extends StatefulWidget {
@@ -81,7 +80,7 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
                   itemCount: getListSelected.length,
                   separatorBuilder: (context, index) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
-                    final item = getListSelected[index] as UsersModel;
+                    final item = getListSelected[index];
                     return Column(
                       children: [
                         Stack(
@@ -123,9 +122,8 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
             AnimatedBuilder(
               animation: txtController,
               builder: (context, child) {
-                final listSearch = controller.listFriendOfUser
-                    .where((element) => Helper.containsToLowerCase((element as UsersModel).displayName, txtController.text))
-                    .toList();
+                final listSearch =
+                    controller.listFriendOfUser.where((element) => Helper.containsToLowerCase((element).displayName, txtController.text)).toList();
                 return Expanded(
                   child: ListView.separated(
                     itemCount: listSearch.length,
@@ -133,7 +131,7 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
                     physics: const BouncingScrollPhysics(),
                     separatorBuilder: (context, index) => const SizedBox(height: 10),
                     itemBuilder: (context, index) {
-                      final item = listSearch[index] as UsersModel;
+                      final item = listSearch[index];
                       return CheckboxListTile(
                         value: item.isSelected,
                         onChanged: (value) {

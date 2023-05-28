@@ -5,8 +5,10 @@ import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
 mixin SearchTagFriendController implements BaseController {
-  RxList<BaseSelectedModel> listFriendOfUser = RxList.empty();
+  RxList<UsersModel> listFriendOfUser = RxList.empty();
   RxList<Map<String, dynamic>> listImageUploadOfUser = RxList.empty();
+  RxList<UsersModel> listFriendSuggest = RxList.empty();
+  RxList<Map<String, dynamic>> listFriendRequest = RxList.empty();
 
   Future<void> call_fetchFriendByUserId([int? userId, int? limit]) async {
     apiCall
@@ -22,10 +24,12 @@ mixin SearchTagFriendController implements BaseController {
         data = value;
       }
       listFriendOfUser.value = List.from(data) //api viet sida
+          .where((item) => item['status'] == 1)
           .map((item) => UsersModel(
                 id: item['friendId'],
                 displayName: item['displayName'],
                 avatar: item['avatar'],
+                status: item['status'].toString(),
               ))
           .toList();
     });
@@ -55,5 +59,28 @@ mixin SearchTagFriendController implements BaseController {
         .then(
           (value) => value[getObjectList],
         );
+  }
+
+  Future<void> call_fetchFriendsSuggestion() async {
+    apiCall
+        .onRequest(
+      ApiUrl.get_fetchFriendsSuggestion(),
+      RequestMethod.GET,
+      baseModel: UsersModel(),
+    )
+        .then((value) {
+      listFriendSuggest.value = value;
+    });
+  }
+
+  Future<void> call_fetchFriendsRequest() async {
+    apiCall
+        .onRequest(
+      ApiUrl.get_fetchFriendRequest(),
+      RequestMethod.POST,
+    )
+        .then((value) {
+      listFriendRequest.value = Helper.convertToListMap(value);
+    });
   }
 }

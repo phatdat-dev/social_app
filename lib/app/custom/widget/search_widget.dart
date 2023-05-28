@@ -1,11 +1,12 @@
 // ignore_for_file: library_private_types_in_public_api, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../core/utils/utils.dart';
 
 class SearchWidget extends StatelessWidget {
-  final String hintText;
+  final String? hintText;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
   final bool readOnly;
@@ -15,7 +16,7 @@ class SearchWidget extends StatelessWidget {
 
   SearchWidget({
     Key? key,
-    this.hintText = 'Search...',
+    this.hintText,
     this.onChanged,
     this.onTap,
     this.controller,
@@ -47,7 +48,7 @@ class SearchWidget extends StatelessWidget {
         decoration: InputDecoration(
           // filled: true,
           border: OutlineInputBorder(borderRadius: borderRadius, borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
-          hintText: hintText,
+          hintText: hintText ?? '${LocaleKeys.Search.tr}...',
           hintStyle: TextStyle(color: Colors.grey.withOpacity(0.7), fontSize: 16),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),

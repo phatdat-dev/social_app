@@ -68,5 +68,9 @@
   "UnFollow": "UnFollow",
   "Block": "Block",
   "UnBlock": "UnBlock",
-  "UnFriend": "UnFriend"
+  "UnFriend": "UnFriend",
+  "Search": "Search",
+  "AddFriend": "Add Friend",
+  "Remove": "Remove",
+  "Accept": "Accept"
 }

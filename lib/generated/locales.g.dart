@@ -85,6 +85,10 @@ LocaleKeys._();
 	static const Block = 'Block';
 	static const UnBlock = 'UnBlock';
 	static const UnFriend = 'UnFriend';
+	static const Search = 'Search';
+	static const AddFriend = 'AddFriend';
+	static const Remove = 'Remove';
+	static const Accept = 'Accept';
 }
 
 class Locales {
@@ -160,6 +164,10 @@ class Locales {
 		'Block': 'ブロック',
 		'UnBlock': 'ブロック解除',
 		'UnFriend': '友達を解除',
+		'Search': '検索',
+		'AddFriend': '友達を追加する',
+		'Remove': '削除する',
+		'Accept': '受け入れる',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -232,6 +240,10 @@ class Locales {
 		'Block': 'Block',
 		'UnBlock': 'UnBlock',
 		'UnFriend': 'UnFriend',
+		'Search': 'Search',
+		'AddFriend': 'Add Friend',
+		'Remove': 'Remove',
+		'Accept': 'Accept',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -304,6 +316,10 @@ class Locales {
 		'Block': 'Chặn',
 		'UnBlock': 'Bỏ chặn',
 		'UnFriend': 'Hủy kết bạn',
+		'Search': 'Tìm kiếm',
+		'AddFriend': 'Kết bạn',
+		'Remove': 'Xoá',
+		'Accept': 'Chấp nhận',
 	};
 
 }

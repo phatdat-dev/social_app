@@ -20,75 +20,76 @@ class UserFriendCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 45,
+    return Row(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: CircleAvatar(
+            radius: 40,
             backgroundImage: image ?? const AssetImage('assets/images/user_default_icon.png'),
             backgroundColor: Colors.transparent,
           ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: [
+        ),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  if (trailingTitle != null) ...[
+                    const Spacer(),
                     Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    if (trailingTitle != null) ...[
-                      const Spacer(),
-                      Text(
-                        trailingTitle!,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ]
-                  ],
-                ),
-                if (subTitle != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3.0),
-                    child: Text(
-                      subTitle!, //'15 Mutual friends',
+                      trailingTitle!,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
+                  ]
+                ],
+              ),
+              if (subTitle != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.0),
+                  child: Text(
+                    subTitle!, //'15 Mutual friends',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
-                Row(
-                  children: <Widget>[
-                    //Add Friends
-                    Expanded(
-                      child: FilledButton.tonal(
-                        onPressed: action1?.$2 ?? () {},
-                        child: Text(action1?.$1 ?? 'Add',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.inverseSurface,
-                            )),
-                      ),
-                    ),
-
-                    const SizedBox(width: 5),
-
-                    //Remove
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: action2?.$2 ?? () {},
-                        child: Text(action2?.$1 ?? 'Remove',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.inverseSurface,
-                            )),
-                      ),
-                    ),
-                  ],
                 ),
-              ],
-            ),
+              Row(
+                children: <Widget>[
+                  //Add Friends
+                  Expanded(
+                    child: FilledButton.tonal(
+                      onPressed: action1?.$2 ?? () {},
+                      child: Text(action1?.$1 ?? 'Add',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                          )),
+                    ),
+                  ),
+
+                  const SizedBox(width: 5),
+
+                  //Remove
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: action2?.$2 ?? () {},
+                      child: Text(action2?.$1 ?? 'Remove',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                          )),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: 10),
+      ],
     );
   }
 }

@@ -142,7 +142,7 @@ class HelperWidget {
     required Iterable<T> data,
     String? hintText = 'Search...',
   }) async {
-    final ValueNotifier<List<T>> search = ValueNotifier(data.toList());
+    final RxList<T> search = data.toList().obs;
     final txtController = TextEditingController();
     return await showDialog<T>(
         // showGeneralDialog
@@ -171,22 +171,22 @@ class HelperWidget {
             content: SizedBox(
               width: size.width,
               height: size.height / 2,
-              child: ValueListenableBuilder(
-                valueListenable: search,
-                builder: (context, value, child) => ListView.builder(
+              child: ObxValue(
+                (search) => ListView.builder(
                   shrinkWrap: true,
-                  itemCount: value.length,
+                  itemCount: search.length,
                   itemBuilder: (context, index) => ListTile(
                     title: txtController.text.isEmpty
-                        ? Text(value[index].queryName)
+                        ? Text(search[index].queryName)
                         : RichText(
                             text: TextSpan(
-                                children: highlightOccurrences(value[index].queryName, txtController.text),
+                                children: highlightOccurrences(search[index].queryName, txtController.text),
                                 style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
                           ),
-                    onTap: () => Navigator.of(context).pop(value[index]),
+                    onTap: () => Navigator.of(context).pop(search[index]),
                   ),
                 ),
+                search,
               ),
             ),
           );

@@ -117,7 +117,7 @@ class MessageView<T extends MessageController> extends GetView<T> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: controller.listFriendOfUser.length,
               itemBuilder: (context, index) {
-                final item = controller.listFriendOfUser[index] as UsersModel;
+                final item = controller.listFriendOfUser[index];
                 // if (LoginController.userLogin?.id == user.id) {
                 //   return const SizedBox.shrink();
                 // }

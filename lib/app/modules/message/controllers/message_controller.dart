@@ -35,7 +35,7 @@ class MessageController extends BaseController with SearchTagFriendController {
 
     await fireBaseService.call_createOrUpdateGroupChat(
       chatRoomId: currentChatRoom['chatRoomId'] ?? Helper.generateIdFromDateTimeNow(),
-      members: [AuthenticationController.userAccount!.toJson(), ...listSelected.map((e) => (e as UsersModel).toJson())],
+      members: [AuthenticationController.userAccount!.toJson(), ...listSelected.map((e) => (e).toJson())],
     );
 
     Get.back();
@@ -52,7 +52,7 @@ class MessageController extends BaseController with SearchTagFriendController {
   }) {
     //member đã chọn
     listMemberSelected.value.forEach((element) {
-      listFriendOfUser.firstWhereOrNull((e) => (e as UsersModel).id == element.id)?.isSelected = true;
+      listFriendOfUser.firstWhereOrNull((e) => (e).id == element.id)?.isSelected = true;
     });
 
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Add member', minSelected: 1)));

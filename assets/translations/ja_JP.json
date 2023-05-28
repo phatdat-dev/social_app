@@ -68,5 +68,9 @@
   "UnFollow": "アンフォロー",
   "Block": "ブロック",
   "UnBlock": "ブロック解除",
-  "UnFriend": "友達を解除"
+  "UnFriend": "友達を解除",
+  "Search": "検索",
+  "AddFriend": "友達を追加する",
+  "Remove": "削除する",
+  "Accept": "受け入れる"
 }

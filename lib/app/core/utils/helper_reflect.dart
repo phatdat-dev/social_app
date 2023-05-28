@@ -2,14 +2,14 @@
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../custom/other/search_controller_custom.dart';
 import '../base/base_project.dart'; //sort AZ
 
 class HelperReflect {
   //muon su dung ham` nay` thi` phai co' reflectable moi xai dc
-  static void search<T>(
-      {required Iterable<T> listOrigin, required ValueNotifier<List<T>> listSearch, required String nameModel, required String keywordSearch}) {
+  static void search<T>({required Iterable<T> listOrigin, required RxList<T> listSearch, required String nameModel, required String keywordSearch}) {
     keywordSearch = keywordSearch.toLowerCase().trim();
     var newList = listOrigin.where((element) {
       String? insMirror;
@@ -29,6 +29,7 @@ class HelperReflect {
       return insMirror?.toLowerCase().contains(keywordSearch) ?? false;
     }).toList();
     listSearch.value = newList;
+    // listSearch.refresh();
   }
 
   static void sortAZ<T>({required ValueNotifier<bool> isSort, required String nameModelSortAZ, required ValueNotifier<List<T>> listSearch}) {

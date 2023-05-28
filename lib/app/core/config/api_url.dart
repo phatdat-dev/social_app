@@ -13,6 +13,8 @@ class ApiUrl {
   static String get_fetchFriendByUserId(int userId, [int? limit]) => '/api/v1/fetch-friend-by-user-id/$userId' + (limit != null ? '/$limit' : '');
   static String get_fetchImageUpload(int userId, [int? limit]) => '/api/v1/fetch-image-uploaded/userId=$userId' + (limit != null ? '/$limit' : '');
   static String get_profileUser(int userId) => '/api/profile-user/userId=$userId';
+  static String get_fetchFriendsSuggestion() => '/api/v1/fetch-friends-suggestion';
+  static String get_fetchFriendRequest() => '/api/v1/fetch-friend-request-list';
   //
   static String get_fetchGroupJoined() => '/api/v1/fetch-group-joined';
   static String get_fetchPostGroup() => '/api/v1/fetch-post-group';
@@ -30,4 +32,6 @@ class ApiUrl {
   static String post_replyComment() => '/api/v1/reply-comment';
   static String get_searchUsersAndGroups(String input) => '/api/v1/search-users-and-groups/$input';
   static String post_unfriend() => '/api/v1/unfriend';
+  static String post_requestAddFriend() => '/api/v1/request-add-friend';
+  static String post_acceptFriendRequest() => '/api/v1/accept-friend-request';
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_app/app/core/utils/helper.dart';
-import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/user/controllers/user_controller.dart';
 import 'package:social_app/generated/locales.g.dart';
 
@@ -347,7 +346,7 @@ class UserView extends GetView<UserController> {
                         shrinkWrap: true,
                         padding: const EdgeInsets.only(top: 20),
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: listFriendOfUser.length,
+                        itemCount: listFriendOfUser.length > 6 ? 6 : listFriendOfUser.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
@@ -355,7 +354,7 @@ class UserView extends GetView<UserController> {
                           crossAxisCount: 3,
                         ),
                         itemBuilder: (context, index) {
-                          final item = listFriendOfUser[index] as UsersModel;
+                          final item = listFriendOfUser[index];
                           return Column(
                             children: [
                               InkWell(

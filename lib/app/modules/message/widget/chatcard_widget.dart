@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:social_app/app/core/utils/helper_widget.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/models/users_model.dart';
 

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -21,7 +23,14 @@ class _UserFriendViewState extends State<UserFriendView> with TickerProviderStat
   late final List<Map<String, dynamic>> tabBarWidget;
   final searchText = TextEditingController();
 
-  ValueNotifier<List> get valueNotifierSearch => tabBarWidget[tabBarController.index]['ValueNotifierSearch'];
+  void onChangedSearchTextUser(String value) {
+    HelperReflect.search(
+      listOrigin: tabBarWidget[tabBarController.index]['ValueNotifier'],
+      listSearch: tabBarWidget[tabBarController.index]['ValueNotifierSearch'],
+      nameModel: 'displayName',
+      keywordSearch: value,
+    );
+  }
 
   @override
   void initState() {
@@ -31,35 +40,34 @@ class _UserFriendViewState extends State<UserFriendView> with TickerProviderStat
     tabBarWidget = [
       {
         'Key': LocaleKeys.SuggetionsForYou,
-        'ValueNotifierSearch': ValueNotifier<List>([]),
-        'onChanged': (String value) {},
+        'ValueNotifier': controller.listFriendSuggest,
+        'ValueNotifierSearch': RxList.from(controller.listFriendSuggest),
+        'onChanged': onChangedSearchTextUser,
       },
       {
         'Key': LocaleKeys.YourFriend,
-        'ValueNotifierSearch': ValueNotifier<List>(controller.listFriendOfUser),
-        'onChanged': (String value) {
-          HelperReflect.search(
-            listOrigin: controller.listFriendOfUser,
-            listSearch: valueNotifierSearch,
-            nameModel: 'displayName',
-            keywordSearch: value,
-          );
-        },
+        'ValueNotifier': controller.listFriendOfUser,
+        'ValueNotifierSearch': RxList.from(controller.listFriendOfUser),
+        'onChanged': onChangedSearchTextUser,
       },
       {
         'Key': LocaleKeys.FriendRequests,
-        'ValueNotifierSearch': ValueNotifier<List>([]),
-        'onChanged': (String value) {},
+        'ValueNotifier': controller.listFriendRequest,
+        'ValueNotifierSearch': RxList.from(controller.listFriendRequest),
+        'onChanged': onChangedSearchTextUser,
       },
     ];
+    //do call api sau nên lúc đầu mảng sẽ rỗng
+    tabBarWidget.forEach((element) {
+      (element['ValueNotifier'] as RxList).listen((p0) {
+        //update lại biến search khi api call thành công
+        element.update('ValueNotifierSearch', (valueNotifierSearch) => (valueNotifierSearch as RxList)..value = p0);
+      });
+    });
 
     tabBarController = TabController(length: tabBarWidget.length, vsync: this);
 
-    loadData();
-  }
-
-  Future<void> loadData() async {
-    controller.call_fetchFriendByUserId(controller.userId);
+    controller.onInitDataUserFriend();
   }
 
   @override
@@ -127,46 +135,67 @@ class _UserFriendViewState extends State<UserFriendView> with TickerProviderStat
                 ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    ...List.generate(
-                      3,
-                      (index) => UserFriendCardWidget(
-                        title: '$index',
-                        action1: ('Follow', () {}),
-                      ),
-                    ),
+                    Obx(() => Column(
+                          children: (tabBarWidget[0]['ValueNotifierSearch'] as RxList).map((e) {
+                            e as UsersModel;
+                            return UserFriendCardWidget(
+                              title: e.displayName!,
+                              image: NetworkImage(e.avatar!),
+                              action1: (
+                                LocaleKeys.AddFriend.tr,
+                                () => controller.call_requestAddFriend(e.id!),
+                              ),
+                              action2: (
+                                LocaleKeys.Remove.tr,
+                                () {},
+                              ),
+                            );
+                          }).toList(),
+                        )),
                   ],
                 ),
                 //
                 ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    AnimatedBuilder(
-                      animation: tabBarController,
-                      builder: (context, child) => ValueListenableBuilder(
-                        valueListenable: valueNotifierSearch,
-                        builder: (context, value, child) => Column(
-                          children: value.map((element) {
-                            element as UsersModel;
+                    Obx(() => Column(
+                          children: (tabBarWidget[1]['ValueNotifierSearch'] as RxList).map((e) {
+                            e as UsersModel;
                             return ListTile(
                                 leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(element.avatar!),
+                                  backgroundImage: NetworkImage(e.avatar!),
                                 ),
-                                title: Text(element.displayName ?? ''),
+                                title: Text(e.displayName ?? ''),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.more_horiz),
-                                  onPressed: () => showBottomSheetOptionFriend(element),
+                                  onPressed: () => showBottomSheetOptionFriend(e),
                                 ));
                           }).toList(),
-                        ),
-                      ),
-                    ),
+                        )),
                   ],
                 ),
                 //
-                Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.red,
+                ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Obx(() => Column(
+                          children: (tabBarWidget[2]['ValueNotifierSearch'] as RxList).map((e) {
+                            e as Map<String, dynamic>;
+                            return UserFriendCardWidget(
+                              title: e['displayName'] ?? '',
+                              image: NetworkImage(e['avatar'] ?? ''),
+                              action1: (
+                                LocaleKeys.Accept.tr,
+                                () => controller.call_acceptFriendRequest(e['user_request']), //
+                              ),
+                              action2: (
+                                LocaleKeys.Remove.tr,
+                                () {},
+                              ),
+                            );
+                          }).toList(),
+                        )),
+                  ],
                 ),
               ],
             ),
@@ -221,7 +250,10 @@ class _UserFriendViewState extends State<UserFriendView> with TickerProviderStat
                     LocaleKeys.UnFriend.tr,
                     style: const TextStyle(color: Colors.red),
                   ),
-                  onTap: () => controller.call_unFriend(usersModel.id!),
+                  onTap: () async{
+                    await controller.call_unFriend(usersModel.id!);
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),

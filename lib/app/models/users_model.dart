@@ -15,6 +15,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
   String? address;
   String? token;
   String? password;
+  String? status;
 
   UsersModel({
     this.id,
@@ -31,6 +32,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
     this.address,
     this.token,
     this.password,
+    this.status,
   });
 
   @override
@@ -52,6 +54,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
       address: json['address'],
       token: token ?? json['token'],
       password: json['password'],
+      status: json['status'].toString(),
     );
   }
 
@@ -100,6 +103,9 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
     if (password != null) {
       data['password'] = password;
     }
+    if (status != null) {
+      data['status'] = status;
+    }
     return data;
   }
 
@@ -118,6 +124,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
     String? address,
     String? token,
     String? password,
+    String? status,
   }) =>
       UsersModel(
         id: id ?? this.id,
@@ -134,5 +141,6 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
         address: address ?? this.address,
         token: token ?? this.token,
         password: password ?? this.password,
+        status: status ?? this.status,
       );
 }
