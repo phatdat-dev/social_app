@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:social_app/app/core/services/firebase_service.dart';
 
 import '/app/core/utils/utils.dart';
 import '/app/custom/widget/loadding_widget.dart';
@@ -22,7 +23,7 @@ class BaseConnect extends GetConnect {
   @override
   void onInit() {
     super.onInit();
-    httpClient.baseUrl = ApiUrl.base_url;
+    httpClient.baseUrl = Get.find<FireBaseService>().getBaseURL();
     httpClient.timeout = Duration(seconds: timeOutSecond);
     // httpClient.addAuthenticator(authInterceptor);
     httpClient.addRequestModifier(requestInterceptor);

@@ -54,8 +54,10 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       initialBinding: BindingsBuilder(() {
-        Get.put(BaseConnect());
-        Get.put(FireBaseService()).notificationServiceInitialize();
+        Get.put(FireBaseService())
+          ..notificationServiceInitialize()
+          ..remoteConfigServiceInitialize();
+        Get.lazyPut(() => BaseConnect(), fenix: true);
       }),
       //theme
       theme: themeConfig.lightTheme,

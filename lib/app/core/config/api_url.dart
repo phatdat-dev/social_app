@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 class ApiUrl {
-  static String get base_url => 'http://192.168.1.6:8080'; //baseUrl
+  // static String get base_url => 'http://192.168.1.6:8080'; //baseUrl
   //auth
   static String post_auth_login() => '/api/auth/login';
   static String post_auth_forgotPassword() => '/api/auth/forgot-password';
@@ -34,4 +34,6 @@ class ApiUrl {
   static String post_unfriend() => '/api/v1/unfriend';
   static String post_requestAddFriend() => '/api/v1/request-add-friend';
   static String post_acceptFriendRequest() => '/api/v1/accept-friend-request';
+  //
+  static String get_stories() => '/api/v1/stories';
 }

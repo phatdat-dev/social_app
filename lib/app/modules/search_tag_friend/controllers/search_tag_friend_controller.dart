@@ -5,6 +5,7 @@ import 'package:social_app/app/models/users_model.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
 mixin SearchTagFriendController implements BaseController {
+  //co thoi gian chuyen may cai nay` thanh` bien' Value<T>
   RxList<UsersModel> listFriendOfUser = RxList.empty();
   RxList<Map<String, dynamic>> listImageUploadOfUser = RxList.empty();
   RxList<UsersModel> listFriendSuggest = RxList.empty();

@@ -6,7 +6,12 @@ class FacebookCardStory extends StatelessWidget {
   final bool showAddButton;
   final String user_name;
 
-  FacebookCardStory({required this.avatarImage, required this.backgroundImage, required this.showAddButton, required this.user_name});
+  FacebookCardStory({
+    required this.avatarImage,
+    required this.backgroundImage,
+    this.showAddButton = false,
+    required this.user_name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class FacebookCardStory extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.1),
           borderRadius: const BorderRadius.all(Radius.circular(20)),
-          image: DecorationImage(image: AssetImage(backgroundImage), fit: BoxFit.cover),
+          image: DecorationImage(image: NetworkImage(backgroundImage), fit: BoxFit.cover),
         ),
         child: Stack(
           children: <Widget>[
@@ -34,7 +39,7 @@ class FacebookCardStory extends StatelessWidget {
                         color: Colors.white,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.blue, width: 2),
-                        image: DecorationImage(image: AssetImage(avatarImage), fit: BoxFit.cover)),
+                        image: DecorationImage(image: NetworkImage(avatarImage), fit: BoxFit.cover)),
                   ),
                 ),
                 const Spacer(),
