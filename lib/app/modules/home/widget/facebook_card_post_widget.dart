@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_app/app/core/services/social_share_service.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:social_app/app/modules/authentication/views/authentication_view.dart';
 import 'package:social_app/app/modules/home/controllers/post_controller.dart';
 import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/comment_widget.dart';
@@ -26,6 +28,8 @@ class FacebookCardPostWidget extends StatelessWidget {
   void showBottomSheetSharePost(BuildContext context) {
     final createPostViewWidget = CreatePostView();
     final postController = Get.find<PostController>();
+    final socialShare = Get.find<SocialShareService>();
+
     showModalBottomSheet<String>(
         context: context,
         isScrollControlled: true,
@@ -74,7 +78,39 @@ class FacebookCardPostWidget extends StatelessWidget {
                           );
                         },
                       ),
-                    )
+                    ),
+                    const Center(child: OrDivider()),
+                    SizedBox(
+                      height: 50,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: SocialShareType.values.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 10),
+                        itemBuilder: (context, index) {
+                          final item = SocialShareType.values[index];
+                          return InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: () {
+                              final socialShare = Get.find<SocialShareService>();
+                              socialShare.onShare(
+                                type: item,
+                                urlShare: 'https://www.youtube.com/watch?v=bWehAFTFc9o', //url this post website
+                                text: 'zzzzzzz',
+                              );
+                            },
+                            child: Ink(
+                              width: 50,
+                              height: 50,
+                              decoration: ShapeDecoration(
+                                shape: const CircleBorder(),
+                                image: DecorationImage(image: NetworkImage(item.icon), fit: BoxFit.cover),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 5),
                   ],
                 ),
               ),

@@ -69,6 +69,7 @@ dependencies:
   chewie: ^1.4.0 #action video
   # animations: any
   flutter_reaction_button: ^2.0.1+2
+  url_launcher: any
 
   #
   flutter_localizations:

@@ -127,6 +127,7 @@ class _AuthenticationViewState extends State<AuthenticationView> with SingleTick
                     ],
                   ),
                   const OrDivider(),
+                  const SizedBox(height: 10),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: Row(

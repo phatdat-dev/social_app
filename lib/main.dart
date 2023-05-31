@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_app/app/core/config/theme_config.dart';
 import 'package:social_app/app/core/constants/global_constant.dart';
 import 'package:social_app/app/core/services/firebase_service.dart';
+import 'package:social_app/app/core/services/social_share_service.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 
 import 'app/core/base/base_project.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
           ..notificationServiceInitialize()
           ..remoteConfigServiceInitialize();
         Get.lazyPut(() => BaseConnect(), fenix: true);
+        Get.putAsync(() => SocialShareService().init());
       }),
       //theme
       theme: themeConfig.lightTheme,
