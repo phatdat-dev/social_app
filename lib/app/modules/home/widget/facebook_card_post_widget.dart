@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_app/app/core/services/cloud_translation_service.dart';
 import 'package:social_app/app/core/services/social_share_service.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
@@ -28,7 +29,6 @@ class FacebookCardPostWidget extends StatelessWidget {
   void showBottomSheetSharePost(BuildContext context) {
     final createPostViewWidget = CreatePostView();
     final postController = Get.find<PostController>();
-    final socialShare = Get.find<SocialShareService>();
 
     showModalBottomSheet<String>(
         context: context,
@@ -241,13 +241,26 @@ class FacebookCardPostWidget extends StatelessWidget {
 
   Widget _buildPostContentString({required BuildContext context, required Map<String, dynamic> postResponseModel}) => Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-        child: Text.rich(TextSpan(
-          children: [
-            TextSpan(text: postResponseModel['post_content']),
-            TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
-          ],
-          style: const TextStyle(fontSize: 16),
-        )),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text.rich(TextSpan(
+            children: [
+              TextSpan(text: postResponseModel['post_content']),
+              TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
+            ],
+            style: const TextStyle(fontSize: 16),
+          )),
+          GestureDetector(
+            onTap: () async {
+              final cloudTranslationService = CloudTranslationService();
+              final text = await cloudTranslationService.translate(text: postResponseModel['post_content']);
+              postResponseModel['post_content'] = text;
+
+              // ignore: invalid_use_of_protected_member
+              Get.find<PostController>().refresh();
+            },
+            child: Text('Translate Text >', style: TextStyle(color: Colors.blue.shade700)),
+          ),
+        ]),
       );
 
   Row _buildButtonBar(ValueNotifier<bool> isExpandedNotifier) {
