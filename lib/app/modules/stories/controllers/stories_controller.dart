@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 
+import '../../../core/services/picker_service.dart';
 import '../../../routes/app_pages.dart';
 
 class StoriesController extends BaseController {
@@ -18,7 +21,7 @@ class StoriesController extends BaseController {
   Future<void> call_fetchStories() async {
     await apiCall
         .onRequest(
-      ApiUrl.get_stories(),
+      ApiUrl.get_fetchStories(),
       RequestMethod.GET,
       isShowLoading: false,
     )
@@ -30,6 +33,33 @@ class StoriesController extends BaseController {
   void redirectToStoriesView(({int index, Map<String, dynamic> data}) item) {
     currentObject = item;
     Get.toNamed(Routes.STORIES(item.data['id'].toString()));
+  }
+
+  void createStories() async {
+    final pickerService = PickerService();
+    await pickerService.pickMultiFile(FileType.image);
+    if (pickerService.files == null || pickerService.files!.isEmpty) return;
+
+    await call_createStories(
+      type: 'image',
+      filesPath: pickerService.files,
+    );
+    call_fetchStories();
+  }
+
+  Future<void> call_createStories({
+    required String type,
+    List<String>? filesPath,
+  }) async {
+    await apiCall.onRequest(
+      ApiUrl.get_createStories(),
+      RequestMethod.POST,
+      body: FormData({
+        'file[]': filesPath?.map((path) => MultipartFile(File(path), filename: path)).toList(),
+        'type': type, //image, video
+      }),
+    );
+    HelperWidget.showSnackBar(message: 'Create stories success');
   }
 }
 

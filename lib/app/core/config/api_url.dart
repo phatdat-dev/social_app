@@ -35,5 +35,6 @@ class ApiUrl {
   static String post_requestAddFriend() => '/api/v1/request-add-friend';
   static String post_acceptFriendRequest() => '/api/v1/accept-friend-request';
   //
-  static String get_stories() => '/api/v1/stories';
+  static String get_fetchStories() => '/api/v1/stories';
+  static String get_createStories() => '/api/v1/stories/create-story';
 }

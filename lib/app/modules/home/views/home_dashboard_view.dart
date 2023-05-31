@@ -65,7 +65,7 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
               FacebookCardStory(
                 avatarImage: AuthenticationController.userAccount!.avatar!,
                 backgroundImage: AuthenticationController.userAccount!.avatar!,
-                showAddButton: true,
+                onPressAdd: storiesController.createStories,
                 user_name: LocaleKeys.CreateYourStories.tr,
               ),
               const SizedBox(width: 5),

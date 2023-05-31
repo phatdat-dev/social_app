@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class FacebookCardStory extends StatelessWidget {
   final String avatarImage;
   final String backgroundImage;
-  final bool showAddButton;
+  final VoidCallback? onPressAdd;
   final String user_name;
 
   FacebookCardStory({
     required this.avatarImage,
     required this.backgroundImage,
-    this.showAddButton = false,
+    this.onPressAdd,
     required this.user_name,
   });
 
@@ -53,11 +53,11 @@ class FacebookCardStory extends StatelessWidget {
               ],
             ),
             Visibility(
-              visible: showAddButton,
+              visible: onPressAdd != null,
               child: Padding(
                 padding: const EdgeInsets.all(3.5),
                 child: RawMaterialButton(
-                  onPressed: () {},
+                  onPressed: onPressAdd,
                   shape: const CircleBorder(),
                   fillColor: Colors.white,
                   constraints: const BoxConstraints.tightFor(width: 42.0, height: 42.0),
