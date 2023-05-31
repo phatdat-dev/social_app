@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_app/app/core/config/theme_config.dart';
 import 'package:social_app/app/core/services/translation_service.dart';
 import 'package:social_app/app/custom/widget/check_radio_listtitle_widget.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
+import '../../../core/constants/app_constant.dart';
 import '../../../core/utils/utils.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
@@ -104,6 +106,35 @@ class HomeDrawerWidget extends StatelessWidget {
                           onChanged: (value) => TranslationService.changeLocale(value!),
                         ))
                     .toList(),
+              ),
+              ExpansionTile(
+                leading: const Icon(Icons.color_lens_outlined),
+                title: const Text('Theme seeder color'),
+                children: [
+                  Wrap(
+                    children: [null, ...Colors.primaries]
+                        .map((e) => SizedBox(
+                              width: 100,
+                              child: CheckRadioListTileWidget<MaterialColor?>(
+                                value: e,
+                                title: CircleAvatar(
+                                  backgroundColor: e,
+                                  radius: 15,
+                                ),
+                                groupValue: Global.colorSchemeSeed,
+                                onChanged: (value) {
+                                  Global.colorSchemeSeed = value;
+                                  if (value == null) {
+                                    Get.changeTheme(ThemeConfig().lightTheme);
+                                  } else {
+                                    Get.changeTheme(ThemeData(colorSchemeSeed: value));
+                                  }
+                                },
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ],
               ),
               //settings
               ListTile(

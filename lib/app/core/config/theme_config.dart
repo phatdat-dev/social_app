@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../constants/color_constant.dart';
 
 // https://flutter.github.io/samples/web/material_3_demo/#/
+// https://github.com/flutter/samples/tree/main/material_3_demo
 class ThemeConfig with ColorConstants {
   ThemeData get lightTheme {
     return ThemeData.light().copyWith(
