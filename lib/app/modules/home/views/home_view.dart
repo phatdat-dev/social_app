@@ -80,9 +80,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
     return GestureDetector(
       //huy keyboard khi bam ngoai man hinh
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
-      child: GetBuilder(
-        init: controller.postController,
-        builder: (postController) => Scaffold(
+      child: Scaffold(
           resizeToAvoidBottomInset: false,
           // extendBody: true,
           extendBodyBehindAppBar: true,
@@ -142,7 +140,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin, Widg
           ),
           //Footer
         ),
-      ),
     );
   }
 }

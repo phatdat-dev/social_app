@@ -11,7 +11,7 @@ class StoriesView extends GetView<StoriesController> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(controller.currentObject!.data['userName']),
+        title: Text(controller.currentObject!.data['displayName']),
       ),
       body: SafeArea(
         child: Stack(children: [

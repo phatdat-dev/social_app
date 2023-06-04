@@ -26,6 +26,8 @@ class StoriesController extends BaseController {
       isShowLoading: false,
     )
         .then((value) {
+      //chổ này api viết tào lao quá nên mắc công phải sửa lại
+      value = (value as List).map((e) => e['stories']).expand((e) => e).toList();
       listStories.change(Helper.convertToListMap(value), status: RxStatus.success());
     });
   }

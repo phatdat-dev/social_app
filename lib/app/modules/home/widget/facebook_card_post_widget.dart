@@ -264,7 +264,7 @@ class FacebookCardPostWidget extends StatelessWidget {
       );
 
   Row _buildButtonBar(ValueNotifier<bool> isExpandedNotifier) {
-    bool like = postResponseModel['isLike'] ?? false;
+    bool like = postResponseModel['isLike'] != null;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

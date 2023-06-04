@@ -35,19 +35,16 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
       children: <Widget>[
         const InputStoryWidget(),
         _buildListCardStory(),
-        GetBuilder(
-          init: controller.postController,
-          builder: (postController) => postController.obx((state) {
-            return ListView.builder(
-                itemCount: state!.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemBuilder: (context, int index) {
-                  return FacebookCardPostWidget(state[index]);
-                });
-          }),
-        ),
+        controller.postController.obx((state) {
+          return ListView.builder(
+              itemCount: state!.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, int index) {
+                return FacebookCardPostWidget(state[index]);
+              });
+        }),
       ],
     );
   }
@@ -56,40 +53,36 @@ class _HomeDashBoardViewState extends State<HomeDashBoardView> {
     return Card(
       child: SizedBox(
         height: 200,
-        child: GetBuilder(
-          init: controller.storiesController,
-          builder: (storiesController) => ListView(
-            addAutomaticKeepAlives: true,
-            scrollDirection: Axis.horizontal,
-            children: [
-              FacebookCardStory(
-                avatarImage: AuthenticationController.userAccount!.avatar!,
-                backgroundImage: AuthenticationController.userAccount!.avatar!,
-                onPressAdd: storiesController.createStories,
-                user_name: LocaleKeys.CreateYourStories.tr,
-              ),
-              const SizedBox(width: 5),
-              storiesController.listStories.obx(
-                (state) => ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state!.length,
-                    separatorBuilder: (context, index) => const SizedBox(width: 5),
-                    itemBuilder: (context, index) {
-                      final item = state[index];
-                      return GestureDetector(
-                        onTap: () => storiesController.redirectToStoriesView((index: index, data: item)),
-                        child: FacebookCardStory(
-                          avatarImage: item['avatar'],
-                          backgroundImage: item['file_name_story'],
-                          user_name: item['userName'],
-                        ),
-                      );
-                    }),
-              ),
-            ],
-          ),
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            FacebookCardStory(
+              avatarImage: AuthenticationController.userAccount!.avatar!,
+              backgroundImage: AuthenticationController.userAccount!.avatar!,
+              onPressAdd: controller.storiesController.createStories,
+              user_name: LocaleKeys.CreateYourStories.tr,
+            ),
+            const SizedBox(width: 5),
+            controller.storiesController.listStories.obx(
+              (state) => ListView.separated(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state!.length,
+                  separatorBuilder: (context, index) => const SizedBox(width: 5),
+                  itemBuilder: (context, index) {
+                    final item = state[index];
+                    return GestureDetector(
+                      onTap: () => controller.storiesController.redirectToStoriesView((index: index, data: item)),
+                      child: FacebookCardStory(
+                        avatarImage: item['avatar'],
+                        backgroundImage: item['file_name_story'],
+                        user_name: item['displayName'],
+                      ),
+                    );
+                  }),
+            ),
+          ],
         ),
       ),
     );

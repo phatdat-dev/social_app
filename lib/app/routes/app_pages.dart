@@ -44,7 +44,11 @@ class AppPages {
     GetPage(
         name: _Paths.HOME,
         page: () => const HomeView(),
-        binding: BindingsBuilder(() => Get.lazyPut(() => HomeController())),
+        binding: BindingsBuilder(() {
+          final homeController = Get.put(HomeController());
+          Get.put(homeController.postController);
+          Get.put(homeController.storiesController);
+        }),
         middlewares: [AuthenticationMiddleware()]),
     GetPage(
       name: '/viewColorTheme',
@@ -106,6 +110,7 @@ class AppPages {
     GetPage(
       name: '${_Paths.STORIES}/:id', // /stories/:id
       page: () => const StoriesView(),
+      // binding: BindingsBuilder(() => Get.lazyPut(() => StoriesController())),
     ),
   ];
 }
