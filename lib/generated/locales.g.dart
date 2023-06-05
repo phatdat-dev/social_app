@@ -95,6 +95,7 @@ LocaleKeys._();
 	static const DeletePost = 'DeletePost';
 	static const ReportPost = 'ReportPost';
 	static const CreatePost = 'CreatePost';
+	static const PostEditHistory = 'PostEditHistory';
 }
 
 class Locales {
@@ -180,6 +181,7 @@ class Locales {
 		'DeletePost': '投稿を削除する',
 		'ReportPost': '投稿を報告する',
 		'CreatePost': '投稿を作成する',
+		'PostEditHistory': '投稿編集履歴',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -262,6 +264,7 @@ class Locales {
 		'DeletePost': 'Delete Post',
 		'ReportPost': 'Report Post',
 		'CreatePost': 'Create Post',
+		'PostEditHistory': 'Post Edit History',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -344,6 +347,7 @@ class Locales {
 		'DeletePost': 'Xoá bài viết',
 		'ReportPost': 'Báo cáo bài viết',
 		'CreatePost': 'Tạo bài viết',
+		'PostEditHistory': 'Lịch sử chỉnh sửa bài viết',
 	};
 
 }

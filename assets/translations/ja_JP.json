@@ -78,5 +78,6 @@
   "EditPost": "投稿を編集する",
   "DeletePost": "投稿を削除する",
   "ReportPost": "投稿を報告する",
-  "CreatePost": "投稿を作成する"
+  "CreatePost": "投稿を作成する",
+  "PostEditHistory": "投稿編集履歴"
 }

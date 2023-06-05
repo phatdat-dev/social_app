@@ -22,8 +22,9 @@ import '../../../routes/app_pages.dart';
 class FacebookCardPostWidget extends GetView<PostController> {
   final Map<String, dynamic> postResponseModel;
   late bool? isGroupPost;
+  final bool isShowcontentOnly;
 
-  FacebookCardPostWidget(this.postResponseModel, {this.isGroupPost}) {
+  FacebookCardPostWidget(this.postResponseModel, {this.isGroupPost, this.isShowcontentOnly = false}) {
     if (isGroupPost == null) {
       isGroupPost = postResponseModel['group_id'] != null;
     }
@@ -137,7 +138,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
               isExpandedNotifier: isExpandedNotifier,
               postResponseModel: postResponseModel,
             ),
-            ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
+            if (isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
           ]
           //nếu bài viết được chia sẽ và có parent_post
           else ...[
@@ -157,7 +158,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
                 postResponseModel: postResponseModel['parent_post'],
               ),
             ),
-            ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
+            if (isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
           ]
         ],
       ),
@@ -490,66 +491,67 @@ class FacebookCardPostWidget extends GetView<PostController> {
               ),
             ),
           ),
-          Builder(builder: (context) {
-            final Map<
-                String,
-                ({
-                  Color? iconColor,
-                  Icon icon,
-                  VoidCallback onTap,
-                })> builderAction = {
-              // LocaleKeys.PrivacyUpdate: (
-              //   iconColor: Colors.blue,
-              //   icon: const Icon(Icons.privacy_tip_outlined),
-              //   onTap: () {},
-              // ),
-              LocaleKeys.ViewEditHistory: (
-                iconColor: Colors.green,
-                icon: const Icon(Icons.history_outlined),
-                onTap: () {},
-              ),
-              LocaleKeys.EditPost: (
-                iconColor: Colors.amber,
-                icon: const Icon(Icons.edit_outlined),
-                onTap: () => Get.toNamed(Routes.POST_CREATE(), arguments: postResponseModel),
-              ),
-              LocaleKeys.DeletePost: (
-                iconColor: Colors.red,
-                icon: const Icon(Icons.delete_outline),
-                onTap: () => controller.call_deletePostData(postResponseModel['id']).then((value) {
-                      //off dialog
-                      HelperWidget.showSnackBar(message: 'Success');
-                      controller.state!.remove(postResponseModel);
-                      controller.refresh();
-                    }),
-              ),
-              LocaleKeys.ReportPost: (
-                iconColor: null,
-                icon: const Icon(Icons.report_outlined),
-                onTap: () {},
-              ),
-            };
-            return PopupMenuButton(
-              //vị trí khi show menu
-              offset: const Offset(0, 25),
-              shape: const TooltipShapeBorderCustom(),
-              //xài child + padding để nó nằm ở góc
-              padding: EdgeInsets.zero,
-              child: const Icon(Icons.more_horiz),
-              onSelected: (value) => builderAction[value]!.onTap(),
-              itemBuilder: (context) => builderAction.entries
-                  .map((e) => PopupMenuItem(
-                        padding: EdgeInsets.zero,
-                        value: e.key,
-                        child: ListTile(
-                          iconColor: e.value.iconColor,
-                          leading: e.value.icon,
-                          title: Text(e.key.tr),
-                        ),
-                      ))
-                  .toList(),
-            );
-          }),
+          if (isShowcontentOnly == false)
+            Builder(builder: (context) {
+              final Map<
+                  String,
+                  ({
+                    Color? iconColor,
+                    Icon icon,
+                    VoidCallback onTap,
+                  })> builderAction = {
+                // LocaleKeys.PrivacyUpdate: (
+                //   iconColor: Colors.blue,
+                //   icon: const Icon(Icons.privacy_tip_outlined),
+                //   onTap: () {},
+                // ),
+                LocaleKeys.ViewEditHistory: (
+                  iconColor: Colors.green,
+                  icon: const Icon(Icons.history_outlined),
+                  onTap: () => Get.toNamed(Routes.POST_HISTORY(postResponseModel['id'].toString())),
+                ),
+                LocaleKeys.EditPost: (
+                  iconColor: Colors.amber,
+                  icon: const Icon(Icons.edit_outlined),
+                  onTap: () => Get.toNamed(Routes.POST_CREATE(), arguments: postResponseModel),
+                ),
+                LocaleKeys.DeletePost: (
+                  iconColor: Colors.red,
+                  icon: const Icon(Icons.delete_outline),
+                  onTap: () => controller.call_deletePostData(postResponseModel['id']).then((value) {
+                        //off dialog
+                        HelperWidget.showSnackBar(message: 'Success');
+                        controller.state!.remove(postResponseModel);
+                        controller.refresh();
+                      }),
+                ),
+                LocaleKeys.ReportPost: (
+                  iconColor: null,
+                  icon: const Icon(Icons.report_outlined),
+                  onTap: () {},
+                ),
+              };
+              return PopupMenuButton(
+                //vị trí khi show menu
+                offset: const Offset(0, 25),
+                shape: const TooltipShapeBorderCustom(),
+                //xài child + padding để nó nằm ở góc
+                padding: EdgeInsets.zero,
+                child: const Icon(Icons.more_horiz),
+                onSelected: (value) => builderAction[value]!.onTap(),
+                itemBuilder: (context) => builderAction.entries
+                    .map((e) => PopupMenuItem(
+                          padding: EdgeInsets.zero,
+                          value: e.key,
+                          child: ListTile(
+                            iconColor: e.value.iconColor,
+                            leading: e.value.icon,
+                            title: Text(e.key.tr),
+                          ),
+                        ))
+                    .toList(),
+              );
+            }),
         ],
       ),
     );

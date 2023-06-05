@@ -23,6 +23,7 @@ import '../modules/message/views/message_setting_profile_members_view.dart';
 import '../modules/message/views/message_setting_profile_view.dart';
 import '../modules/message/views/message_view.dart';
 import '../modules/post/views/post_create_view.dart';
+import '../modules/post/views/post_history_view.dart';
 import '../modules/user/controllers/user_controller.dart';
 import '../modules/user/views/user_view.dart';
 
@@ -112,17 +113,27 @@ class AppPages {
     GetPage(
       name: '${_Paths.STORIES}/:id', // /stories/:id
       page: () => const StoriesView(),
+      transition: Transition.circularReveal,
       // binding: BindingsBuilder(() => Get.lazyPut(() => StoriesController())),
     ),
-    // GetPage(
-    //   name: '${_Paths.POST}/:id', // /post/:id
-    //   page: () => const SizedBox(),
-    //   children: [],
-    // ),
     GetPage(
       name: '${_Paths.POST}${_Paths.CREATE}', // /post/create
       page: () => PostCreateView(postResponseModel: Get.arguments),
       transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: '${_Paths.POST}/:id', // /post/:id
+      page: () => const Scaffold(),
+      children: [
+        GetPage(
+          name: _Paths.HISTORY, // /post/:id/history
+          page: () {
+            final id = int.tryParse(Get.parameters['id'] ?? '') ?? 0;
+            return PostHistoryView(postId: id);
+          },
+          transition: Transition.size,
+        ),
+      ],
     ),
   ];
 }

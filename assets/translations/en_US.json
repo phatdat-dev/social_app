@@ -78,5 +78,6 @@
   "EditPost": "Edit Post",
   "DeletePost": "Delete Post",
   "ReportPost": "Report Post",
-  "CreatePost": "Create Post"
+  "CreatePost": "Create Post",
+  "PostEditHistory": "Post Edit History"
 }
