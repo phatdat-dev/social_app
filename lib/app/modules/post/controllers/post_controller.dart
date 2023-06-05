@@ -107,4 +107,9 @@ class PostController extends BaseFetchController {
       'commentContent': content,
     });
   }
+
+  Future<List<Map<String, dynamic>>> call_fetchHistoryEditPost(int postId) async {
+    final result = await apiCall.onRequest(ApiUrl.get_fetchHistoryEditPost(postId), RequestMethod.GET);
+    return Helper.convertToListMap(result);
+  }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/custom/other/animated_route_custom.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/routes/app_pages.dart';
 
 import '../../../core/utils/utils.dart';
@@ -33,7 +31,7 @@ class InputStoryWidget extends StatelessWidget {
               ),
               Expanded(
                 child: OutlinedButton(
-                    onPressed: () async => Navigator.of(context).push(AnimatedRouteCustom(CreatePostView())),
+                    onPressed: () async => Get.toNamed(Routes.POST_CREATE()),
                     child: Text(
                       LocaleKeys.WhatOnYourMind.tr,
                       style: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),

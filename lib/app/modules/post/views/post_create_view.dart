@@ -16,8 +16,8 @@ import 'package:social_app/app/modules/search_tag_friend/views/search_tag_friend
 import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable
-class CreatePostView<T extends HomeController> extends GetView<T> {
-  CreatePostView({super.key, this.postResponseModel}) {
+class PostCreateView<T extends HomeController> extends GetView<T> {
+  PostCreateView({super.key, this.postResponseModel}) {
     txtController = TextEditingController(text: postResponseModel?['post_content']);
     currentPrivacy = ValueNotifier(PrivacyModel.from(postResponseModel?['privacy'] ?? 0)); //private
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/app/core/base/base_project.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
-import 'package:social_app/app/modules/home/controllers/post_controller.dart';
+import 'package:social_app/app/modules/post/controllers/post_controller.dart';
 import 'package:social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
 import 'package:social_app/app/modules/stories/controllers/stories_controller.dart';
 

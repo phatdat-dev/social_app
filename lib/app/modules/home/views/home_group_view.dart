@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:social_app/app/modules/home/widget/card_background_widget.dart';
-import 'package:social_app/app/modules/home/widget/facebook_card_post_widget.dart';
+import 'package:social_app/app/modules/post/widget/facebook_card_post_widget.dart';
 
 class HomeGroupView extends StatefulWidget {
   @override

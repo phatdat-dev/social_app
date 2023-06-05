@@ -10,12 +10,11 @@ import 'package:social_app/app/core/services/social_share_service.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/authentication/views/authentication_view.dart';
-import 'package:social_app/app/modules/home/controllers/post_controller.dart';
-import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/comment_widget.dart';
+import 'package:social_app/app/modules/post/controllers/post_controller.dart';
+import 'package:social_app/app/modules/post/views/post_create_view.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../custom/other/animated_route_custom.dart';
 import '../../../custom/other/tooltip_shapeborder_custom.dart';
 import '../../../routes/app_pages.dart';
 
@@ -31,7 +30,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
   }
 
   void showBottomSheetSharePost(BuildContext context) {
-    final createPostViewWidget = CreatePostView();
+    final createPostViewWidget = PostCreateView();
 
     showModalBottomSheet<String>(
         context: context,
@@ -512,11 +511,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
               LocaleKeys.EditPost: (
                 iconColor: Colors.amber,
                 icon: const Icon(Icons.edit_outlined),
-                onTap: () => Navigator.of(context).push(
-                      AnimatedRouteCustom(CreatePostView(
-                        postResponseModel: postResponseModel,
-                      )),
-                    ),
+                onTap: () => Get.toNamed(Routes.POST_CREATE(), arguments: postResponseModel),
               ),
               LocaleKeys.DeletePost: (
                 iconColor: Colors.red,

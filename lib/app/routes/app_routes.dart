@@ -18,6 +18,9 @@ abstract class Routes {
   static String USER(String id) => _Paths.USER + '/$id';
   static String USER_FRIEND(String id) => USER(id) + _Paths.FRIEND;
   static String STORIES(String id) => _Paths.STORIES + '/$id';
+  static String POST(String id) => _Paths.POST + '/$id';
+  static String POST_CREATE() => _Paths.POST + _Paths.CREATE;
+  static String POST_HISTORY(String id) => POST(id) + _Paths.HISTORY;
 }
 
 abstract class _Paths {
@@ -34,4 +37,7 @@ abstract class _Paths {
   static const USER = '/user';
   static const FRIEND = '/friend';
   static const STORIES = '/stories';
+  static const POST = '/post';
+  static const CREATE = '/create';
+  static const HISTORY = '/history';
 }

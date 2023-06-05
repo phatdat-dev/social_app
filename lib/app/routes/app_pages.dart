@@ -22,6 +22,7 @@ import '../modules/message/views/message_search_view.dart';
 import '../modules/message/views/message_setting_profile_members_view.dart';
 import '../modules/message/views/message_setting_profile_view.dart';
 import '../modules/message/views/message_view.dart';
+import '../modules/post/views/post_create_view.dart';
 import '../modules/user/controllers/user_controller.dart';
 import '../modules/user/views/user_view.dart';
 
@@ -112,6 +113,16 @@ class AppPages {
       name: '${_Paths.STORIES}/:id', // /stories/:id
       page: () => const StoriesView(),
       // binding: BindingsBuilder(() => Get.lazyPut(() => StoriesController())),
+    ),
+    // GetPage(
+    //   name: '${_Paths.POST}/:id', // /post/:id
+    //   page: () => const SizedBox(),
+    //   children: [],
+    // ),
+    GetPage(
+      name: '${_Paths.POST}${_Paths.CREATE}', // /post/create
+      page: () => PostCreateView(postResponseModel: Get.arguments),
+      transition: Transition.downToUp,
     ),
   ];
 }
