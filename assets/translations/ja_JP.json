@@ -72,5 +72,11 @@
   "Search": "検索",
   "AddFriend": "友達を追加する",
   "Remove": "削除する",
-  "Accept": "受け入れる"
+  "Accept": "受け入れる",
+  "PrivacyUpdate": "プライバシーの更新",
+  "ViewEditHistory": "表示/編集履歴",
+  "EditPost": "投稿を編集する",
+  "DeletePost": "投稿を削除する",
+  "ReportPost": "投稿を報告する",
+  "CreatePost": "投稿を作成する"
 }

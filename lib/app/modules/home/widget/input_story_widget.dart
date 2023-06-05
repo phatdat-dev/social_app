@@ -33,9 +33,7 @@ class InputStoryWidget extends StatelessWidget {
               ),
               Expanded(
                 child: OutlinedButton(
-                    onPressed: () async {
-                      await Navigator.of(context).push(AnimatedRouteCustom(CreatePostView()));
-                    },
+                    onPressed: () async => Navigator.of(context).push(AnimatedRouteCustom(CreatePostView())),
                     child: Text(
                       LocaleKeys.WhatOnYourMind.tr,
                       style: TextStyle(color: Theme.of(context).colorScheme.inverseSurface),

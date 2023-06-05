@@ -72,5 +72,11 @@
   "Search": "Tìm kiếm",
   "AddFriend": "Kết bạn",
   "Remove": "Xoá",
-  "Accept": "Chấp nhận"
+  "Accept": "Chấp nhận",
+  "PrivacyUpdate": "Cập nhật quyền riêng tư",
+  "ViewEditHistory": "Xem lịch sử chỉnh sửa",
+  "EditPost": "Chỉnh sửa bài viết",
+  "DeletePost": "Xoá bài viết",
+  "ReportPost": "Báo cáo bài viết",
+  "CreatePost": "Tạo bài viết"
 }

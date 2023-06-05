@@ -42,14 +42,15 @@ class AppPages {
       binding: BindingsBuilder(() => Get.lazyPut(() => AuthenticationController())),
     ),
     GetPage(
-        name: _Paths.HOME,
-        page: () => const HomeView(),
-        binding: BindingsBuilder(() {
-          final homeController = Get.put(HomeController());
-          Get.put(homeController.postController);
-          Get.put(homeController.storiesController);
-        }),
-        middlewares: [AuthenticationMiddleware()]),
+      name: _Paths.HOME,
+      page: () => const HomeView(),
+      binding: BindingsBuilder(() {
+        final homeController = Get.put(HomeController());
+        Get.put(homeController.postController);
+        Get.put(homeController.storiesController);
+      }),
+      middlewares: [AuthenticationMiddleware()],
+    ),
     GetPage(
       name: '/viewColorTheme',
       page: () => const ThemeView(),

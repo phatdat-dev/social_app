@@ -72,5 +72,11 @@
   "Search": "Search",
   "AddFriend": "Add Friend",
   "Remove": "Remove",
-  "Accept": "Accept"
+  "Accept": "Accept",
+  "PrivacyUpdate": "Privacy Update",
+  "ViewEditHistory": "View Edit History",
+  "EditPost": "Edit Post",
+  "DeletePost": "Delete Post",
+  "ReportPost": "Report Post",
+  "CreatePost": "Create Post"
 }

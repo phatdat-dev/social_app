@@ -89,6 +89,12 @@ LocaleKeys._();
 	static const AddFriend = 'AddFriend';
 	static const Remove = 'Remove';
 	static const Accept = 'Accept';
+	static const PrivacyUpdate = 'PrivacyUpdate';
+	static const ViewEditHistory = 'ViewEditHistory';
+	static const EditPost = 'EditPost';
+	static const DeletePost = 'DeletePost';
+	static const ReportPost = 'ReportPost';
+	static const CreatePost = 'CreatePost';
 }
 
 class Locales {
@@ -168,6 +174,12 @@ class Locales {
 		'AddFriend': '友達を追加する',
 		'Remove': '削除する',
 		'Accept': '受け入れる',
+		'PrivacyUpdate': 'プライバシーの更新',
+		'ViewEditHistory': '表示/編集履歴',
+		'EditPost': '投稿を編集する',
+		'DeletePost': '投稿を削除する',
+		'ReportPost': '投稿を報告する',
+		'CreatePost': '投稿を作成する',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -244,6 +256,12 @@ class Locales {
 		'AddFriend': 'Add Friend',
 		'Remove': 'Remove',
 		'Accept': 'Accept',
+		'PrivacyUpdate': 'Privacy Update',
+		'ViewEditHistory': 'View Edit History',
+		'EditPost': 'Edit Post',
+		'DeletePost': 'Delete Post',
+		'ReportPost': 'Report Post',
+		'CreatePost': 'Create Post',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -320,6 +338,12 @@ class Locales {
 		'AddFriend': 'Kết bạn',
 		'Remove': 'Xoá',
 		'Accept': 'Chấp nhận',
+		'PrivacyUpdate': 'Cập nhật quyền riêng tư',
+		'ViewEditHistory': 'Xem lịch sử chỉnh sửa',
+		'EditPost': 'Chỉnh sửa bài viết',
+		'DeletePost': 'Xoá bài viết',
+		'ReportPost': 'Báo cáo bài viết',
+		'CreatePost': 'Tạo bài viết',
 	};
 
 }

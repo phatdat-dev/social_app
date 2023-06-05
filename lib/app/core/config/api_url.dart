@@ -8,7 +8,9 @@ class ApiUrl {
   static String post_auth_register() => '/api/auth/register';
   //
   static String get_fetchPost() => '/api/v1/fetch-post';
-  static String post_createPostt() => '/api/v1/create-post';
+  static String post_createPost() => '/api/v1/create-post';
+  static String post_deletePost() => '/api/v1/delete-post';
+  static String post_updatePost() => '/api/v1/update-post';
   //
   static String get_fetchFriendByUserId(int userId, [int? limit]) => '/api/v1/fetch-friend-by-user-id/$userId' + (limit != null ? '/$limit' : '');
   static String get_fetchImageUpload(int userId, [int? limit]) => '/api/v1/fetch-image-uploaded/userId=$userId' + (limit != null ? '/$limit' : '');

@@ -145,10 +145,8 @@ class BaseConnect extends GetConnect {
         if (data is Map<String, dynamic>) return baseModel.fromJson(data);
         return null;
       },
-    ).timeout(httpClient.timeout, onTimeout: onTimeout).then((value) {
-      Printt.magenta(value.bodyString.toString());
-      return value;
-    });
+    ).timeout(httpClient.timeout, onTimeout: onTimeout);
+    Printt.magenta(res.bodyString.toString());
     //
     return res.body;
     // } on TimeoutException catch (_) {

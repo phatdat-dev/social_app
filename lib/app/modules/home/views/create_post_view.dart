@@ -16,18 +16,60 @@ import 'package:social_app/app/modules/search_tag_friend/views/search_tag_friend
 import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable
-class CreatePostView<T extends HomeController> extends StatelessWidget {
-  CreatePostView({super.key});
+class CreatePostView<T extends HomeController> extends GetView<T> {
+  CreatePostView({super.key, this.postResponseModel}) {
+    txtController = TextEditingController(text: postResponseModel?['post_content']);
+    currentPrivacy = ValueNotifier(PrivacyModel.from(postResponseModel?['privacy'] ?? 0)); //private
+  }
 
-  ValueNotifier<PrivacyModel> currentPrivacy = ValueNotifier(PrivacyModel.from(0)); //private
-  final txtController = TextEditingController();
+  late ValueNotifier<PrivacyModel> currentPrivacy;
+  late final TextEditingController txtController;
+  GroupController? groupController = null;
+  final Map<String, dynamic>? postResponseModel;
+
+  // đáng lý ra phải viết trong controller > nhưng pass qua 1 nùi giá trị thì mắc công
+  // nên viết ổ đây luôn, mốt rảnh refactor code
+  void onSubmit() {
+    final pickerService = Get.find<PickerService>();
+    //nếu postResponseModel không có data => đang tạo
+    if (postResponseModel == null) {
+      controller.postController
+          .call_createPostData(
+        content: txtController.text,
+        privacy: currentPrivacy.value.privacyId!, //get dropdown privacy
+        groupId: groupController?.currentGroup['id'] ?? null,
+        filesPath: pickerService.files,
+        // images: [],
+      )
+          .then((value) {
+        HelperWidget.showSnackBar(message: 'Create Success');
+        Get.back();
+      });
+    }
+    //nếu postResponseModel có data => đang edit
+    else {
+      controller.postController
+          .call_updatePostData(
+        postId: postResponseModel!['id'],
+        content: txtController.text,
+        privacy: currentPrivacy.value.privacyId!, //get dropdown privacy
+        filesPath: pickerService.files,
+        removeFile: postResponseModel!['removeFile'],
+      )
+          .then((value) {
+        postResponseModel!.remove('removeFile');
+        HelperWidget.showSnackBar(message: 'Update Success');
+        Get.back();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<T>();
-    GroupController? groupController = null;
     if (Get.isRegistered<GroupController>()) groupController = Get.find<GroupController?>();
     //  = Get.find<GroupController?>();
+    final String title =
+        groupController?.currentGroup['group_name'] ?? (postResponseModel == null) ? LocaleKeys.CreatePost.tr : LocaleKeys.EditPost.tr;
 
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
@@ -36,32 +78,19 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
         builder: (pickerService) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(groupController?.currentGroup['group_name'] ?? 'Tạo bài viết'),
+              title: Text(title),
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: AnimatedBuilder(
                     animation: txtController,
                     builder: (context, child) {
-                      final bool allowPost = txtController.text.isNotEmpty || (pickerService.files?.isNotEmpty ?? false);
+                      final bool allowPost = txtController.text.isNotEmpty || (pickerService.files.isNotEmpty);
                       return ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: allowPost ? null : Colors.grey.shade200,
                         ),
-                        onPressed: allowPost
-                            ? () => controller.postController
-                                    .call_createPostData(
-                                  content: txtController.text,
-                                  privacy: currentPrivacy.value.privacyId!, //get dropdown privacy
-                                  groupId: groupController?.currentGroup['id'] ?? null,
-                                  filesPath: pickerService.files,
-                                  // images: [],
-                                )
-                                    .then((value) {
-                                  HelperWidget.showSnackBar(message: 'Create Success');
-                                  Navigator.pop(context);
-                                })
-                            : null,
+                        onPressed: allowPost ? onSubmit : null,
                         child: Text('Đăng', style: TextStyle(color: allowPost ? null : Colors.grey)),
                       );
                     },
@@ -88,72 +117,41 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
                 ),
                 //show image when push complete
 
-                Builder(
-                  builder: (context) {
-                    final filesPicker = pickerService.files;
-                    if (filesPicker == null) return const SizedBox.shrink();
+                Builder(builder: (context) {
+                  final RxList<({int id, String path})>? fileAttachments = (postResponseModel?['mediafile'] as List?)
+                      ?.map((e) => (id: int.parse("${e['id']}"), path: e['media_file_name'].toString()))
+                      .toList()
+                      .obs;
 
-                    return StatefulBuilder(
-                        builder: (context, setState) => Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: List.generate(
-                                filesPicker.length,
-                                (index) {
-                                  final bool isImageFile = filesPicker[index].isImageFileName;
-                                  final bool isVideoFile = filesPicker[index].isVideoFileName;
+                  return Obx(() {
+                    final filesPicker = pickerService.files.map((e) => (id: null, path: e)).toList();
+                    if (filesPicker.isEmpty && postResponseModel == null) return const SizedBox.shrink();
 
-                                  if (isImageFile) {
-                                    return Stack(
-                                      children: [
-                                        kIsWeb
-                                            ? Image.network(filesPicker[index])
-                                            : Image.file(
-                                                File(filesPicker[index]),
-                                                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) =>
-                                                    const Center(child: Text('This image type is not supported')),
-                                              ),
-                                        Positioned.fill(
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: Material(
-                                              elevation: 1,
-                                              shape: const CircleBorder(),
-                                              child: CloseButton(
-                                                onPressed: () {
-                                                  filesPicker.removeAt(index);
-                                                  setState(() {});
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  }
-                                  if (isVideoFile) {
-                                    VideoPlayerController videoPlayerController = VideoPlayerController.file(File(filesPicker[index]));
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ..._buildFileAttachments(
+                          filesPicker,
+                          onDelete: (index) => pickerService.files.removeAt(index),
+                        ),
+                        if (fileAttachments != null)
+                          ..._buildFileAttachments(
+                            fileAttachments,
+                            onDelete: (index) {
+                              final fileOfIndex = fileAttachments.removeAt(index);
 
-                                    return FutureBuilder(
-                                      future: videoPlayerController.initialize(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState == ConnectionState.done) {
-                                          return AspectRatio(
-                                            aspectRatio: videoPlayerController.value.aspectRatio,
-                                            child: Chewie(
-                                              controller: ChewieController(videoPlayerController: videoPlayerController),
-                                            ),
-                                          );
-                                        }
-                                        return const CircularProgressIndicator();
-                                      },
-                                    );
-                                  }
-                                  return const SizedBox.shrink();
-                                },
-                              ),
-                            ));
-                  },
-                )
+                              postResponseModel?.update('removeFile', (value) {
+                                (value as List).add(fileOfIndex.id);
+                                return value;
+                              }, ifAbsent: () {
+                                return [fileOfIndex.id];
+                              });
+                            },
+                          ),
+                      ],
+                    );
+                  });
+                }),
               ],
             ),
             bottomSheet: Container(
@@ -372,5 +370,59 @@ class CreatePostView<T extends HomeController> extends StatelessWidget {
         currentPrivacy.value = selectedPrivacy;
       }
     });
+  }
+
+  List<Widget> _buildFileAttachments(List<({int? id, String path})> filesPicker, {required ValueChanged<int> onDelete}) {
+    return List.generate(
+      filesPicker.length,
+      (index) {
+        final bool isImageFile = filesPicker[index].path.isImageFileName;
+        final bool isVideoFile = filesPicker[index].path.isVideoFileName;
+        final bool isURL = filesPicker[index].path.contains('http');
+
+        if (isImageFile) {
+          return Stack(
+            children: [
+              kIsWeb || isURL
+                  ? Image.network(filesPicker[index].path)
+                  : Image.file(
+                      File(filesPicker[index].path),
+                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) =>
+                          const Center(child: Text('This image type is not supported')),
+                    ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Material(
+                    elevation: 1,
+                    shape: const CircleBorder(),
+                    child: CloseButton(onPressed: () => onDelete(index)),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+        if (isVideoFile) {
+          VideoPlayerController videoPlayerController = VideoPlayerController.file(File(filesPicker[index].path));
+
+          return FutureBuilder(
+            future: videoPlayerController.initialize(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return AspectRatio(
+                  aspectRatio: videoPlayerController.value.aspectRatio,
+                  child: Chewie(
+                    controller: ChewieController(videoPlayerController: videoPlayerController),
+                  ),
+                );
+              }
+              return const CircularProgressIndicator();
+            },
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
   }
 }

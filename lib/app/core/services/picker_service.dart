@@ -6,7 +6,7 @@ class PickerService extends GetxController {
   PickerService() {
     Printt.white('Create Service: ${runtimeType}');
   }
-  List<String>? files = null;
+  RxList<String> files = <String>[].obs;
 
   Future<List<String>?> pickMultiFile(FileType type) async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -16,7 +16,7 @@ class PickerService extends GetxController {
 
     if (result != null) {
       // files = result.paths.map((path) => File(path!)).toList();
-      files = result.paths.map((e) => e!).toList();
+      files.value = result.paths.map((e) => e!).toList();
       Printt.white(files);
 
       return files;

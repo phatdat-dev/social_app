@@ -40,7 +40,7 @@ class StoriesController extends BaseController {
   void createStories() async {
     final pickerService = PickerService();
     await pickerService.pickMultiFile(FileType.image);
-    if (pickerService.files == null || pickerService.files!.isEmpty) return;
+    if (pickerService.files.isEmpty) return;
 
     await call_createStories(
       type: 'image',

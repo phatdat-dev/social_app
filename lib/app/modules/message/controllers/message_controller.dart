@@ -64,10 +64,10 @@ class MessageController extends BaseController with SearchTagFriendController {
     //pick file
     final pickerService = PickerService();
     await pickerService.pickMultiFile(type);
-    if (pickerService.files == null || pickerService.files!.isEmpty) return;
+    if (pickerService.files.isEmpty) return;
 
     final formData = FormData({
-      'files[]': pickerService.files?.map((path) => MultipartFile(File(path), filename: path)).toList(),
+      'files[]': pickerService.files.map((path) => MultipartFile(File(path), filename: path)).toList(),
     });
 
     final images = await apiCall.onRequest(

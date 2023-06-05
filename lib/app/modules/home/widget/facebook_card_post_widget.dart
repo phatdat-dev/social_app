@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
@@ -13,10 +15,12 @@ import 'package:social_app/app/modules/home/views/create_post_view.dart';
 import 'package:social_app/app/modules/home/widget/comment_widget.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../custom/other/animated_route_custom.dart';
+import '../../../custom/other/tooltip_shapeborder_custom.dart';
 import '../../../routes/app_pages.dart';
 
 // ignore: must_be_immutable
-class FacebookCardPostWidget extends StatelessWidget {
+class FacebookCardPostWidget extends GetView<PostController> {
   final Map<String, dynamic> postResponseModel;
   late bool? isGroupPost;
 
@@ -28,7 +32,6 @@ class FacebookCardPostWidget extends StatelessWidget {
 
   void showBottomSheetSharePost(BuildContext context) {
     final createPostViewWidget = CreatePostView();
-    final postController = Get.find<PostController>();
 
     showModalBottomSheet<String>(
         context: context,
@@ -63,8 +66,8 @@ class FacebookCardPostWidget extends StatelessWidget {
                               backgroundColor: allowPost ? null : Colors.grey.shade200,
                             ),
                             onPressed: allowPost
-                                ? () => postController
-                                        .sharePost(
+                                ? () => controller
+                                        .call_sharePost(
                                       postId: postResponseModel['id'],
                                       content: createPostViewWidget.txtController.text,
                                       privacy: createPostViewWidget.currentPrivacy.value.privacyId!, //get dropdown privacy
@@ -201,11 +204,10 @@ class FacebookCardPostWidget extends StatelessWidget {
       ValueListenableBuilder(
           valueListenable: isExpandedNotifier,
           builder: (context, value, child) {
-            final postController = Get.find<PostController>();
             ValueNotifier<List<Map<String, dynamic>>?> commentsOfPostDataResponse = ValueNotifier(null);
 
             void loadComment() =>
-                postController.call_fetchCommentByPost(postResponseModel['id']).then((value) => commentsOfPostDataResponse.value = value);
+                controller.call_fetchCommentByPost(postResponseModel['id']).then((value) => commentsOfPostDataResponse.value = value);
             if (value) {
               loadComment();
             }
@@ -220,14 +222,14 @@ class FacebookCardPostWidget extends StatelessWidget {
                     return CommentWidget(
                       data: data,
                       onSendComment: (text) {
-                        postController.call_createCommentPost(postResponseModel['id'], text).then((value) {
+                        controller.call_createCommentPost(postResponseModel['id'], text).then((value) {
                           loadComment();
                         });
                       },
                       onReplyComment: (text, comment) {
                         int commentId = comment['id'];
                         if (comment['parent_comment'] != null) commentId = comment['parent_comment'];
-                        postController.call_replyComment(postResponseModel['id'], commentId, text).then((value) {
+                        controller.call_replyComment(postResponseModel['id'], commentId, text).then((value) {
                           loadComment();
                         });
                       },
@@ -255,8 +257,7 @@ class FacebookCardPostWidget extends StatelessWidget {
               final text = await cloudTranslationService.translate(text: postResponseModel['post_content']);
               postResponseModel['post_content'] = text;
 
-              // ignore: invalid_use_of_protected_member
-              Get.find<PostController>().refresh();
+              controller.refresh();
             },
             child: Text('Translate Text >', style: TextStyle(color: Colors.blue.shade700)),
           ),
@@ -271,8 +272,6 @@ class FacebookCardPostWidget extends StatelessWidget {
         Expanded(
           child: Builder(
             builder: (context) {
-              final controller = Get.find<PostController>();
-
               final typeIdMyUserReaction = (postResponseModel['like'] as List)
                   .firstWhereOrNull((userReaction) => userReaction['user_id'] == AuthenticationController.userAccount!.id)?['type'] as int?;
 
@@ -350,8 +349,6 @@ class FacebookCardPostWidget extends StatelessWidget {
   }
 
   Widget _buildNumbericLikeComment(BuildContext context) {
-    final controller = Get.find<PostController>();
-
     Widget circleIcon(String image) {
       return Container(
         margin: const EdgeInsets.only(left: 8.0, top: 12.0),
@@ -494,12 +491,70 @@ class FacebookCardPostWidget extends StatelessWidget {
               ),
             ),
           ),
-          IconButton(
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
+          Builder(builder: (context) {
+            final Map<
+                String,
+                ({
+                  Color? iconColor,
+                  Icon icon,
+                  VoidCallback onTap,
+                })> builderAction = {
+              // LocaleKeys.PrivacyUpdate: (
+              //   iconColor: Colors.blue,
+              //   icon: const Icon(Icons.privacy_tip_outlined),
+              //   onTap: () {},
+              // ),
+              LocaleKeys.ViewEditHistory: (
+                iconColor: Colors.green,
+                icon: const Icon(Icons.history_outlined),
+                onTap: () {},
+              ),
+              LocaleKeys.EditPost: (
+                iconColor: Colors.amber,
+                icon: const Icon(Icons.edit_outlined),
+                onTap: () => Navigator.of(context).push(
+                      AnimatedRouteCustom(CreatePostView(
+                        postResponseModel: postResponseModel,
+                      )),
+                    ),
+              ),
+              LocaleKeys.DeletePost: (
+                iconColor: Colors.red,
+                icon: const Icon(Icons.delete_outline),
+                onTap: () => controller.call_deletePostData(postResponseModel['id']).then((value) {
+                      //off dialog
+                      HelperWidget.showSnackBar(message: 'Success');
+                      controller.state!.remove(postResponseModel);
+                      controller.refresh();
+                    }),
+              ),
+              LocaleKeys.ReportPost: (
+                iconColor: null,
+                icon: const Icon(Icons.report_outlined),
+                onTap: () {},
+              ),
+            };
+            return PopupMenuButton(
+              //vị trí khi show menu
+              offset: const Offset(0, 25),
+              shape: const TooltipShapeBorderCustom(),
+              //xài child + padding để nó nằm ở góc
+              padding: EdgeInsets.zero,
+              child: const Icon(Icons.more_horiz),
+              onSelected: (value) => builderAction[value]!.onTap(),
+              itemBuilder: (context) => builderAction.entries
+                  .map((e) => PopupMenuItem(
+                        padding: EdgeInsets.zero,
+                        value: e.key,
+                        child: ListTile(
+                          iconColor: e.value.iconColor,
+                          leading: e.value.icon,
+                          title: Text(e.key.tr),
+                        ),
+                      ))
+                  .toList(),
+            );
+          }),
         ],
       ),
     );

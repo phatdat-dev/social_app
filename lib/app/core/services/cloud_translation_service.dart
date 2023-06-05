@@ -9,7 +9,7 @@ import '../../custom/widget/loadding_widget.dart';
 
 const _projectId = 'myanime-a7b0f';
 const _token =
-    'ya29.a0AWY7CkkeaptjVWlpiILzfQCNCgxqD7gtZZJaIqvYq0Xk4OcjoRFWIG0caCiyhQ8FljZ3dVSlEnfMaApuCy2CT4oJ3SU_ERwol6MgD_-Cqaxey-xX5ki-OX2nMXWrlL77ksE7tjtzR3r_jsWIaMuneRtWhGsraCgYKAXkSARASFQG1tDrpm0CfwQNfVjH_91jpeJ3ghA0163';
+    'ya29.a0AWY7Cklqn-ysVYImFKB_HjAbtt6bzy5cSQgZppovFh-kDI4pZBaDcVnsU_7IVfRdfVbt_iCwxeHMJ7vLN0STk-BrBRDWkl_k9uLJYg1NUjmxbepjPO-Ryky49vh7uIHSu6bIpXl6TbkczatEt4QiyE5cUFy6bYMERb9pFAaCgYKAc0SARASFQG1tDrpVTPb3eoHZWZbJF_Anml_jg0173';
 
 class CloudTranslationService {
   final _apiCall = _CloudTranslationApi();

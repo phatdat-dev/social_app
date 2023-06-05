@@ -19,6 +19,18 @@ class PostController extends BaseFetchController {
   @override
   String get apiUrl => ApiUrl.get_fetchPost();
 
+  Future<void> call_sharePost({
+    required int postId,
+    required String content,
+    required int privacy,
+  }) async {
+    await apiCall.onRequest(ApiUrl.post_sharePostToProfile(), RequestMethod.POST, body: {
+      'postId': postId,
+      'postContent': content,
+      'privacy': privacy,
+    });
+  }
+
   Future<void> call_createPostData({
     required String content,
     required int privacy,
@@ -35,26 +47,42 @@ class PostController extends BaseFetchController {
     });
 
     await apiCall.onRequest(
-      ApiUrl.post_createPostt(),
+      ApiUrl.post_createPost(),
       RequestMethod.POST,
       body: formData,
     );
   }
 
-  Future<void> call_likePost(int postId, [int reactionId = 1]) async {
-    await apiCall.onRequest(ApiUrl.post_likePost(), RequestMethod.POST, body: {'postId': postId, 'reaction': reactionId}, isShowLoading: false);
-  }
-
-  Future<void> sharePost({
+  //lúc tạo thì field khác, lúc edit thì field khác, api sida quá nên phải viết 2 hàm cho rõ nghĩa
+  //không là có thể gộp lại (nếu có id thì update/không thì tạo)
+  Future<void> call_updatePostData({
     required int postId,
     required String content,
     required int privacy,
+    List<String>? filesPath,
+    List<int>? removeFile,
   }) async {
-    await apiCall.onRequest(ApiUrl.post_sharePostToProfile(), RequestMethod.POST, body: {
+    final formData = FormData({
       'postId': postId,
-      'postContent': content,
+      'contentPost': content,
       'privacy': privacy,
+      'files[]': filesPath?.map((path) => MultipartFile(File(path), filename: path)).toList(),
+      'removeFile[]': removeFile,
     });
+
+    await apiCall.onRequest(
+      ApiUrl.post_updatePost(),
+      RequestMethod.POST,
+      body: formData,
+    );
+  }
+
+  Future<void> call_deletePostData(int postId) async {
+    await apiCall.onRequest(ApiUrl.post_deletePost(), RequestMethod.POST, body: {'postId': postId});
+  }
+
+  Future<void> call_likePost(int postId, [int reactionId = 1]) async {
+    await apiCall.onRequest(ApiUrl.post_likePost(), RequestMethod.POST, body: {'postId': postId, 'reaction': reactionId}, isShowLoading: false);
   }
 
   Future<List<Map<String, dynamic>>> call_fetchCommentByPost(int postId) async {
