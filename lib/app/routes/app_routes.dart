@@ -21,6 +21,7 @@ abstract class Routes {
   static String POST(String id) => _Paths.POST + '/$id';
   static String POST_CREATE() => _Paths.POST + _Paths.CREATE;
   static String POST_HISTORY(String id) => POST(id) + _Paths.HISTORY;
+  static String NOTIFICATION() => _Paths.NOTIFICATION;
 }
 
 abstract class _Paths {
@@ -40,4 +41,5 @@ abstract class _Paths {
   static const POST = '/post';
   static const CREATE = '/create';
   static const HISTORY = '/history';
+  static const NOTIFICATION = '/notification';
 }

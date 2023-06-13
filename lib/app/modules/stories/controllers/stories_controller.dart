@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -63,15 +62,4 @@ class StoriesController extends BaseController {
     );
     HelperWidget.showSnackBar(message: 'Create stories success');
   }
-}
-
-class ListMapDataState extends Value<List<Map<String, dynamic>>> {
-  ListMapDataState(super.val);
-
-  @override
-  String toJson() => jsonEncode(value);
-
-  //remove @protected
-  @override
-  void change(List<Map<String, dynamic>>? newState, {RxStatus? status}) => super.change(newState, status: status);
 }

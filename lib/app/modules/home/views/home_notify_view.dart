@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_app/app/core/utils/utils.dart';
 import 'package:social_app/app/modules/home/widget/facebook_card_notification.dart';
+import 'package:social_app/app/modules/notification/controllers/notification_controller.dart';
 
 import '../../user/widget/user_friend_card_widget.dart';
 
@@ -12,6 +14,8 @@ class HomeNotifyView extends StatefulWidget {
 }
 
 class _HomeNotifyViewState extends State<HomeNotifyView> {
+  final notificationController = Get.find<NotificationController>();
+
   @override
   void initState() {
     super.initState();
@@ -41,29 +45,21 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        FutureBuilder(
-            future: Helper.readFileJson('assets/json/notification.json'),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data == null ? 0 : snapshot.data.length,
-                    itemBuilder: (context, int index) {
-                      return FacebookCardNotification(
-                        color: snapshot.data[index]['status'] == 'unread' ? Theme.of(context).colorScheme.secondary : null,
-                        ImageData: snapshot.data[index]['profile_image'],
-                        title: snapshot.data[index]['notification_message'],
-                        date: snapshot.data[index]['notification_time'],
-                        icon: snapshot.data[index]['notication_type'] == 'page' ? 'assets/images/page.jpg' : 'assets/images/fb.png',
-                      );
-                    });
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
+        notificationController.listNotification.obx((state) => ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: state == null ? 0 : state.length,
+            itemBuilder: (context, int index) {
+              final item = state![index];
+              return FacebookCardNotification(
+                color: item['status'] == 'unread' ? Theme.of(context).colorScheme.secondary : null,
+                ImageData: item['userAvatarFrom'],
+                title: item['userNameFrom'] + ' ' + item['title'],
+                date: DateTime.tryParse(item['created_at'] ?? '')?.timeAgoSinceDate() ?? '',
+                icon: item['notication_type'] == 'page' ? 'assets/images/page.jpg' : 'assets/images/fb.png',
               );
-            }),
+            })),
       ],
     );
   }

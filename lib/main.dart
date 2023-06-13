@@ -14,6 +14,7 @@ import 'package:social_app/app/routes/app_pages.dart';
 
 import 'app/core/base/base_project.dart';
 import 'app/core/constants/app_constant.dart';
+import 'app/core/services/pusher_service.dart';
 import 'app/core/services/translation_service.dart';
 import 'firebase_options.dart';
 
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
           ..remoteConfigServiceInitialize();
         Get.lazyPut(() => BaseConnect(), fenix: true);
         Get.putAsync(() => SocialShareService().init());
+        Get.lazyPut(() => PusherService());
       }),
       //theme
       theme: themeConfig.lightTheme,

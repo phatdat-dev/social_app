@@ -47,29 +47,30 @@ dependencies:
   fluttertoast: any #show toast error
   flutter_svg: any #using svg image
   #firebase
-  firebase_core: ^2.9.0
+  firebase_core: any
   firebase_auth: any
   flutter_local_notifications: ^14.0.0+1
   flutter_native_timezone: any
   cloud_firestore: any #dung de load data notify
   firebase_messaging: any
-  firebase_remote_config: ^4.2.1
+  firebase_remote_config: any
 
-  flutter_native_splash: ^2.2.19 #splash screen
+  flutter_native_splash: any #splash screen
   flutter_form_builder: any #bingding form
   form_builder_validators: any
   # carousel_slider: any
   # flutter_rating_bar: any
   flutter_inappwebview: any #web view load and display html
-  youtube_player_flutter: ^8.1.2 #run trailer from YT
+  youtube_player_flutter: any #run trailer from YT
   # auto_size_text: ^3.0.0
   material_design_icons_flutter: any #icon Fb
   file_picker: any #pick file/video/image
   video_player: any #play video
-  chewie: ^1.4.0 #action video
+  chewie: any #action video
   # animations: any
-  flutter_reaction_button: ^2.0.1+2
+  flutter_reaction_button: any
   url_launcher: any
+  pusher_client: ^2.0.0
 
   #
   flutter_localizations:

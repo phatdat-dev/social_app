@@ -580,8 +580,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
     }
 
     Widget buildVideo(String url) {
-      VideoPlayerController videoPlayerController =
-          VideoPlayerController.network('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4');
+      VideoPlayerController videoPlayerController = VideoPlayerController.network(url);
       return Stack(
         children: [
           FutureBuilder(

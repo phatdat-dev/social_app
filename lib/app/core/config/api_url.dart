@@ -40,4 +40,6 @@ class ApiUrl {
   //
   static String get_fetchStories() => '/api/v1/stories';
   static String get_createStories() => '/api/v1/stories/create-story';
+  //
+  static String get_fetchNotification() => '/api/v1/fetch-notifications';
 }
