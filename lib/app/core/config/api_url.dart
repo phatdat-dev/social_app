@@ -11,6 +11,7 @@ class ApiUrl {
   static String post_createPost() => '/api/v1/create-post';
   static String post_deletePost() => '/api/v1/delete-post';
   static String post_updatePost() => '/api/v1/update-post';
+  static String get_fetchPostById(int postId) => '/api/v1/fetch-post-by-id/postId=$postId';
   static String get_fetchHistoryEditPost(int postId) => '/api/v1/fetch-history-edit-post/postId=$postId';
   //
   static String get_fetchFriendByUserId(int userId, [int? limit]) => '/api/v1/fetch-friend-by-user-id/$userId' + (limit != null ? '/$limit' : '');

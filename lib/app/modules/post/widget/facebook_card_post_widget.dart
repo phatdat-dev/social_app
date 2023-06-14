@@ -19,15 +19,27 @@ import '../../../custom/other/tooltip_shapeborder_custom.dart';
 import '../../../routes/app_pages.dart';
 
 // ignore: must_be_immutable
-class FacebookCardPostWidget extends GetView<PostController> {
-  final Map<String, dynamic> postResponseModel;
-  late bool? isGroupPost;
+class FacebookCardPostWidget extends StatefulWidget {
+  Map<String, dynamic> postResponseModel;
   final bool isShowcontentOnly;
+  late bool? isGroupPost;
 
-  FacebookCardPostWidget(this.postResponseModel, {this.isGroupPost, this.isShowcontentOnly = false}) {
+  FacebookCardPostWidget(this.postResponseModel, {super.key, this.isGroupPost, this.isShowcontentOnly = false}) {
     if (isGroupPost == null) {
       isGroupPost = postResponseModel['group_id'] != null;
     }
+  }
+
+  @override
+  State<FacebookCardPostWidget> createState() => _FacebookCardPostWidgetState();
+}
+
+class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
+  final controller = Get.find<PostController>();
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   void showBottomSheetSharePost(BuildContext context) {
@@ -68,7 +80,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
                             onPressed: allowPost
                                 ? () => controller
                                         .call_sharePost(
-                                      postId: postResponseModel['id'],
+                                      postId: widget.postResponseModel['id'],
                                       content: createPostViewWidget.txtController.text,
                                       privacy: createPostViewWidget.currentPrivacy.value.privacyId!, //get dropdown privacy
                                     )
@@ -132,20 +144,20 @@ class FacebookCardPostWidget extends GetView<PostController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (postResponseModel['parent_post'] == null) ...[
+          if (widget.postResponseModel['parent_post'] == null) ...[
             _buildPostCard(
               context: context,
               isExpandedNotifier: isExpandedNotifier,
-              postResponseModel: postResponseModel,
+              postResponseModel: widget.postResponseModel,
             ),
-            if (isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
+            if (widget.isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
           ]
           //nếu bài viết được chia sẽ và có parent_post
           else ...[
-            _buildHeaderPost(context, postResponseModel),
+            _buildHeaderPost(context, widget.postResponseModel),
             _buildPostContentString(
               context: context,
-              postResponseModel: postResponseModel,
+              postResponseModel: widget.postResponseModel,
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -155,10 +167,10 @@ class FacebookCardPostWidget extends GetView<PostController> {
               child: _buildPostCard(
                 context: context,
                 isExpandedNotifier: isExpandedNotifier,
-                postResponseModel: postResponseModel['parent_post'],
+                postResponseModel: widget.postResponseModel['parent_post'],
               ),
             ),
-            if (isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
+            if (widget.isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
           ]
         ],
       ),
@@ -178,11 +190,11 @@ class FacebookCardPostWidget extends GetView<PostController> {
         _buildHeaderPost(context, postResponseModel),
         _buildPostContentString(
           context: context,
-          postResponseModel: postResponseModel,
+          postResponseModel: widget.postResponseModel,
         ),
         _buildMediaPost(
           context: context,
-          postResponseModel: postResponseModel,
+          postResponseModel: widget.postResponseModel,
         ),
       ],
     );
@@ -207,7 +219,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
             ValueNotifier<List<Map<String, dynamic>>?> commentsOfPostDataResponse = ValueNotifier(null);
 
             void loadComment() =>
-                controller.call_fetchCommentByPost(postResponseModel['id']).then((value) => commentsOfPostDataResponse.value = value);
+                controller.call_fetchCommentByPost(widget.postResponseModel['id']).then((value) => commentsOfPostDataResponse.value = value);
             if (value) {
               loadComment();
             }
@@ -222,14 +234,14 @@ class FacebookCardPostWidget extends GetView<PostController> {
                     return CommentWidget(
                       data: data,
                       onSendComment: (text) {
-                        controller.call_createCommentPost(postResponseModel['id'], text).then((value) {
+                        controller.call_createCommentPost(widget.postResponseModel['id'], text).then((value) {
                           loadComment();
                         });
                       },
                       onReplyComment: (text, comment) {
                         int commentId = comment['id'];
                         if (comment['parent_comment'] != null) commentId = comment['parent_comment'];
-                        controller.call_replyComment(postResponseModel['id'], commentId, text).then((value) {
+                        controller.call_replyComment(widget.postResponseModel['id'], commentId, text).then((value) {
                           loadComment();
                         });
                       },
@@ -246,7 +258,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text.rich(TextSpan(
             children: [
-              TextSpan(text: postResponseModel['post_content']),
+              TextSpan(text: widget.postResponseModel['post_content']),
               TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
             ],
             style: const TextStyle(fontSize: 16),
@@ -254,8 +266,8 @@ class FacebookCardPostWidget extends GetView<PostController> {
           GestureDetector(
             onTap: () async {
               final cloudTranslationService = CloudTranslationService();
-              final text = await cloudTranslationService.translate(text: postResponseModel['post_content']);
-              postResponseModel['post_content'] = text;
+              final text = await cloudTranslationService.translate(text: widget.postResponseModel['post_content']);
+              widget.postResponseModel['post_content'] = text;
 
               controller.refresh();
             },
@@ -265,14 +277,14 @@ class FacebookCardPostWidget extends GetView<PostController> {
       );
 
   Row _buildButtonBar(ValueNotifier<bool> isExpandedNotifier) {
-    bool like = postResponseModel['isLike'] != null;
+    bool like = widget.postResponseModel['isLike'] != null;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
           child: Builder(
             builder: (context) {
-              final typeIdMyUserReaction = (postResponseModel['like'] as List)
+              final typeIdMyUserReaction = (widget.postResponseModel['like'] as List)
                   .firstWhereOrNull((userReaction) => userReaction['user_id'] == AuthenticationController.userAccount!.id)?['type'] as int?;
 
               final listReactions = controller.rectionsGif.entries
@@ -306,8 +318,11 @@ class FacebookCardPostWidget extends GetView<PostController> {
                   .toList();
 
               return ReactionButtonToggle<int>(
-                onReactionChanged: (value, isChecked) {
-                  Get.find<PostController>().call_likePost(postResponseModel['id'], value!);
+                onReactionChanged: (value, isChecked) async {
+                  await controller.call_likePost(widget.postResponseModel['id'], value!);
+                  final result = await controller.call_fetchPostById(widget.postResponseModel['id']);
+                  widget.postResponseModel = result;
+                  setState(() {});
                 },
                 initialReaction: listReactions[(typeIdMyUserReaction ?? 1) - 1],
                 reactions: listReactions,
@@ -365,7 +380,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
     String getAssetRectionsGif(int index) => controller.rectionsGif.entries.elementAt(index - 1).value;
 
     //return Map<int,List<Map<String,dynamic>>>
-    final groupReactions = (postResponseModel['like'] as List).groupListsBy((element) => element['type']);
+    final groupReactions = (widget.postResponseModel['like'] as List).groupListsBy((element) => element['type']);
     // sort by value.length
     final sortValueByLength = groupReactions.entries.sorted((a, b) => b.value.length.compareTo(a.value.length)).take(3).toList();
     final top3ReactionsId = Map.fromEntries(sortValueByLength).keys.take(3);
@@ -380,7 +395,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0, right: 8.0),
                 child: Text(
-                  '${postResponseModel['totalComment']} · ${postResponseModel['totalShare']}',
+                  '${widget.postResponseModel['totalComment']} · ${widget.postResponseModel['totalShare']}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -398,7 +413,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
               child: Padding(
                   padding: const EdgeInsets.only(left: 0.0, top: 15.0),
                   child: Text(
-                    '${postResponseModel['totalLike']}',
+                    '${widget.postResponseModel['totalLike']}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ))),
         ],
@@ -421,7 +436,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
                   // shape: BoxShape.circle,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(postResponseModel['groupAvatar']!),
+                    image: NetworkImage(widget.postResponseModel['groupAvatar']!),
                     fit: BoxFit.cover,
                   )),
             ),
@@ -429,10 +444,10 @@ class FacebookCardPostWidget extends GetView<PostController> {
               right: 0,
               bottom: 0,
               child: InkWell(
-                onTap: () => Get.toNamed(Routes.USER("${postResponseModel['user_id']}")),
+                onTap: () => Get.toNamed(Routes.USER("${widget.postResponseModel['user_id']}")),
                 child: CircleAvatar(
                   radius: 15,
-                  backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
+                  backgroundImage: NetworkImage(widget.postResponseModel['avatarUser']!),
                 ),
               ),
             )
@@ -448,13 +463,13 @@ class FacebookCardPostWidget extends GetView<PostController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           //neu bai viet nam` trong nhom' thi` co' hinh` cua nhom'+ hinh` cua nguoi` dang
-          isGroupPost!
+          widget.isGroupPost!
               ? _buildAvatarGroup()
               : InkWell(
-                  onTap: () => Get.toNamed(Routes.USER("${postResponseModel['user_id']}")),
+                  onTap: () => Get.toNamed(Routes.USER("${widget.postResponseModel['user_id']}")),
                   child: CircleAvatar(
                     radius: 25,
-                    backgroundImage: NetworkImage(postResponseModel['avatarUser']!),
+                    backgroundImage: NetworkImage(widget.postResponseModel['avatarUser']!),
                   ),
                 ),
           Expanded(
@@ -467,22 +482,23 @@ class FacebookCardPostWidget extends GetView<PostController> {
                   const SizedBox(height: 5),
                   Text.rich(TextSpan(children: [
                     TextSpan(
-                      text: (isGroupPost!) ? postResponseModel['groupName'] : postResponseModel['displayName']!,
+                      text: (widget.isGroupPost!) ? widget.postResponseModel['groupName'] : widget.postResponseModel['displayName']!,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    if (postResponseModel['parent_post'] != null) const TextSpan(text: ' shared a post')
+                    if (widget.postResponseModel['parent_post'] != null) const TextSpan(text: ' shared a post')
                   ])),
                   const SizedBox(height: 5),
                   Text.rich(
                     TextSpan(
                       children: [
-                        if (isGroupPost!)
+                        if (widget.isGroupPost!)
                           TextSpan(
-                              text: '${postResponseModel['displayName']}  · ',
+                              text: '${widget.postResponseModel['displayName']}  · ',
                               style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
                         TextSpan(
-                            text: '${DateTime.tryParse(postResponseModel['created_at'])?.timeAgoSinceDate()} · ☘',
-                            style: Theme.of(context).textTheme.bodySmall),
+                          text: '${DateTime.tryParse(widget.postResponseModel['created_at'])?.timeAgoSinceDate()} · ☘',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
                       ],
                     ),
                   ),
@@ -491,7 +507,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
               ),
             ),
           ),
-          if (isShowcontentOnly == false)
+          if (widget.isShowcontentOnly == false)
             Builder(builder: (context) {
               final Map<
                   String,
@@ -508,7 +524,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
                 LocaleKeys.ViewEditHistory: (
                   iconColor: Colors.green,
                   icon: const Icon(Icons.history_outlined),
-                  onTap: () => Get.toNamed(Routes.POST_HISTORY(postResponseModel['id'].toString())),
+                  onTap: () => Get.toNamed(Routes.POST_HISTORY(widget.postResponseModel['id'].toString())),
                 ),
                 LocaleKeys.EditPost: (
                   iconColor: Colors.amber,
@@ -518,7 +534,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
                 LocaleKeys.DeletePost: (
                   iconColor: Colors.red,
                   icon: const Icon(Icons.delete_outline),
-                  onTap: () => controller.call_deletePostData(postResponseModel['id']).then((value) {
+                  onTap: () => controller.call_deletePostData(widget.postResponseModel['id']).then((value) {
                         //off dialog
                         HelperWidget.showSnackBar(message: 'Success');
                         controller.state!.remove(postResponseModel);
@@ -627,7 +643,7 @@ class FacebookCardPostWidget extends GetView<PostController> {
       return const SizedBox.shrink();
     }
 
-    final List<Map<String, dynamic>> listMedia = Helper.convertToListMap(postResponseModel['mediafile'] ?? []);
+    final List<Map<String, dynamic>> listMedia = Helper.convertToListMap(widget.postResponseModel['mediafile'] ?? []);
 
     if (listMedia.isEmpty) return const SizedBox.shrink();
 

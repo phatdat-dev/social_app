@@ -68,13 +68,12 @@ class AuthenticationController extends BaseController {
         ApiUrl.post_auth_register(),
         RequestMethod.POST,
         body: {
-          'firstName': name,
-          'lastName': name,
+          'displayName': name,
           ...formSignUpKey.currentState!.value,
         },
       ).then((result) {
         if (result == null) return;
-        HelperWidget.showSnackBar(message: result['message']);
+        HelperWidget.showSnackBar(message: result['message'] + ', Please check your mail !');
       });
     }
   }

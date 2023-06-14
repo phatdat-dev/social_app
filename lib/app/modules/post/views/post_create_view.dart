@@ -66,10 +66,10 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
 
   @override
   Widget build(BuildContext context) {
-    if (Get.isRegistered<GroupController>()) groupController = Get.find<GroupController?>();
+    if (Get.isRegistered<GroupController>()) groupController = Get.find<GroupController>();
     //  = Get.find<GroupController?>();
     final String title =
-        groupController?.currentGroup['group_name'] ?? (postResponseModel == null) ? LocaleKeys.CreatePost.tr : LocaleKeys.EditPost.tr;
+        ((groupController?.currentGroup['group_name'] == null) || (postResponseModel == null)) ? LocaleKeys.CreatePost.tr : LocaleKeys.EditPost.tr;
 
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),

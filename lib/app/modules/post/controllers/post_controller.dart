@@ -112,4 +112,8 @@ class PostController extends BaseFetchController {
     final result = await apiCall.onRequest(ApiUrl.get_fetchHistoryEditPost(postId), RequestMethod.GET);
     return Helper.convertToListMap(result);
   }
+
+  Future<Map<String, dynamic>> call_fetchPostById(int postId) async {
+    return await apiCall.onRequest(ApiUrl.get_fetchPostById(postId), RequestMethod.GET, isShowLoading: false);
+  }
 }
