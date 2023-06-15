@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:social_app/app/modules/group/widget/group_drawer_widget.dart';
-import 'package:social_app/app/modules/post/widget/facebook_card_post_widget.dart';
 import 'package:social_app/app/modules/home/widget/input_story_widget.dart';
+import 'package:social_app/app/modules/post/widget/facebook_card_post_widget.dart';
 
 class GroupView extends StatefulWidget {
   const GroupView({super.key});
@@ -194,7 +194,6 @@ class _GroupViewState extends State<GroupView> {
                             itemBuilder: (context, int index) {
                               return FacebookCardPostWidget(
                                 state[index],
-                                isGroupPost: false,
                               );
                             });
                       },

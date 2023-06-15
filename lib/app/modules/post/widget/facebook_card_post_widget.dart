@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_use_of_protected_member
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +22,8 @@ import '../../../routes/app_pages.dart';
 class FacebookCardPostWidget extends StatefulWidget {
   Map<String, dynamic> postResponseModel;
   final bool isShowcontentOnly;
-  late bool? isGroupPost;
 
-  FacebookCardPostWidget(this.postResponseModel, {super.key, this.isGroupPost, this.isShowcontentOnly = false}) {
-    if (isGroupPost == null) {
-      isGroupPost = postResponseModel['group_id'] != null;
-    }
-  }
+  FacebookCardPostWidget(this.postResponseModel, {super.key, this.isShowcontentOnly = false});
 
   @override
   State<FacebookCardPostWidget> createState() => _FacebookCardPostWidgetState();
@@ -190,11 +185,11 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
         _buildHeaderPost(context, postResponseModel),
         _buildPostContentString(
           context: context,
-          postResponseModel: widget.postResponseModel,
+          postResponseModel: postResponseModel,
         ),
         _buildMediaPost(
           context: context,
-          postResponseModel: widget.postResponseModel,
+          postResponseModel: postResponseModel,
         ),
       ],
     );
@@ -245,6 +240,11 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                           loadComment();
                         });
                       },
+                      onLoadMoreComment: (comment) async {
+                        final result = Helper.convertToListMap(await controller.call_fetchReplyComment(comment['id']));
+                        comment['replies'] = result;
+                        commentsOfPostDataResponse.notifyListeners();
+                      },
                     );
                   }),
               crossFadeState: value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
@@ -258,7 +258,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text.rich(TextSpan(
             children: [
-              TextSpan(text: widget.postResponseModel['post_content']),
+              TextSpan(text: postResponseModel['post_content']),
               TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
             ],
             style: const TextStyle(fontSize: 16),
@@ -266,8 +266,8 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
           GestureDetector(
             onTap: () async {
               final cloudTranslationService = CloudTranslationService();
-              final text = await cloudTranslationService.translate(text: widget.postResponseModel['post_content']);
-              widget.postResponseModel['post_content'] = text;
+              final text = await cloudTranslationService.translate(text: postResponseModel['post_content']);
+              postResponseModel['post_content'] = text;
 
               controller.refresh();
             },
@@ -422,6 +422,8 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
   }
 
   Padding _buildHeaderPost(BuildContext context, Map<String, dynamic> postResponseModel) {
+    bool isGroupPost = postResponseModel['group_id'] != null;
+
     Container _buildAvatarGroup() {
       return Container(
         width: 55,
@@ -436,7 +438,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                   // shape: BoxShape.circle,
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(widget.postResponseModel['groupAvatar']!),
+                    image: NetworkImage(postResponseModel['groupAvatar']!),
                     fit: BoxFit.cover,
                   )),
             ),
@@ -444,10 +446,10 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
               right: 0,
               bottom: 0,
               child: InkWell(
-                onTap: () => Get.toNamed(Routes.USER("${widget.postResponseModel['user_id']}")),
+                onTap: () => Get.toNamed(Routes.USER("${postResponseModel['user_id']}")),
                 child: CircleAvatar(
                   radius: 15,
-                  backgroundImage: NetworkImage(widget.postResponseModel['avatarUser']!),
+                  backgroundImage: NetworkImage(postResponseModel['avatarUser']!), //! api sida
                 ),
               ),
             )
@@ -463,13 +465,13 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           //neu bai viet nam` trong nhom' thi` co' hinh` cua nhom'+ hinh` cua nguoi` dang
-          widget.isGroupPost!
+          isGroupPost
               ? _buildAvatarGroup()
               : InkWell(
-                  onTap: () => Get.toNamed(Routes.USER("${widget.postResponseModel['user_id']}")),
+                  onTap: () => Get.toNamed(Routes.USER("${postResponseModel['user_id']}")),
                   child: CircleAvatar(
                     radius: 25,
-                    backgroundImage: NetworkImage(widget.postResponseModel['avatarUser']!),
+                    backgroundImage: NetworkImage(postResponseModel['avatarUser']!), //! api sida
                   ),
                 ),
           Expanded(
@@ -482,21 +484,21 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                   const SizedBox(height: 5),
                   Text.rich(TextSpan(children: [
                     TextSpan(
-                      text: (widget.isGroupPost!) ? widget.postResponseModel['groupName'] : widget.postResponseModel['displayName']!,
+                      text: (isGroupPost) ? postResponseModel['groupName'] : postResponseModel['displayName']!,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    if (widget.postResponseModel['parent_post'] != null) const TextSpan(text: ' shared a post')
+                    if (postResponseModel['parent_post'] != null) const TextSpan(text: ' shared a post')
                   ])),
                   const SizedBox(height: 5),
                   Text.rich(
                     TextSpan(
                       children: [
-                        if (widget.isGroupPost!)
+                        if (isGroupPost)
                           TextSpan(
-                              text: '${widget.postResponseModel['displayName']}  · ',
+                              text: '${postResponseModel['displayName']}  · ',
                               style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
                         TextSpan(
-                          text: '${DateTime.tryParse(widget.postResponseModel['created_at'])?.timeAgoSinceDate()} · ☘',
+                          text: '${DateTime.tryParse(postResponseModel['created_at'])?.timeAgoSinceDate()} · ☘',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -524,7 +526,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                 LocaleKeys.ViewEditHistory: (
                   iconColor: Colors.green,
                   icon: const Icon(Icons.history_outlined),
-                  onTap: () => Get.toNamed(Routes.POST_HISTORY(widget.postResponseModel['id'].toString())),
+                  onTap: () => Get.toNamed(Routes.POST_HISTORY(postResponseModel['id'].toString())),
                 ),
                 LocaleKeys.EditPost: (
                   iconColor: Colors.amber,
@@ -534,7 +536,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                 LocaleKeys.DeletePost: (
                   iconColor: Colors.red,
                   icon: const Icon(Icons.delete_outline),
-                  onTap: () => controller.call_deletePostData(widget.postResponseModel['id']).then((value) {
+                  onTap: () => controller.call_deletePostData(postResponseModel['id']).then((value) {
                         //off dialog
                         HelperWidget.showSnackBar(message: 'Success');
                         controller.state!.remove(postResponseModel);
@@ -643,7 +645,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
       return const SizedBox.shrink();
     }
 
-    final List<Map<String, dynamic>> listMedia = Helper.convertToListMap(widget.postResponseModel['mediafile'] ?? []);
+    final List<Map<String, dynamic>> listMedia = Helper.convertToListMap(postResponseModel['mediafile'] ?? []);
 
     if (listMedia.isEmpty) return const SizedBox.shrink();
 

@@ -31,7 +31,8 @@ class ApiUrl {
   static String post_saveDeviceToken() => '/api/v1/save-device-token';
   static String post_messageUploadFile() => '/api/v1/message/upload-file';
   static String post_sharePostToProfile() => '/api/v1/share-post-to-profile';
-  static String post_fetchCommentByPost() => '/api/fetch-comment-by-post';
+  static String get_fetchCommentByPost(int postId) => '/api/v1/fetch-comment-by-post/postId=$postId';
+  static String get_fetchReplyComment(int commentId) => '/api/v1/fetch-reply-comment/commentId=$commentId';
   static String post_createCommentPost() => '/api/v1/create-comment-post';
   static String post_replyComment() => '/api/v1/reply-comment';
   static String get_searchUsersAndGroups(String input) => '/api/v1/search-users-and-groups/$input';

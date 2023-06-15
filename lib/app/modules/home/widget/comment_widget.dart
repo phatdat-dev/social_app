@@ -5,10 +5,11 @@ import 'package:social_app/app/core/utils/utils.dart';
 import '../../../../package/comment_tree/comment_tree.dart';
 
 class CommentWidget extends StatelessWidget {
-  const CommentWidget({super.key, required this.data, this.onSendComment, this.onReplyComment});
+  const CommentWidget({super.key, required this.data, this.onSendComment, this.onReplyComment, this.onLoadMoreComment});
   final List<Map<String, dynamic>> data;
   final ValueChanged<String>? onSendComment;
   final void Function(String, Map<String, dynamic>)? onReplyComment;
+  final ValueChanged<Map<String, dynamic>>? onLoadMoreComment;
 
   @override
   Widget build(BuildContext context) {
@@ -22,27 +23,10 @@ class CommentWidget extends StatelessWidget {
           data.length,
           (index) {
             final item = data.elementAt(index);
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: CommentTreeWidget<Map<String, dynamic>, Map<String, dynamic>>(
-                root: item,
-                replies: Helper.convertToListMap(item['replies']),
-                treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
-                avatarRoot: (context, data) => PreferredSize(
-                  child: CircleAvatar(radius: 20, backgroundImage: NetworkImage(data['avatarUser'])),
-                  preferredSize: const Size.fromRadius(20),
-                ),
-                avatarChild: (context, data) => PreferredSize(
-                  child: CircleAvatar(radius: 14, backgroundImage: NetworkImage(data['avatarUser'])),
-                  preferredSize: const Size.fromRadius(14),
-                ),
-                contentRoot: (context, data) {
-                  return buildContentComment(data);
-                },
-                contentChild: (context, data) {
-                  return buildContentComment(data);
-                },
-              ),
+              child: buildWidgetTree(item),
             );
           },
         ),
@@ -140,22 +124,37 @@ class CommentWidget extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(width: 5),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        // padding: EdgeInsets.zero,
+                      ),
+                      onPressed: () {},
+                      child: Text(LocaleKeys.Like.tr),
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        // padding: EdgeInsets.zero,
+                      ),
+                      onPressed: () => isShowTextFieldComment.value = !isShowTextFieldComment.value,
+                      child: Text(LocaleKeys.Reply.tr),
+                    ),
                     Text(DateTime.tryParse(data['created_at'] ?? '')?.timeAgoSinceDate() ?? '', style: Theme.of(context).textTheme.bodySmall!),
-                    TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                        ),
-                        onPressed: () {},
-                        child: const Text('Like')),
-                    TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                        ),
-                        onPressed: () => isShowTextFieldComment.value = !isShowTextFieldComment.value,
-                        child: const Text('Reply')),
                   ],
                 ),
+                if (data['countComment'] != null && data['countComment'] > 0 && ((data['replies'] as List?)?.isEmpty ?? true))
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      // padding: EdgeInsets.zero,
+                    ),
+                    onPressed: () => onLoadMoreComment?.call(data),
+                    child: Text("${LocaleKeys.ViewMore.tr} ${data["countComment"]} ${LocaleKeys.Reply.tr}"),
+                  ),
 
                 ValueListenableBuilder(
                     valueListenable: isShowTextFieldComment,
@@ -172,5 +171,27 @@ class CommentWidget extends StatelessWidget {
                     }),
               ],
             ));
+  }
+
+  Widget buildWidgetTree(Map<String, dynamic> item) {
+    return CommentTreeWidget<Map<String, dynamic>, Map<String, dynamic>>(
+      root: item,
+      replies: item['replies'] ?? [],
+      treeThemeData: TreeThemeData(lineColor: Colors.green[500]!, lineWidth: 1),
+      avatarRoot: (context, data) => PreferredSize(
+        child: CircleAvatar(radius: 20, backgroundImage: NetworkImage(data['avatarUser'])),
+        preferredSize: const Size.fromRadius(20),
+      ),
+      avatarChild: (context, data) => PreferredSize(
+        child: CircleAvatar(radius: 0, backgroundImage: NetworkImage(data['avatarUser'])),
+        preferredSize: const Size.fromRadius(0), //14
+      ),
+      contentRoot: (context, data) {
+        return buildContentComment(data);
+      },
+      contentChild: (context, data) {
+        return buildWidgetTree(data);
+      },
+    );
   }
 }

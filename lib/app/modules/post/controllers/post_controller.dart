@@ -51,6 +51,9 @@ class PostController extends BaseFetchController {
       RequestMethod.POST,
       body: formData,
     );
+
+    //refresh data
+    call_fetchData();
   }
 
   //lúc tạo thì field khác, lúc edit thì field khác, api sida quá nên phải viết 2 hàm cho rõ nghĩa
@@ -86,9 +89,7 @@ class PostController extends BaseFetchController {
   }
 
   Future<List<Map<String, dynamic>>> call_fetchCommentByPost(int postId) async {
-    final result = await apiCall.onRequest(ApiUrl.post_fetchCommentByPost(), RequestMethod.POST, body: {
-      'postId': postId,
-    });
+    final result = await apiCall.onRequest(ApiUrl.get_fetchCommentByPost(postId), RequestMethod.GET);
 
     return Helper.convertToListMap(result);
   }
@@ -106,6 +107,11 @@ class PostController extends BaseFetchController {
       'commentId': commentId,
       'commentContent': content,
     });
+  }
+
+  Future<List<Map<String, dynamic>>> call_fetchReplyComment(int commentId) async {
+    final result =await apiCall.onRequest(ApiUrl.get_fetchReplyComment(commentId), RequestMethod.GET);
+    return Helper.convertToListMap(result);
   }
 
   Future<List<Map<String, dynamic>>> call_fetchHistoryEditPost(int postId) async {
