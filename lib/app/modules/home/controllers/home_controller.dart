@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/modules/group/controllers/group_controller.dart';
-import 'package:social_app/app/modules/post/controllers/post_controller.dart';
-import 'package:social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
-import 'package:social_app/app/modules/stories/controllers/stories_controller.dart';
+import 'package:ckc_social_app/app/core/base/base_project.dart';
+import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:ckc_social_app/app/modules/post/controllers/post_controller.dart';
+import 'package:ckc_social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
+import 'package:ckc_social_app/app/modules/stories/controllers/stories_controller.dart';
 
 import '../../notification/controllers/notification_controller.dart';
 
@@ -28,7 +28,6 @@ class HomeController extends BaseController with SearchTagFriendController {
   Future<void> onInitData() async {
     //reset data
     globalKeyScrollController = GlobalKey();
-    
 
     //
     //sau khi RenderUI

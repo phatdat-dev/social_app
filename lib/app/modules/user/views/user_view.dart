@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:social_app/app/core/utils/helper.dart';
-import 'package:social_app/app/modules/user/controllers/user_controller.dart';
-import 'package:social_app/generated/locales.g.dart';
+import 'package:ckc_social_app/app/core/utils/helper.dart';
+import 'package:ckc_social_app/app/modules/user/controllers/user_controller.dart';
+import 'package:ckc_social_app/generated/locales.g.dart';
 
 import '../../../routes/app_pages.dart';
 

@@ -1,4 +1,4 @@
-# social_app
+# ckc_social_app
 
 A new Flutter project.
 

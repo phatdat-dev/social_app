@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/routes/app_pages.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/routes/app_pages.dart';
 
 import '../../../core/utils/utils.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:social_app/app/core/services/pusher_service.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/core/services/pusher_service.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
 import '../../../core/base/base_project.dart';
 import '../../../core/utils/utils.dart';

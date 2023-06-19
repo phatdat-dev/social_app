@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/custom/other/search_controller_custom.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/custom/other/search_controller_custom.dart';
 
 import '../../custom/other/more_dropdown_search_custom.dart';
 
@@ -273,6 +273,4 @@ class HelperWidget {
           );
         });
   }
-
-  
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/services/translation_service.dart';
-import 'package:social_app/app/custom/widget/check_radio_listtitle_widget.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:ckc_social_app/app/core/services/translation_service.dart';
+import 'package:ckc_social_app/app/custom/widget/check_radio_listtitle_widget.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
 
 import '../../../../generated/locales.g.dart';
 

@@ -4,14 +4,14 @@ part of 'firebase_service.dart';
 mixin NotificationService {
   final localNotification = FlutterLocalNotificationsPlugin();
   AndroidNotificationChannel get androidNotifiChannel => const AndroidNotificationChannel(
-        'notify_social_app',
+        'notify_ckc_social_app',
         'my_default_notification_channel_id',
         description: 'Cái này là channel mặc định cho app',
         enableLights: true,
         importance: Importance.max,
         enableVibration: true,
         playSound: true,
-        //sound: RawResourceAndroidNotificationSound('social_app_notification_sound'),
+        //sound: RawResourceAndroidNotificationSound('ckc_social_app_notification_sound'),
         // sound: UriAndroidNotificationSound('assets/sound/gmc_notification_sound.mp3')
       );
 

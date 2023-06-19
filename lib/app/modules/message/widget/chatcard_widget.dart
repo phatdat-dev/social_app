@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/models/users_model.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/models/users_model.dart';
 
 class ChatCard extends StatelessWidget {
   //dang' ly' ra la` truyen` id hoac token gi` do' de sang trang chat se~ query ra.

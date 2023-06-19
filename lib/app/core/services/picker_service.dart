@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 class PickerService extends GetxController {
   PickerService() {

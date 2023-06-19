@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/generated/locales.g.dart';
+import 'package:ckc_social_app/generated/locales.g.dart';
 
 class TextFieldCommentWidget extends StatefulWidget {
   TextFieldCommentWidget({

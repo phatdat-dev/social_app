@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/generated/locales.g.dart';
+import 'package:ckc_social_app/app/core/base/base_project.dart';
+import 'package:ckc_social_app/generated/locales.g.dart';
 
 class PrivacyModel extends BaseModel<PrivacyModel> {
   int? privacyId;

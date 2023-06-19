@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
+import 'package:ckc_social_app/app/core/base/base_project.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/modules/home/controllers/base_fetch_controller.dart';
 
 class PostController extends BaseFetchController {
   final Map<String, String> rectionsGif = {
@@ -110,7 +110,7 @@ class PostController extends BaseFetchController {
   }
 
   Future<List<Map<String, dynamic>>> call_fetchReplyComment(int commentId) async {
-    final result =await apiCall.onRequest(ApiUrl.get_fetchReplyComment(commentId), RequestMethod.GET);
+    final result = await apiCall.onRequest(ApiUrl.get_fetchReplyComment(commentId), RequestMethod.GET);
     return Helper.convertToListMap(result);
   }
 

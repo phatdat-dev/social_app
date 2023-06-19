@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:social_app/app/custom/widget/search_widget.dart';
-import 'package:social_app/app/models/users_model.dart';
-import 'package:social_app/app/modules/user/controllers/user_controller.dart';
+import 'package:ckc_social_app/app/custom/widget/search_widget.dart';
+import 'package:ckc_social_app/app/models/users_model.dart';
+import 'package:ckc_social_app/app/modules/user/controllers/user_controller.dart';
 
 import '../../../core/utils/utils.dart';
 import '../widget/user_friend_card_widget.dart';
@@ -250,7 +250,7 @@ class _UserFriendViewState extends State<UserFriendView> with TickerProviderStat
                     LocaleKeys.UnFriend.tr,
                     style: const TextStyle(color: Colors.red),
                   ),
-                  onTap: () async{
+                  onTap: () async {
                     await controller.call_unFriend(usersModel.id!);
                     Navigator.pop(context);
                   },

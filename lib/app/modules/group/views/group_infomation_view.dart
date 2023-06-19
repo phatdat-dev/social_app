@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/models/response/privacy_model.dart';
-import 'package:social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:ckc_social_app/app/models/response/privacy_model.dart';
+import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
 
 class GroupInfomationView extends StatefulWidget {
   const GroupInfomationView({super.key});

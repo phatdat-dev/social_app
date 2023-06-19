@@ -3,7 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/modules/authentication/widget/forgot_password_tab_widget.dart';
+import 'package:ckc_social_app/app/modules/authentication/widget/forgot_password_tab_widget.dart';
 
 import '../../../../generated/locales.g.dart';
 import '../controllers/authentication_controller.dart';

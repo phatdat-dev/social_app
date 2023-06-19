@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/modules/wellcome/controller/wellcome_controller.dart';
-import 'package:social_app/generated/locales.g.dart';
+import 'package:ckc_social_app/app/modules/wellcome/controller/wellcome_controller.dart';
+import 'package:ckc_social_app/generated/locales.g.dart';
 
 import '../../../routes/app_pages.dart';
 

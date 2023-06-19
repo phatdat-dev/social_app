@@ -1,3 +1,8 @@
+import 'package:ckc_social_app/app/core/config/theme_config.dart';
+import 'package:ckc_social_app/app/core/constants/global_constant.dart';
+import 'package:ckc_social_app/app/core/services/firebase_service.dart';
+import 'package:ckc_social_app/app/core/services/social_share_service.dart';
+import 'package:ckc_social_app/app/routes/app_pages.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +11,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:social_app/app/core/config/theme_config.dart';
-import 'package:social_app/app/core/constants/global_constant.dart';
-import 'package:social_app/app/core/services/firebase_service.dart';
-import 'package:social_app/app/core/services/social_share_service.dart';
-import 'package:social_app/app/routes/app_pages.dart';
 
 import 'app/core/base/base_project.dart';
 import 'app/core/constants/app_constant.dart';
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeConfig = ThemeConfig();
     return GetMaterialApp(
-      title: 'Social App',
+      title: 'CKC Social App',
       // tắt cái banner ở appBar
       debugShowCheckedModeBanner: false,
       // luôn show cái log của GetX

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/app/core/utils/extension/app_extension.dart';
+import 'package:ckc_social_app/app/core/utils/extension/app_extension.dart';
 
 mixin ColorConstants {
   //0xFF vao` hex

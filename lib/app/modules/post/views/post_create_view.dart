@@ -6,13 +6,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/services/picker_service.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/models/response/privacy_model.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/modules/group/controllers/group_controller.dart';
-import 'package:social_app/app/modules/home/controllers/home_controller.dart';
-import 'package:social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
+import 'package:ckc_social_app/app/core/services/picker_service.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/models/response/privacy_model.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:ckc_social_app/app/modules/home/controllers/home_controller.dart';
+import 'package:ckc_social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
 import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable

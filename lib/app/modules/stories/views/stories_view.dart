@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/modules/stories/controllers/stories_controller.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/modules/stories/controllers/stories_controller.dart';
 
 class StoriesView extends GetView<StoriesController> {
   const StoriesView({Key? key}) : super(key: key);

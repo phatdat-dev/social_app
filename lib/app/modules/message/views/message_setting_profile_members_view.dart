@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:social_app/app/core/services/firebase_service.dart';
-import 'package:social_app/app/models/users_model.dart';
-import 'package:social_app/app/modules/message/controllers/message_controller.dart';
-import 'package:social_app/app/modules/message/widget/chatcard_widget.dart';
+import 'package:ckc_social_app/app/core/services/firebase_service.dart';
+import 'package:ckc_social_app/app/models/users_model.dart';
+import 'package:ckc_social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:ckc_social_app/app/modules/message/widget/chatcard_widget.dart';
 
 class MessageSettingProfileMembersView extends StatefulWidget {
   const MessageSettingProfileMembersView({super.key});

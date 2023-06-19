@@ -8,7 +8,7 @@
 # cd ios
 # pod repo update
 # pod install
-name: social_app
+name: ckc_social_app
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/modules/home/widget/facebook_card_notification.dart';
-import 'package:social_app/app/modules/notification/controllers/notification_controller.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/modules/home/widget/facebook_card_notification.dart';
+import 'package:ckc_social_app/app/modules/notification/controllers/notification_controller.dart';
 
 import '../../user/widget/user_friend_card_widget.dart';
 

@@ -3,7 +3,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
 
 import 'package:flutter/material.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 class MessageSearchView extends StatelessWidget {
   MessageSearchView({super.key});

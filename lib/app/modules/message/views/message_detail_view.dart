@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/services/firebase_service.dart';
-import 'package:social_app/app/core/utils/helper_widget.dart';
-import 'package:social_app/app/custom/widget/textfield_comment_widget.dart';
-import 'package:social_app/app/models/users_model.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/modules/message/controllers/message_controller.dart';
-import 'package:social_app/app/routes/app_pages.dart';
+import 'package:ckc_social_app/app/core/services/firebase_service.dart';
+import 'package:ckc_social_app/app/core/utils/helper_widget.dart';
+import 'package:ckc_social_app/app/custom/widget/textfield_comment_widget.dart';
+import 'package:ckc_social_app/app/models/users_model.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:ckc_social_app/app/routes/app_pages.dart';
 
 import '../widget/video_play_widget.dart';
 

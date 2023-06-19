@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/utils/helper.dart';
-import 'package:social_app/app/models/users_model.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/core/base/base_project.dart';
+import 'package:ckc_social_app/app/core/utils/helper.dart';
+import 'package:ckc_social_app/app/models/users_model.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 
 mixin SearchTagFriendController implements BaseController {
   //co thoi gian chuyen may cai nay` thanh` bien' Value<T>

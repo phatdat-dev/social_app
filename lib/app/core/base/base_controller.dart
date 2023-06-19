@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:social_app/app/core/base/base_connect.dart';
+import 'package:ckc_social_app/app/core/base/base_connect.dart';
 
 abstract class BaseController extends GetxController {
   BaseConnect get apiCall => Get.find<BaseConnect>();

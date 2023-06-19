@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:social_app/app/core/services/firebase_service.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
-import 'package:social_app/app/modules/home/widget/home_drawer_widget.dart';
-import 'package:social_app/app/routes/app_pages.dart';
+import 'package:ckc_social_app/app/core/services/firebase_service.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/custom/widget/app_bar_icon_widget.dart';
+import 'package:ckc_social_app/app/modules/home/widget/home_drawer_widget.dart';
+import 'package:ckc_social_app/app/routes/app_pages.dart';
 
 import '../../../custom/other/more_dropdown_search_custom.dart';
 import '../controllers/home_controller.dart';

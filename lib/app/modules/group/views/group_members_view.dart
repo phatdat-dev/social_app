@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/utils/utils.dart';
-import 'package:social_app/app/custom/widget/app_bar_icon_widget.dart';
-import 'package:social_app/app/custom/widget/search_widget.dart';
-import 'package:social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/custom/widget/app_bar_icon_widget.dart';
+import 'package:ckc_social_app/app/custom/widget/search_widget.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
 
 class GroupMembersView extends GetView<GroupController> {
   const GroupMembersView({super.key});

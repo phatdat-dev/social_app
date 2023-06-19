@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.social_app">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ckc_social_app">
     <!-- Cấp các quyền cho ứng dụng -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- android:usesCleartextTraffic="true"  bỏ chặn/cho phép load video từ http (bình thường là https) -->
-    <application android:label="social_app" android:name="${applicationName}" android:icon="@mipmap/ic_launcher" android:usesCleartextTraffic="true">
+    <application android:label="CKC Social App" android:name="${applicationName}" android:icon="@mipmap/ic_launcher" android:usesCleartextTraffic="true">
         <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize" android:showWhenLocked="true" android:turnScreenOn="true">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -42,7 +42,7 @@
 
 
         <!-- chanel notification -->
-        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="notify_social_app" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="notify_ckc_social_app" />
     </application>
 
 </manifest>

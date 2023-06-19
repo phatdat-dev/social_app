@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 import '../../../../package/comment_tree/comment_tree.dart';
 

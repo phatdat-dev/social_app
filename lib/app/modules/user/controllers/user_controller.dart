@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/core/base/base_project.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 import '../../../models/users_model.dart';
 import '../../search_tag_friend/controllers/search_tag_friend_controller.dart';

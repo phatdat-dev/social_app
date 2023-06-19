@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/utils/helper.dart';
-import 'package:social_app/app/core/utils/helper_widget.dart';
-import 'package:social_app/app/modules/home/controllers/base_fetch_controller.dart';
-import 'package:social_app/app/routes/app_pages.dart';
+import 'package:ckc_social_app/app/core/utils/helper.dart';
+import 'package:ckc_social_app/app/core/utils/helper_widget.dart';
+import 'package:ckc_social_app/app/modules/home/controllers/base_fetch_controller.dart';
+import 'package:ckc_social_app/app/routes/app_pages.dart';
 
 import '../../../core/base/base_project.dart';
 

@@ -1,4 +1,4 @@
-import 'package:social_app/app/core/base/base_model.dart';
+import 'package:ckc_social_app/app/core/base/base_model.dart';
 
 class BaseSearchRequestModel extends BaseModel<BaseSearchRequestModel> {
   int? page;

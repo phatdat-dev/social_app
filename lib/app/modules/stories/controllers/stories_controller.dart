@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:social_app/app/core/base/base_project.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/core/base/base_project.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 import '../../../core/services/picker_service.dart';
 import '../../../routes/app_pages.dart';

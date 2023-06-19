@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
-import 'package:social_app/app/core/base/base_connect.dart';
-import 'package:social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/core/base/base_connect.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 import '../../custom/widget/loadding_widget.dart';
 
