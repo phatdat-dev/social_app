@@ -16,7 +16,7 @@ class ApiUrl {
   //
   static String get_fetchFriendByUserId(int userId, [int? limit]) => '/api/v1/fetch-friend-by-user-id/$userId' + (limit != null ? '/$limit' : '');
   static String get_fetchImageUpload(int userId, [int? limit]) => '/api/v1/fetch-image-uploaded/userId=$userId' + (limit != null ? '/$limit' : '');
-  static String get_profileUser(int userId) => '/api/profile-user/userId=$userId';
+  static String get_profileUser(int userId) => '/api/v1/profile-user/userId=$userId';
   static String get_fetchFriendsSuggestion() => '/api/v1/fetch-friends-suggestion';
   static String get_fetchFriendRequest() => '/api/v1/fetch-friend-request-list';
   //
