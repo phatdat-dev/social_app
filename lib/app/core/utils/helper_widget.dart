@@ -1,8 +1,8 @@
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/custom/other/search_controller_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:ckc_social_app/app/core/utils/utils.dart';
-import 'package:ckc_social_app/app/custom/other/search_controller_custom.dart';
 
 import '../../custom/other/more_dropdown_search_custom.dart';
 
@@ -72,6 +72,7 @@ class HelperWidget {
       ));
 
   static Widget buildImage(String image) {
+    if (!image.isImageFileName) return const SizedBox.shrink();
     final context = Get.context!;
     return GestureDetector(
       onTap: () {
@@ -107,7 +108,7 @@ class HelperWidget {
         tag: image,
         child: Image.network(
           image,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
           width: MediaQuery.of(context).size.width / 2,
           // alignment: Alignment.center,
           errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),

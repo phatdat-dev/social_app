@@ -1,6 +1,6 @@
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 class PickerService extends GetxController {
   PickerService() {
@@ -8,9 +8,9 @@ class PickerService extends GetxController {
   }
   RxList<String> files = <String>[].obs;
 
-  Future<List<String>?> pickMultiFile(FileType type) async {
+  Future<List<String>?> pickMultiFile(FileType type, {bool allowMultiple = true}) async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
+      allowMultiple: allowMultiple,
       type: type,
     );
 

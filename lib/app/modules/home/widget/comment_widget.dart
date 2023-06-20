@@ -1,14 +1,17 @@
+import 'package:ckc_social_app/app/core/services/picker_service.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/modules/post/views/post_create_view.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ckc_social_app/app/core/utils/utils.dart';
 
 import '../../../../package/comment_tree/comment_tree.dart';
 
 class CommentWidget extends StatelessWidget {
   const CommentWidget({super.key, required this.data, this.onSendComment, this.onReplyComment, this.onLoadMoreComment});
   final List<Map<String, dynamic>> data;
-  final ValueChanged<String>? onSendComment;
-  final void Function(String, Map<String, dynamic>)? onReplyComment;
+  final ValueChanged<({String text, List<String> files})>? onSendComment;
+  final void Function(({String text, List<String> files}), Map<String, dynamic>)? onReplyComment;
   final ValueChanged<Map<String, dynamic>>? onLoadMoreComment;
 
   @override
@@ -34,60 +37,89 @@ class CommentWidget extends StatelessWidget {
     );
   }
 
-  Builder _buildTextFieldComment({required TextEditingController controller, required ValueChanged<String>? onSendComment}) {
-    return Builder(builder: (context) {
-      InputBorder borderInput(Color color) => OutlineInputBorder(
-            borderSide: BorderSide(width: 0.5, color: color),
-            borderRadius: BorderRadius.circular(30),
-          );
-      late bool isComposing = controller.text.isNotEmpty;
-      //
-      return StatefulBuilder(
-        builder: (context, setStatee) {
-          return TextField(
-            controller: controller,
-            onChanged: (text) {
-              //neu' co' du lieu trong text thi` nut gui~ se~ dc hien
-              if (!isComposing) setStatee(() => isComposing = text.isNotEmpty);
-              if (text.isEmpty) setStatee(() => isComposing = false);
+  Widget _buildTextFieldComment(
+      {required TextEditingController controller, required ValueChanged<({String text, List<String> files})>? onSendComment}) {
+    InputBorder borderInput(Color color) => OutlineInputBorder(
+          borderSide: BorderSide(width: 0.5, color: color),
+          borderRadius: BorderRadius.circular(30),
+        );
+    late bool isComposing = controller.text.isNotEmpty;
+    //
+    return GetBuilder(
+      init: PickerService(),
+      builder: (pickerService) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: StatefulBuilder(
+                  builder: (context, setStatee) => TextField(
+                    controller: controller,
+                    onChanged: (text) {
+                      //neu' co' du lieu trong text thi` nut gui~ se~ dc hien
+                      if (!isComposing) setStatee(() => isComposing = text.isNotEmpty);
+                      if (text.isEmpty) setStatee(() => isComposing = false);
 
-              // widget.onChanged?.call(text);
+                      // widget.onChanged?.call(text);
+                    },
+                    keyboardType: TextInputType.multiline, //co the dc nhieu` dong`
+                    maxLines: 10, //do dai` toi' da =10
+                    minLines: 1,
+
+                    decoration: InputDecoration(
+                        hintText: LocaleKeys.WriteAComment.tr,
+                        // hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                        enabledBorder: borderInput(Theme.of(context).colorScheme.secondary),
+                        focusedBorder: borderInput(Colors.green),
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        //neu' textfield ko rong~ thi` dc phep nhan' nut, ngc lai thi` nhan' ko dc
+                        suffixIcon: StatefulBuilder(
+                          builder: (BuildContext context, StateSetter setState) {
+                            setStatee = setState;
+                            return IconButton(
+                                icon: Icon(
+                                  Icons.send,
+                                  color: isComposing ? Theme.of(context).colorScheme.primary : Colors.grey,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  if (isComposing) {
+                                    onSendComment?.call((text: controller.text, files: pickerService.files));
+                                    controller.clear();
+                                    pickerService.files.clear();
+                                    setStatee(() => isComposing = false);
+                                    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+                                  }
+                                });
+                          },
+                        )),
+                  ),
+                ),
+              ),
+              IconButton(
+                color: Get.theme.colorScheme.primary,
+                icon: const Icon(Icons.camera_alt_outlined),
+                onPressed: () => pickerService.pickMultiFile(FileType.media, allowMultiple: false),
+              ),
+            ],
+          ),
+          Obx(
+            () {
+              final filesPicker = pickerService.files.map((e) => (id: null, path: e)).toList();
+              return Wrap(
+                children: PostCreateView.buildFileAttachments(
+                  filesPicker,
+                  onDelete: (index) => pickerService.files.removeAt(index),
+                ).map((e) => SizedBox(width: 100, height: 100, child: e)).toList(),
+              );
             },
-            keyboardType: TextInputType.multiline, //co the dc nhieu` dong`
-            maxLines: 10, //do dai` toi' da =10
-            minLines: 1,
-
-            decoration: InputDecoration(
-                hintText: LocaleKeys.WriteAComment.tr,
-                // hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                enabledBorder: borderInput(Theme.of(context).colorScheme.secondary),
-                focusedBorder: borderInput(Colors.green),
-                filled: true,
-                fillColor: Colors.grey.shade200,
-                //neu' textfield ko rong~ thi` dc phep nhan' nut, ngc lai thi` nhan' ko dc
-                suffixIcon: StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                    setStatee = setState;
-                    return IconButton(
-                        icon: Icon(
-                          Icons.send,
-                          color: isComposing ? Theme.of(context).colorScheme.primary : Colors.grey,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          if (isComposing) {
-                            onSendComment?.call(controller.text);
-                            controller.clear();
-                            setStatee(() => isComposing = false);
-                            WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-                          }
-                        });
-                  },
-                )),
-          );
-        },
-      );
-    });
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildContentComment(Map<String, dynamic> data) {
@@ -114,6 +146,8 @@ class CommentWidget extends StatelessWidget {
                         '${data['comment_content']}',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                      const SizedBox(height: 10),
+                      SizedBox(height: 150, child: HelperWidget.buildImage('${data['fileName']}'))
                     ],
                   ),
                 ),

@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/modules/home/controllers/base_fetch_controller.dart';
+import 'package:get/get.dart';
 
 class PostController extends BaseFetchController {
   final Map<String, String> rectionsGif = {
@@ -94,19 +94,25 @@ class PostController extends BaseFetchController {
     return Helper.convertToListMap(result);
   }
 
-  Future<void> call_createCommentPost(int postId, String content) async {
-    await apiCall.onRequest(ApiUrl.post_createCommentPost(), RequestMethod.POST, body: {
+  Future<void> call_createCommentPost(int postId, String content, List<String> filesPath) async {
+    final formData = FormData({
       'postId': postId,
       'commentContent': content,
+      'file': MultipartFile(File(filesPath.first), filename: filesPath.first),
     });
+
+    await apiCall.onRequest(ApiUrl.post_createCommentPost(), RequestMethod.POST, body: formData);
   }
 
-  Future<void> call_replyComment(int postId, int commentId, String content) async {
-    await apiCall.onRequest(ApiUrl.post_replyComment(), RequestMethod.POST, body: {
+  Future<void> call_replyComment(int postId, int commentId, String content, List<String> filesPath) async {
+    final formData = FormData({
       'postId': postId,
       'commentId': commentId,
       'commentContent': content,
+      'file': MultipartFile(File(filesPath.first), filename: filesPath.first),
     });
+
+    await apiCall.onRequest(ApiUrl.post_replyComment(), RequestMethod.POST, body: formData);
   }
 
   Future<List<Map<String, dynamic>>> call_fetchReplyComment(int commentId) async {

@@ -130,12 +130,12 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ..._buildFileAttachments(
+                        ...buildFileAttachments(
                           filesPicker,
                           onDelete: (index) => pickerService.files.removeAt(index),
                         ),
                         if (fileAttachments != null)
-                          ..._buildFileAttachments(
+                          ...buildFileAttachments(
                             fileAttachments,
                             onDelete: (index) {
                               final fileOfIndex = fileAttachments.removeAt(index);
@@ -372,7 +372,7 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
     });
   }
 
-  List<Widget> _buildFileAttachments(List<({int? id, String path})> filesPicker, {required ValueChanged<int> onDelete}) {
+  static List<Widget> buildFileAttachments(List<({int? id, String path})> filesPicker, {required ValueChanged<int> onDelete}) {
     return List.generate(
       filesPicker.length,
       (index) {

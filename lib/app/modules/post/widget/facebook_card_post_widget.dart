@@ -229,14 +229,14 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                     return CommentWidget(
                       data: data,
                       onSendComment: (text) {
-                        controller.call_createCommentPost(widget.postResponseModel['id'], text).then((value) {
+                        controller.call_createCommentPost(widget.postResponseModel['id'], text.text,text.files).then((value) {
                           loadComment();
                         });
                       },
                       onReplyComment: (text, comment) {
                         int commentId = comment['id'];
                         if (comment['parent_comment'] != null) commentId = comment['parent_comment'];
-                        controller.call_replyComment(widget.postResponseModel['id'], commentId, text).then((value) {
+                        controller.call_replyComment(widget.postResponseModel['id'], commentId, text.text,text.files).then((value) {
                           loadComment();
                         });
                       },
