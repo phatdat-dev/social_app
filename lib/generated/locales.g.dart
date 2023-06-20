@@ -97,6 +97,11 @@ LocaleKeys._();
 	static const CreatePost = 'CreatePost';
 	static const PostEditHistory = 'PostEditHistory';
 	static const Reply = 'Reply';
+	static const UpdateMyProfile = 'UpdateMyProfile';
+	static const Edit = 'Edit';
+	static const ProfilePicture = 'ProfilePicture';
+	static const CoverPhoto = 'CoverPhoto';
+	static const Details = 'Details';
 }
 
 class Locales {
@@ -184,6 +189,11 @@ class Locales {
 		'CreatePost': '投稿を作成する',
 		'PostEditHistory': '投稿編集履歴',
 		'Reply': '返信',
+		'UpdateMyProfile': 'プロフィールを更新する',
+		'Edit': '編集する',
+		'ProfilePicture': 'プロフィール写真',
+		'CoverPhoto': 'カバー写真',
+		'Details': '詳細',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -219,8 +229,8 @@ class Locales {
 		'Comment': 'Comment',
 		'Genres': 'Genres',
 		'RememberPassword': 'Remember Password',
-		'CreateYourStories': 'あなたの物語を作成する',
-		'WhatOnYourMind': 'あなたの心に何がありますか',
+		'CreateYourStories': 'Create your stories',
+		'WhatOnYourMind': 'What\'s on your mind ?',
 		'Share': 'Share',
 		'Like': 'Like',
 		'Love': 'Love',
@@ -268,6 +278,11 @@ class Locales {
 		'CreatePost': 'Create Post',
 		'PostEditHistory': 'Post Edit History',
 		'Reply': 'Reply',
+		'UpdateMyProfile': 'Update My Profile',
+		'Edit': 'Edit',
+		'ProfilePicture': 'Profile Picture',
+		'CoverPhoto': 'Cover Photo',
+		'Details': 'Details',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -352,6 +367,11 @@ class Locales {
 		'CreatePost': 'Tạo bài viết',
 		'PostEditHistory': 'Lịch sử chỉnh sửa bài viết',
 		'Reply': 'Trả lời',
+		'UpdateMyProfile': 'Cập nhật thông tin cá nhân',
+		'Edit': 'Chỉnh sửa',
+		'ProfilePicture': 'Ảnh đại diện',
+		'CoverPhoto': 'Ảnh bìa',
+		'Details': 'Chi tiết',
 	};
 
 }

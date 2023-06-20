@@ -32,8 +32,8 @@
   "Comment": "Comment",
   "Genres": "Genres",
   "RememberPassword": "Remember Password",
-  "CreateYourStories": "あなたの物語を作成する",
-  "WhatOnYourMind": "あなたの心に何がありますか",
+  "CreateYourStories": "Create your stories",
+  "WhatOnYourMind": "What's on your mind ?",
   "Share": "Share",
   "Like": "Like",
   "Love": "Love",
@@ -80,5 +80,10 @@
   "ReportPost": "Report Post",
   "CreatePost": "Create Post",
   "PostEditHistory": "Post Edit History",
-  "Reply": "Reply"
+  "Reply": "Reply",
+  "UpdateMyProfile": "Update My Profile",
+  "Edit": "Edit",
+  "ProfilePicture": "Profile Picture",
+  "CoverPhoto": "Cover Photo",
+  "Details": "Details"
 }

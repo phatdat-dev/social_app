@@ -19,6 +19,8 @@ class ApiUrl {
   static String get_profileUser(int userId) => '/api/v1/profile-user/userId=$userId';
   static String get_fetchFriendsSuggestion() => '/api/v1/fetch-friends-suggestion';
   static String get_fetchFriendRequest() => '/api/v1/fetch-friend-request-list';
+  static String post_editInformationUser() => '/api/v1/edit-information-user';
+  static String post_uploadAvatar() => '/api/v1/upload-avatar';
   //
   static String get_fetchGroupJoined() => '/api/v1/fetch-group-joined';
   static String get_fetchPostGroup() => '/api/v1/fetch-post-group';

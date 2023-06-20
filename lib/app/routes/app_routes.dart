@@ -17,6 +17,7 @@ abstract class Routes {
   static String GROUP_INFOMATION_MEMBERS(String id) => GROUP_INFOMATION(id) + _Paths.MEMBERS;
   static String USER(String id) => _Paths.USER + '/$id';
   static String USER_FRIEND(String id) => USER(id) + _Paths.FRIEND;
+  static String USER_EDITING(String id) => USER(id) + _Paths.EDITING;
   static String STORIES(String id) => _Paths.STORIES + '/$id';
   static String POST(String id) => _Paths.POST + '/$id';
   static String POST_CREATE() => _Paths.POST + _Paths.CREATE;
@@ -40,6 +41,7 @@ abstract class _Paths {
   static const STORIES = '/stories';
   static const POST = '/post';
   static const CREATE = '/create';
+  static const EDITING = '/editing';
   static const HISTORY = '/history';
   static const NOTIFICATION = '/notification';
 }

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ckc_social_app/app/core/utils/helper.dart';
 import 'package:ckc_social_app/app/modules/user/controllers/user_controller.dart';
 import 'package:ckc_social_app/generated/locales.g.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../routes/app_pages.dart';
 
@@ -93,76 +93,37 @@ class UserView extends GetView<UserController> {
   }
 
   void _showMoreOption(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bcx) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              child: const Row(
-                children: <Widget>[
-                  Icon(Icons.feedback),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Give feedback or report this profile',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
+    showModalBottomSheet<String>(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        builder: (context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      onTap: () => Get.toNamed(Routes.USER_EDITING('${controller.userId}')),
+                      contentPadding: EdgeInsets.zero,
+                      // minVerticalPadding: 10,
+                      // visualDensity: VisualDensity.compact,
+                      leading: const Icon(Icons.edit_outlined),
+                      title: Text(LocaleKeys.UpdateMyProfile.tr),
+                      // isThreeLine: true,
+                    ),
+                  ],
+                ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              child: const Row(
-                children: <Widget>[
-                  Icon(Icons.block),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Block',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              child: const Row(
-                children: <Widget>[
-                  Icon(Icons.link),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Copy link to profile',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              child: const Row(
-                children: <Widget>[
-                  Icon(Icons.search),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Search Profile',
-                    style: TextStyle(fontSize: 18.0),
-                  )
-                ],
-              ),
-            )
-          ],
-        );
-      },
-    );
+          );
+        });
   }
 
   Widget _buildInfomation() {

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/app/core/constants/app_constant.dart';
 import 'package:ckc_social_app/app/core/utils/helper_widget.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/routes/app_pages.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 
 import '../../../core/services/firebase_service.dart';
 

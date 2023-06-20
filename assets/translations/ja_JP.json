@@ -80,5 +80,10 @@
   "ReportPost": "投稿を報告する",
   "CreatePost": "投稿を作成する",
   "PostEditHistory": "投稿編集履歴",
-  "Reply": "返信"
+  "Reply": "返信",
+  "UpdateMyProfile": "プロフィールを更新する",
+  "Edit": "編集する",
+  "ProfilePicture": "プロフィール写真",
+  "CoverPhoto": "カバー写真",
+  "Details": "詳細"
 }

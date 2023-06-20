@@ -1,10 +1,8 @@
-
 import 'dart:convert';
 
+import 'package:ckc_social_app/app/modules/user/views/user_editing_view.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
 
 import '../core/config/theme_config.dart';
 import '../core/constants/app_constant.dart';
@@ -32,10 +30,6 @@ import '../modules/user/controllers/user_controller.dart';
 import '../modules/user/views/user_friend_view.dart';
 import '../modules/user/views/user_view.dart';
 
-
-
-
-
 part 'app_middleware.dart';
 // ignore_for_file: constant_identifier_names
 
@@ -50,8 +44,7 @@ class AppPages {
     GetPage(
       name: _Paths.AUTHENTICATION,
       page: () => const AuthenticationView(),
-      binding:
-          BindingsBuilder(() => Get.lazyPut(() => AuthenticationController())),
+      binding: BindingsBuilder(() => Get.lazyPut(() => AuthenticationController())),
     ),
     GetPage(
       name: _Paths.HOME,
@@ -82,8 +75,7 @@ class AppPages {
           page: () => MessageSearchView(),
         ),
         GetPage(
-            name:
-                '${_Paths.SETTING_PROFILE}/:id', // /message/setting-profile/:id
+            name: '${_Paths.SETTING_PROFILE}/:id', // /message/setting-profile/:id
             page: () => MessageSettingProfileView(),
             children: [
               GetPage(
@@ -119,7 +111,11 @@ class AppPages {
         GetPage(
           name: _Paths.FRIEND, // /user/:id/friend
           page: () => const UserFriendView(),
-        )
+        ),
+        GetPage(
+          name: _Paths.EDITING, // /user/:id/editing
+          page: () => const UserEditingView(),
+        ),
       ],
     ),
     GetPage(
@@ -148,8 +144,8 @@ class AppPages {
       ],
     ),
     GetPage(
-      name: _Paths.NOTIFICATION, 
-      page:()=> const NotificationView(), 
+      name: _Paths.NOTIFICATION,
+      page: () => const NotificationView(),
       binding: BindingsBuilder(() => Get.lazyPut(() => NotificationController())),
     ),
   ];
