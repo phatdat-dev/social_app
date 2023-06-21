@@ -103,16 +103,14 @@ class UserController extends BaseController with SearchTagFriendController, Stat
     }
   }
 
-  Future<void> call_uploadAvatar(
-    List<String> filesPath,
-  ) async {
+  Future<void> call_uploadAvatar(List<String> filesPath, {bool isCoverImage = false}) async {
     final formData = FormData({
       //? lúc thì api truyền files[], lúc thì file[]
       'file[]': filesPath.map((path) => MultipartFile(File(path), filename: path)).toList(),
     });
 
     final result = await apiCall.onRequest(
-      ApiUrl.post_uploadAvatar(),
+      isCoverImage ? ApiUrl.post_uploadCoverImage() : ApiUrl.post_uploadAvatar(),
       RequestMethod.POST,
       body: formData,
       baseModel: UsersModel(),

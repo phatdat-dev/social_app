@@ -53,12 +53,22 @@ class UserEditingView extends GetView<UserController> {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          _buildTitle(LocaleKeys.CoverPhoto.tr, () {}),
+                          GetBuilder(
+                            init: PickerService(),
+                            tag: LocaleKeys.CoverPhoto,
+                            builder: (pickerService) => _buildTitle(
+                              LocaleKeys.CoverPhoto.tr,
+                              () async {
+                                final files = await pickerService.pickMultiFile(FileType.image, allowMultiple: false);
+                                if (files != null) controller.call_uploadAvatar(files, isCoverImage: true);
+                              },
+                            ),
+                          ),
                           Container(
                               height: 200,
                               decoration: BoxDecoration(
-                                image: const DecorationImage(
-                                  image: NetworkImage('https://www.sageisland.com/wp-content/uploads/2017/06/beat-instagram-algorithm.jpg'),
+                                image: DecorationImage(
+                                  image: NetworkImage(controller.state!.coverImage!),
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(10),

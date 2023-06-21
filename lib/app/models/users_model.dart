@@ -5,7 +5,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
   String? displayName;
   String? email;
   String? avatar;
-  dynamic coverImage;
+  String? coverImage;
   DateTime? dateOfBirth;
   int? sex;
   String? wentTo;
@@ -44,7 +44,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
       displayName: json['displayName'],
       email: json['email'],
       avatar: json['avatar'],
-      coverImage: json['cover_image'],
+      coverImage: json['coverImage'],
       dateOfBirth: json['date_of_birth'] != null ? DateTime.tryParse(json['date_of_birth']) : null,
       sex: (json['sex'] as num?)?.toInt(),
       wentTo: json['went_to'],
@@ -75,6 +75,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
     }
     if (coverImage != null) {
       data['cover_image'] = coverImage;
+      data['coverImage'] = coverImage;
     }
     if (dateOfBirth != null) {
       data['date_of_birth'] = dateOfBirth?.toIso8601String();
@@ -114,7 +115,7 @@ class UsersModel extends BaseModel<UsersModel> with BaseSelectedModel {
     String? displayName,
     String? email,
     String? avatar,
-    dynamic coverImage,
+    String? coverImage,
     DateTime? dateOfBirth,
     int? sex,
     String? wentTo,

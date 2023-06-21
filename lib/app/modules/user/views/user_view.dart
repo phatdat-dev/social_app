@@ -31,10 +31,12 @@ class UserView extends GetView<UserController> {
                         children: <Widget>[
                           Container(
                             height: 200.0,
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage('https://www.sageisland.com/wp-content/uploads/2017/06/beat-instagram-algorithm.jpg'))),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(controller.state!.coverImage!),
+                              ),
+                            ),
                           ),
                           Positioned(
                             top: 100.0,
