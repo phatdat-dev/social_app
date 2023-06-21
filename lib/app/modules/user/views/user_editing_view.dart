@@ -1,9 +1,13 @@
 import 'package:ckc_social_app/app/core/services/picker_service.dart';
 import 'package:ckc_social_app/app/modules/user/controllers/user_controller.dart';
-import 'package:ckc_social_app/generated/locales.g.dart';
+import 'package:ckc_social_app/app/modules/user/views/user_view.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
+
+import '../../../core/utils/utils.dart';
 
 class UserEditingView extends GetView<UserController> {
   const UserEditingView({super.key});
@@ -68,8 +72,83 @@ class UserEditingView extends GetView<UserController> {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          _buildTitle(LocaleKeys.Details.tr, () {}),
-                          //
+                          _buildTitle(LocaleKeys.Details.tr, () {
+                            final _formKey = GlobalKey<FormBuilderState>();
+                            showDialog<String>(
+                                //barrierDismissible: false,
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text(LocaleKeys.Overview.tr),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                      content: FormBuilder(
+                                        key: _formKey,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            FormBuilderTextField(
+                                              name: 'wentTo',
+                                              initialValue: state.wentTo,
+                                              // autofocus: true,
+                                              // maxLines: 3,
+                                              decoration: InputDecoration(
+                                                focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
+                                                // prefixIcon: const Icon(Icons.cloud_circle),
+                                                labelText: LocaleKeys.WentFrom.tr,
+                                                // hintText: 'hintText',
+                                              ),
+                                            ),
+                                            FormBuilderTextField(
+                                              name: 'liveIn',
+                                              initialValue: state.liveIn,
+                                              // autofocus: true,
+                                              // maxLines: 3,
+                                              decoration: InputDecoration(
+                                                focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
+                                                // prefixIcon: const Icon(Icons.cloud_circle),
+                                                labelText: LocaleKeys.LiveIn.tr,
+                                                // hintText: 'hintText',
+                                              ),
+                                            ),
+                                            FormBuilderDropdown(
+                                              name: 'relationship',
+                                              initialValue: state.relationship,
+                                              items: Relationship.values.map((e) => DropdownMenuItem(value: e.value, child: Text(e.title))).toList(),
+                                            ),
+                                            FormBuilderTextField(
+                                              name: 'phone',
+                                              initialValue: state.phone,
+                                              // autofocus: true,
+                                              // maxLines: 3,
+                                              decoration: InputDecoration(
+                                                focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
+                                                // prefixIcon: const Icon(Icons.cloud_circle),
+                                                labelText: LocaleKeys.Phone.tr,
+                                                // hintText: 'hintText',
+                                              ),
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter.digitsOnly,
+                                                LengthLimitingTextInputFormatter(10),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        OutlinedButton(onPressed: () => Navigator.of(context).maybePop(), child: Text(LocaleKeys.Cancel.tr)),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!.saveAndValidate()) {
+                                              controller.call_editInformationUser(_formKey.currentState!.value);
+                                            }
+                                          },
+                                          // style: ElevatedButton.styleFrom(backgroundColor: Get.theme.colorScheme.secondary),
+                                          child: Text(LocaleKeys.Confirm.tr),
+                                        ),
+                                      ],
+                                    ));
+                          }),
+                          UserView.buildInfomation(controller),
                         ],
                       ),
                     ),

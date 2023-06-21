@@ -16,6 +16,10 @@ enum Relationship {
   final int value;
   final String title;
   const Relationship(this.value, this.title);
+
+  factory Relationship.fromValue(int? value) {
+    return Relationship.values.firstWhere((element) => element.value == value, orElse: () => Relationship.Nothing);
+  }
 }
 
 class UserController extends BaseController with SearchTagFriendController, StateMixin<UsersModel?> {
@@ -79,22 +83,24 @@ class UserController extends BaseController with SearchTagFriendController, Stat
     });
   }
 
-  Future<void> call_editInformationUser({
-    required String wentTo,
-    required String liveIn,
-    required Relationship relationship,
-    required String phone,
-  }) async {
-    await apiCall.onRequest(
+  Future<void> call_editInformationUser(Map<String, dynamic> body) async {
+    final result = await apiCall.onRequest(
       ApiUrl.post_editInformationUser(),
       RequestMethod.POST,
-      body: {
-        'wentTo': wentTo,
-        'liveIn': liveIn,
-        'relationship': relationship.value,
-        'phone': phone,
-      },
+      body: body,
+      baseModel: UsersModel(),
+      // {
+      //   'wentTo': wentTo,
+      //   'liveIn': liveIn,
+      //   'relationship': relationship.value,
+      //   'phone': phone,
+      // },
     );
+    if (result != null) {
+      change(result, status: RxStatus.success());
+      Get.back();
+      HelperWidget.showSnackBar(message: 'Success');
+    }
   }
 
   Future<void> call_uploadAvatar(

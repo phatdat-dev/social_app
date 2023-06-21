@@ -102,6 +102,7 @@ LocaleKeys._();
 	static const ProfilePicture = 'ProfilePicture';
 	static const CoverPhoto = 'CoverPhoto';
 	static const Details = 'Details';
+	static const Overview = 'Overview';
 }
 
 class Locales {
@@ -194,6 +195,7 @@ class Locales {
 		'ProfilePicture': 'プロフィール写真',
 		'CoverPhoto': 'カバー写真',
 		'Details': '詳細',
+		'Overview': '概要',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -283,6 +285,7 @@ class Locales {
 		'ProfilePicture': 'Profile Picture',
 		'CoverPhoto': 'Cover Photo',
 		'Details': 'Details',
+		'Overview': 'Overview',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -372,6 +375,7 @@ class Locales {
 		'ProfilePicture': 'Ảnh đại diện',
 		'CoverPhoto': 'Ảnh bìa',
 		'Details': 'Chi tiết',
+		'Overview': 'Tổng quan',
 	};
 
 }

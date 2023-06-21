@@ -1,4 +1,5 @@
 import 'package:ckc_social_app/app/core/utils/helper.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/user/controllers/user_controller.dart';
 import 'package:ckc_social_app/generated/locales.g.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ class UserView extends GetView<UserController> {
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                 child: Column(
                   children: <Widget>[
-                    controller.obx((state) => _buildInfomation()),
+                    controller.obx((state) => buildInfomation(controller)),
                     const Divider(),
                     _buildPhotos(),
                     const Divider(),
@@ -109,15 +110,16 @@ class UserView extends GetView<UserController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ListTile(
-                      onTap: () => Get.toNamed(Routes.USER_EDITING('${controller.userId}')),
-                      contentPadding: EdgeInsets.zero,
-                      // minVerticalPadding: 10,
-                      // visualDensity: VisualDensity.compact,
-                      leading: const Icon(Icons.edit_outlined),
-                      title: Text(LocaleKeys.UpdateMyProfile.tr),
-                      // isThreeLine: true,
-                    ),
+                    if (controller.userId == AuthenticationController.userAccount!.id!)
+                      ListTile(
+                        onTap: () => Get.toNamed(Routes.USER_EDITING('${controller.userId}')),
+                        contentPadding: EdgeInsets.zero,
+                        // minVerticalPadding: 10,
+                        // visualDensity: VisualDensity.compact,
+                        leading: const Icon(Icons.edit_outlined),
+                        title: Text(LocaleKeys.UpdateMyProfile.tr),
+                        // isThreeLine: true,
+                      ),
                   ],
                 ),
               ),
@@ -126,37 +128,43 @@ class UserView extends GetView<UserController> {
         });
   }
 
-  Widget _buildInfomation() {
+  static Widget buildInfomation(UserController controller) {
     final data = [
       {
         'title': LocaleKeys.WentFrom.tr,
         'value': 'went_to',
         'icon': Icons.place_outlined,
+        'format': 'text',
       },
       {
         'title': LocaleKeys.LiveIn.tr,
         'value': 'live_in',
         'icon': Icons.home_outlined,
+        'format': 'text',
       },
       {
         'title': LocaleKeys.Relationship.tr,
         'value': 'relationship',
         'icon': Icons.favorite_outline,
+        'format': 'Relationship',
       },
       {
         'title': LocaleKeys.Phone.tr,
         'value': 'phone',
         'icon': Icons.phone_outlined,
+        'format': 'text',
       },
       {
         'title': LocaleKeys.Birthday.tr,
         'value': 'date_of_birth',
         'icon': Icons.date_range_outlined,
+        'format': 'date',
       },
       {
         'title': LocaleKeys.Address.tr,
         'value': 'address',
         'icon': Icons.location_city_outlined,
+        'format': 'text',
       },
     ];
 
@@ -169,6 +177,18 @@ class UserView extends GetView<UserController> {
             data.length,
             generator: (index) {
               final item = data[index];
+
+              final String text;
+              switch (item['format']) {
+                case 'date':
+                  text = Helper.tryFormatDateTime(userJson[item['value']] ?? '');
+                  break;
+                case 'Relationship':
+                  text = Relationship.fromValue(userJson[item['value']]).title;
+                  break;
+                default:
+                  text = userJson[item['value']] ?? '';
+              }
               return Row(
                 children: <Widget>[
                   Icon(item['icon'] as IconData),
@@ -176,7 +196,7 @@ class UserView extends GetView<UserController> {
                   Text("${item['title']}:"),
                   const SizedBox(width: 5.0),
                   Text(
-                    Helper.tryFormatDateTime(userJson[item['value']] ?? ''),
+                    text,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   )
