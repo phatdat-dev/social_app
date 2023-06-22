@@ -88,6 +88,7 @@ class UserEditingView extends GetView<UserController> {
                                 //barrierDismissible: false,
                                 context: context,
                                 builder: (context) => AlertDialog(
+                                      scrollable: true,
                                       title: Text(LocaleKeys.Overview.tr),
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                       content: FormBuilder(
@@ -97,13 +98,37 @@ class UserEditingView extends GetView<UserController> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             FormBuilderTextField(
+                                              name: 'displayName',
+                                              initialValue: state.displayName,
+                                              // autofocus: true,
+                                              // maxLines: 3,
+                                              decoration: InputDecoration(
+                                                focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
+                                                icon: const Icon(Icons.visibility_outlined),
+                                                labelText: LocaleKeys.DisplayName.tr,
+                                                // hintText: 'hintText',
+                                              ),
+                                            ),
+                                            FormBuilderTextField(
+                                              name: 'email',
+                                              initialValue: state.email,
+                                              // autofocus: true,
+                                              // maxLines: 3,
+                                              decoration: InputDecoration(
+                                                focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
+                                                icon: const Icon(Icons.email_outlined),
+                                                labelText: LocaleKeys.Email.tr,
+                                                // hintText: 'hintText',
+                                              ),
+                                            ),
+                                            FormBuilderTextField(
                                               name: 'wentTo',
                                               initialValue: state.wentTo,
                                               // autofocus: true,
                                               // maxLines: 3,
                                               decoration: InputDecoration(
                                                 focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
-                                                // prefixIcon: const Icon(Icons.cloud_circle),
+                                                icon: const Icon(Icons.place_outlined),
                                                 labelText: LocaleKeys.WentFrom.tr,
                                                 // hintText: 'hintText',
                                               ),
@@ -115,7 +140,7 @@ class UserEditingView extends GetView<UserController> {
                                               // maxLines: 3,
                                               decoration: InputDecoration(
                                                 focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
-                                                // prefixIcon: const Icon(Icons.cloud_circle),
+                                                icon: const Icon(Icons.home_outlined),
                                                 labelText: LocaleKeys.LiveIn.tr,
                                                 // hintText: 'hintText',
                                               ),
@@ -123,6 +148,10 @@ class UserEditingView extends GetView<UserController> {
                                             FormBuilderDropdown(
                                               name: 'relationship',
                                               initialValue: state.relationship,
+                                              decoration: InputDecoration(
+                                                labelText: LocaleKeys.Relationship.tr,
+                                                icon: const Icon(Icons.favorite_outline),
+                                              ),
                                               items: Relationship.values.map((e) => DropdownMenuItem(value: e.value, child: Text(e.title))).toList(),
                                             ),
                                             FormBuilderTextField(
@@ -132,7 +161,7 @@ class UserEditingView extends GetView<UserController> {
                                               // maxLines: 3,
                                               decoration: InputDecoration(
                                                 focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(width: 0.5, color: Colors.red)),
-                                                // prefixIcon: const Icon(Icons.cloud_circle),
+                                                icon: const Icon(Icons.phone_outlined),
                                                 labelText: LocaleKeys.Phone.tr,
                                                 // hintText: 'hintText',
                                               ),

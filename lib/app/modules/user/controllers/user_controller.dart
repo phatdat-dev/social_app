@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import '../../../models/users_model.dart';
@@ -118,6 +119,18 @@ class UserController extends BaseController with SearchTagFriendController, Stat
     if (result != null) {
       change(result, status: RxStatus.success());
       HelperWidget.showSnackBar(message: 'Success');
+    }
+  }
+
+  Future<void> call_updatePasswordUser(Map<String, dynamic> body) async {
+    final result = await apiCall.onRequest(
+      ApiUrl.post_updatePasswordUser(),
+      RequestMethod.POST,
+      body: body,
+    );
+    if (result != null) {
+      Get.until((route) => route.settings.name == Routes.USER('$userId'));
+      HelperWidget.showSnackBar(message: result.toString());
     }
   }
 }

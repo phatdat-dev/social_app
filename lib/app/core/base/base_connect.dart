@@ -65,6 +65,12 @@ class BaseConnect extends GetConnect {
       case 404:
       case 500:
         //
+        if (response.body is String) {
+          final message = response.body;
+          HelperWidget.showToast('CODE (${response.statusCode}):\n$message');
+          Printt.red(message);
+          break;
+        }
         final Map<String, dynamic> errorMessage = jsonDecode(response.bodyString!);
 
         String message = '';

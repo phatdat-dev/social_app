@@ -22,6 +22,7 @@ class ApiUrl {
   static String post_editInformationUser() => '/api/v1/edit-information-user';
   static String post_uploadAvatar() => '/api/v1/upload-avatar';
   static String post_uploadCoverImage() => '/api/v1/upload-cover-image';
+  static String post_updatePasswordUser() => '/api/v1/update-password-user';
   //
   static String get_fetchGroupJoined() => '/api/v1/fetch-group-joined';
   static String get_fetchPostGroup() => '/api/v1/fetch-post-group';

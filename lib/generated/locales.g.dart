@@ -103,6 +103,12 @@ LocaleKeys._();
 	static const CoverPhoto = 'CoverPhoto';
 	static const Details = 'Details';
 	static const Overview = 'Overview';
+	static const DisplayName = 'DisplayName';
+	static const ChangePassword = 'ChangePassword';
+	static const OldPassword = 'OldPassword';
+	static const NewPassword = 'NewPassword';
+	static const ConfirmNewPassword = 'ConfirmNewPassword';
+	static const PasswordNotMatch = 'PasswordNotMatch';
 }
 
 class Locales {
@@ -196,6 +202,12 @@ class Locales {
 		'CoverPhoto': 'カバー写真',
 		'Details': '詳細',
 		'Overview': '概要',
+		'DisplayName': '表示名',
+		'ChangePassword': 'パスワードを変更する',
+		'OldPassword': '古いパスワード',
+		'NewPassword': '新しいパスワード',
+		'ConfirmNewPassword': '新しいパスワードの確認',
+		'PasswordNotMatch': 'パスワードが一致しません',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -286,6 +298,12 @@ class Locales {
 		'CoverPhoto': 'Cover Photo',
 		'Details': 'Details',
 		'Overview': 'Overview',
+		'DisplayName': 'Display Name',
+		'ChangePassword': 'Change Password',
+		'OldPassword': 'Old Password',
+		'NewPassword': 'New Password',
+		'ConfirmNewPassword': 'Confirm New Password',
+		'PasswordNotMatch': 'Password not match',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -376,6 +394,12 @@ class Locales {
 		'CoverPhoto': 'Ảnh bìa',
 		'Details': 'Chi tiết',
 		'Overview': 'Tổng quan',
+		'DisplayName': 'Tên hiển thị',
+		'ChangePassword': 'Đổi mật khẩu',
+		'OldPassword': 'Mật khẩu cũ',
+		'NewPassword': 'Mật khẩu mới',
+		'ConfirmNewPassword': 'Xác nhận mật khẩu mới',
+		'PasswordNotMatch': 'Mật khẩu không khớp',
 	};
 
 }

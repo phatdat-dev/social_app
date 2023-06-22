@@ -86,5 +86,11 @@
   "ProfilePicture": "Profile Picture",
   "CoverPhoto": "Cover Photo",
   "Details": "Details",
-  "Overview": "Overview"
+  "Overview": "Overview",
+  "DisplayName": "Display Name",
+  "ChangePassword": "Change Password",
+  "OldPassword": "Old Password",
+  "NewPassword": "New Password",
+  "ConfirmNewPassword": "Confirm New Password",
+  "PasswordNotMatch": "Password not match"
 }

@@ -3,6 +3,8 @@ import 'package:ckc_social_app/app/modules/authentication/controllers/authentica
 import 'package:ckc_social_app/app/modules/user/controllers/user_controller.dart';
 import 'package:ckc_social_app/generated/locales.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -112,7 +114,7 @@ class UserView extends GetView<UserController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (controller.userId == AuthenticationController.userAccount!.id!)
+                    if (controller.userId == AuthenticationController.userAccount!.id!) ...[
                       ListTile(
                         onTap: () => Get.toNamed(Routes.USER_EDITING('${controller.userId}')),
                         contentPadding: EdgeInsets.zero,
@@ -122,6 +124,85 @@ class UserView extends GetView<UserController> {
                         title: Text(LocaleKeys.UpdateMyProfile.tr),
                         // isThreeLine: true,
                       ),
+                      ListTile(
+                        onTap: () {
+                          final _formKey = GlobalKey<FormBuilderState>();
+                          showDialog<String>(
+                              //barrierDismissible: false,
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    scrollable: true,
+                                    title: Text(LocaleKeys.Overview.tr),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                    content: FormBuilder(
+                                      key: _formKey,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          FormBuilderTextField(
+                                              name: 'currentPassword',
+                                              decoration: InputDecoration(
+                                                iconColor: Colors.red,
+                                                icon: const Icon(Icons.key_outlined),
+                                                labelText: LocaleKeys.OldPassword.tr,
+                                              ),
+                                              validator: FormBuilderValidators.compose([
+                                                FormBuilderValidators.required(),
+                                                FormBuilderValidators.minLength(6),
+                                              ])),
+                                          FormBuilderTextField(
+                                              name: 'password',
+                                              decoration: InputDecoration(
+                                                iconColor: Colors.green,
+                                                icon: const Icon(Icons.vpn_key_outlined),
+                                                labelText: LocaleKeys.NewPassword.tr,
+                                              ),
+                                              validator: FormBuilderValidators.compose([
+                                                FormBuilderValidators.required(),
+                                                FormBuilderValidators.minLength(6),
+                                              ])),
+                                          FormBuilderTextField(
+                                              name: 'confirmPassword',
+                                              decoration: InputDecoration(
+                                                iconColor: Colors.blue,
+                                                icon: const Icon(Icons.vpn_key_outlined),
+                                                labelText: LocaleKeys.ConfirmNewPassword.tr,
+                                              ),
+                                              validator: FormBuilderValidators.compose([
+                                                FormBuilderValidators.required(),
+                                                FormBuilderValidators.minLength(6),
+                                                (value) => (value != _formKey.currentState!.fields['password']!.value)
+                                                    ? LocaleKeys.PasswordNotMatch.tr
+                                                    : null,
+                                              ])),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      OutlinedButton(onPressed: () => Navigator.of(context).maybePop(), child: Text(LocaleKeys.Cancel.tr)),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          if (_formKey.currentState!.saveAndValidate()) {
+                                            controller.call_updatePasswordUser(_formKey.currentState!.value);
+                                          }
+                                        },
+                                        // style: ElevatedButton.styleFrom(backgroundColor: Get.theme.colorScheme.secondary),
+                                        child: Text(LocaleKeys.Confirm.tr),
+                                      ),
+                                    ],
+                                  ));
+                        },
+                        contentPadding: EdgeInsets.zero,
+                        iconColor: Colors.grey,
+                        textColor: Colors.grey,
+                        // minVerticalPadding: 10,
+                        // visualDensity: VisualDensity.compact,
+                        leading: const Icon(Icons.lock_outline),
+                        title: Text(LocaleKeys.ChangePassword.tr),
+                        // isThreeLine: true,
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -132,6 +213,18 @@ class UserView extends GetView<UserController> {
 
   static Widget buildInfomation(UserController controller) {
     final data = [
+      {
+        'title': LocaleKeys.DisplayName.tr,
+        'value': 'displayName',
+        'icon': Icons.visibility_outlined,
+        'format': 'text',
+      },
+      {
+        'title': LocaleKeys.Email.tr,
+        'value': 'email',
+        'icon': Icons.mail_outline,
+        'format': 'text',
+      },
       {
         'title': LocaleKeys.WentFrom.tr,
         'value': 'went_to',

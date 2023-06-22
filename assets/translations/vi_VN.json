@@ -86,5 +86,11 @@
   "ProfilePicture": "Ảnh đại diện",
   "CoverPhoto": "Ảnh bìa",
   "Details": "Chi tiết",
-  "Overview": "Tổng quan"
+  "Overview": "Tổng quan",
+  "DisplayName": "Tên hiển thị",
+  "ChangePassword": "Đổi mật khẩu",
+  "OldPassword": "Mật khẩu cũ",
+  "NewPassword": "Mật khẩu mới",
+  "ConfirmNewPassword": "Xác nhận mật khẩu mới",
+  "PasswordNotMatch": "Mật khẩu không khớp"
 }

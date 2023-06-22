@@ -86,5 +86,11 @@
   "ProfilePicture": "プロフィール写真",
   "CoverPhoto": "カバー写真",
   "Details": "詳細",
-  "Overview": "概要"
+  "Overview": "概要",
+  "DisplayName": "表示名",
+  "ChangePassword": "パスワードを変更する",
+  "OldPassword": "古いパスワード",
+  "NewPassword": "新しいパスワード",
+  "ConfirmNewPassword": "新しいパスワードの確認",
+  "PasswordNotMatch": "パスワードが一致しません"
 }
