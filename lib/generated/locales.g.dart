@@ -109,6 +109,8 @@ LocaleKeys._();
 	static const NewPassword = 'NewPassword';
 	static const ConfirmNewPassword = 'ConfirmNewPassword';
 	static const PasswordNotMatch = 'PasswordNotMatch';
+	static const Preview = 'Preview';
+	static const CreateGroup = 'CreateGroup';
 }
 
 class Locales {
@@ -208,6 +210,8 @@ class Locales {
 		'NewPassword': '新しいパスワード',
 		'ConfirmNewPassword': '新しいパスワードの確認',
 		'PasswordNotMatch': 'パスワードが一致しません',
+		'Preview': 'プレビュー',
+		'CreateGroup': 'グループを作成する',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -304,6 +308,8 @@ class Locales {
 		'NewPassword': 'New Password',
 		'ConfirmNewPassword': 'Confirm New Password',
 		'PasswordNotMatch': 'Password not match',
+		'Preview': 'Preview',
+		'CreateGroup': 'Create Group',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -400,6 +406,8 @@ class Locales {
 		'NewPassword': 'Mật khẩu mới',
 		'ConfirmNewPassword': 'Xác nhận mật khẩu mới',
 		'PasswordNotMatch': 'Mật khẩu không khớp',
+		'Preview': 'Xem trước',
+		'CreateGroup': 'Tạo nhóm',
 	};
 
 }

@@ -13,6 +13,7 @@ abstract class Routes {
   static String MESSAGE_SETTING_PROFILE(String id) => _Paths.MESSAGE + _Paths.SETTING_PROFILE + '/$id';
   static String MESSAGE_SETTING_PROFILE_MEMBERS(String id) => MESSAGE_SETTING_PROFILE(id) + _Paths.MEMBERS;
   static String GROUP(String id) => _Paths.GROUP + '/$id';
+  static String GROUP_CREATE() => _Paths.GROUP + _Paths.CREATE;
   static String GROUP_INFOMATION(String id) => GROUP(id) + _Paths.INFOMATION;
   static String GROUP_INFOMATION_MEMBERS(String id) => GROUP_INFOMATION(id) + _Paths.MEMBERS;
   static String USER(String id) => _Paths.USER + '/$id';

@@ -92,5 +92,7 @@
   "OldPassword": "Mật khẩu cũ",
   "NewPassword": "Mật khẩu mới",
   "ConfirmNewPassword": "Xác nhận mật khẩu mới",
-  "PasswordNotMatch": "Mật khẩu không khớp"
+  "PasswordNotMatch": "Mật khẩu không khớp",
+  "Preview": "Xem trước",
+  "CreateGroup":"Tạo nhóm"
 }

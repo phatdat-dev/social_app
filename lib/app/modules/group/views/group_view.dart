@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:ckc_social_app/app/modules/group/widget/group_drawer_widget.dart';
 import 'package:ckc_social_app/app/modules/home/widget/input_story_widget.dart';
 import 'package:ckc_social_app/app/modules/post/widget/facebook_card_post_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class GroupView extends StatefulWidget {
   const GroupView({super.key});
@@ -23,6 +23,7 @@ class _GroupViewState extends State<GroupView> {
     'Sự kiện',
     'File',
   ];
+
   @override
   void initState() {
     super.initState();
@@ -54,36 +55,40 @@ class _GroupViewState extends State<GroupView> {
                   flexibleSpace: GestureDetector(
                     onTap: () => controller.redirectToGroupInfomation(context),
                     child: FlexibleSpaceBar(
-                      centerTitle: false,
-                      title: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            controller.currentGroup['group_name'] ?? '',
-                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 5),
-                          Text.rich(
-                            const TextSpan(
-                              children: [
-                                WidgetSpan(
-                                  child: Icon(
-                                    Icons.public,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
-                                ),
-                                TextSpan(text: ' Công khai'),
+                      centerTitle: true,
+                      title: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final Color defaultTitleColor = constraints.maxHeight > 150 ? Colors.white : Colors.black;
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                controller.currentGroup['group_name'] ?? '',
+                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: defaultTitleColor, fontWeight: FontWeight.bold),
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 5),
+                              Text.rich(
                                 TextSpan(
-                                  text: ' ☘ 100k thành viên',
+                                  children: [
+                                    WidgetSpan(
+                                      child: Icon(
+                                        Icons.public,
+                                        color: defaultTitleColor,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    const TextSpan(text: ' Công khai'),
+                                    const TextSpan(text: ' ☘ 100k thành viên'),
+                                    const TextSpan(text: ' >', style: TextStyle(color: Colors.cyan)),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
-                          ),
-                        ],
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: defaultTitleColor),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       background: DecoratedBox(
                         decoration: BoxDecoration(

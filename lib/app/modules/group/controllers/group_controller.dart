@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/utils/helper.dart';
 import 'package:ckc_social_app/app/core/utils/helper_widget.dart';
 import 'package:ckc_social_app/app/modules/home/controllers/base_fetch_controller.dart';
 import 'package:ckc_social_app/app/routes/app_pages.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../core/base/base_project.dart';
 
@@ -90,6 +90,15 @@ class GroupController extends BaseController {
         HelperWidget.showSnackBar(message: 'Success');
       }
     });
+  }
+
+  Future<void> call_createGroup(Map<String,dynamic> body) async {
+    //groupName, privacy
+    await apiCall.onRequest(
+      ApiUrl.post_createGroup(),
+      RequestMethod.POST,
+      body: body,
+    ).then((value) => HelperWidget.showSnackBar(message: 'Success'));
   }
 }
 

@@ -10,6 +10,7 @@ import 'package:ckc_social_app/app/modules/home/widget/home_drawer_widget.dart';
 import 'package:ckc_social_app/app/routes/app_pages.dart';
 
 import '../../../custom/other/more_dropdown_search_custom.dart';
+import '../../group/controllers/group_controller.dart';
 import '../controllers/home_controller.dart';
 import 'home_dashboard_view.dart';
 import 'home_group_view.dart';

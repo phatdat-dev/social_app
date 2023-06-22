@@ -92,5 +92,7 @@
   "OldPassword": "Old Password",
   "NewPassword": "New Password",
   "ConfirmNewPassword": "Confirm New Password",
-  "PasswordNotMatch": "Password not match"
+  "PasswordNotMatch": "Password not match",
+  "Preview": "Preview",
+  "CreateGroup": "Create Group"
 }

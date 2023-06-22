@@ -92,5 +92,7 @@
   "OldPassword": "古いパスワード",
   "NewPassword": "新しいパスワード",
   "ConfirmNewPassword": "新しいパスワードの確認",
-  "PasswordNotMatch": "パスワードが一致しません"
+  "PasswordNotMatch": "パスワードが一致しません",
+  "Preview": "プレビュー",
+  "CreateGroup":"グループを作成する"
 }

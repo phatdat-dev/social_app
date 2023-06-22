@@ -134,13 +134,18 @@ extension HomeViewExtension on _HomeViewState {
               snap: true,
 
               title: Text(
-                'Group',
+                LocaleKeys.Group.tr,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       fontSize: 30,
                       color: Theme.of(context).primaryColor,
                     ),
               ),
               actions: [
+                AppBarIconWidget(
+                  tooltip: LocaleKeys.CreateGroup.tr,
+                  icon: const Icon(Icons.group_add, color: Colors.green),
+                  onPressed: () => Get.toNamed(Routes.GROUP_CREATE()),
+                ),
                 AppBarIconWidget(icon: const Icon(Icons.settings), onPressed: () {}),
                 AppBarIconWidget(icon: const Icon(MdiIcons.magnify), onPressed: () {}),
               ],
