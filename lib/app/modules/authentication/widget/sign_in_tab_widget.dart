@@ -25,7 +25,7 @@ class SignInTabWidget extends GetView<AuthenticationController> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: ElevatedButton(
-              onPressed: () => controller.onSignIn(),
+              onPressed: controller.onSignIn,
               child: Text(LocaleKeys.SignIn.tr),
             ),
           ),

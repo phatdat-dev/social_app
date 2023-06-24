@@ -40,7 +40,7 @@ class SignUpTapWidget extends GetView<AuthenticationController> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: ElevatedButton(
-              onPressed: () => controller.onSignUp(),
+              onPressed: controller.onSignUp,
               child: Text(LocaleKeys.SignUp.tr),
             ),
           ),
