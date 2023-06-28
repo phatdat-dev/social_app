@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/base/base_project.dart';
+import '../../search_tag_friend/controllers/search_tag_friend_controller.dart';
 
-class GroupController extends BaseController {
+class GroupController extends BaseController with SearchTagFriendController {
   final FetchPostGroupController fetchPostGroupController = FetchPostGroupController();
   late FetchPostByGroupIdController fetchPostByGroupIdController;
 
@@ -15,11 +16,23 @@ class GroupController extends BaseController {
   RxList<Map<String, dynamic>> groupData = RxList.empty();
   Map<String, dynamic> currentGroup = {};
   RxList<Map<String, dynamic>> memberGroupData = RxList();
+  ListMapDataState inviteMyGroupData = ListMapDataState([]);
 
   @override
   Future<void> onInitData() async {
     fetchPostGroupController.onInitData();
     call_fetchGroupJoined();
+    call_fetchInviteToGroup();
+  }
+
+  @override
+  void onPresseSearchTagFriendDone() async {
+    final getListSelected = listFriendOfUser.where((element) => element.isSelected).toList();
+    getListSelected.forEach((element) {
+      call_sendInviteToGroup(element.id!);
+    });
+    Get.back();
+    HelperWidget.showSnackBar(message: 'Success');
   }
 
   Future<void> call_fetchGroupJoined() async {
@@ -92,13 +105,47 @@ class GroupController extends BaseController {
     });
   }
 
-  Future<void> call_createGroup(Map<String,dynamic> body) async {
+  Future<void> call_createGroup(Map<String, dynamic> body) async {
     //groupName, privacy
+    await apiCall
+        .onRequest(
+          ApiUrl.post_createGroup(),
+          RequestMethod.POST,
+          body: body,
+        )
+        .then((value) => HelperWidget.showSnackBar(message: 'Success'));
+  }
+
+  Future<void> call_sendInviteToGroup(int userId) async {
     await apiCall.onRequest(
-      ApiUrl.post_createGroup(),
+      ApiUrl.post_sendInviteToGroup(),
       RequestMethod.POST,
-      body: body,
-    ).then((value) => HelperWidget.showSnackBar(message: 'Success'));
+      body: {
+        'userId': userId,
+        'groupId': currentGroup['id'],
+      },
+      isShowLoading: false,
+    );
+  }
+
+  Future<void> call_fetchInviteToGroup() async {
+    inviteMyGroupData.run(
+      apiCall
+          .onRequest(
+            ApiUrl.get_fetchInviteToGroup(),
+            RequestMethod.GET,
+          )
+          .then((value) => Helper.convertToListMap(value)),
+    );
+  }
+
+  Future<void> call_acceptInviteToGroup(int groupId) async {
+    await apiCall.onRequest(ApiUrl.post_acceptInviteToGroup(), RequestMethod.POST, body: {
+      'groupId': groupId,
+    }).then((value) {
+      HelperWidget.showSnackBar(message: value);
+      call_fetchInviteToGroup();
+    });
   }
 }
 

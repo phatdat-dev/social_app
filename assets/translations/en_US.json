@@ -94,5 +94,8 @@
   "ConfirmNewPassword": "Confirm New Password",
   "PasswordNotMatch": "Password not match",
   "Preview": "Preview",
-  "CreateGroup": "Create Group"
+  "CreateGroup": "Create Group",
+  "InviteFriend": "Invite Friend",
+  "InviteFriendToGroup": "Invite Friend To Group",
+  "Joined": "Joined"
 }

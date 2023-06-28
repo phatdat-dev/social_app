@@ -23,9 +23,9 @@ class MessageView<T extends MessageController> extends GetView<T> {
           SliverAppBar(
             elevation: 0, //shadow
             automaticallyImplyLeading: false, //tat' cai' back tu dong
-            leading: const Padding(
-              padding: EdgeInsets.only(left: 15),
-              child: CircleAvatar(radius: 25),
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: CircleAvatar(radius: 25, backgroundImage: NetworkImage(AuthenticationController.userAccount?.avatar ?? '')),
             ),
             title: const Text('Chats', style: TextStyle(color: Colors.black)),
             actions: [

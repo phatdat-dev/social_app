@@ -94,5 +94,8 @@
   "ConfirmNewPassword": "Xác nhận mật khẩu mới",
   "PasswordNotMatch": "Mật khẩu không khớp",
   "Preview": "Xem trước",
-  "CreateGroup":"Tạo nhóm"
+  "CreateGroup": "Tạo nhóm",
+  "InviteFriend": "Mời bạn bè",
+  "InviteFriendToGroup": "Mời bạn bè vào nhóm",
+  "Joined": "Đã tham gia"
 }

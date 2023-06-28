@@ -94,5 +94,8 @@
   "ConfirmNewPassword": "新しいパスワードの確認",
   "PasswordNotMatch": "パスワードが一致しません",
   "Preview": "プレビュー",
-  "CreateGroup":"グループを作成する"
+  "CreateGroup": "グループを作成する",
+  "InviteFriend": "友達を招待する",
+  "InviteFriendToGroup": "グループに友達を招待する",
+  "Joined": "参加しました"
 }

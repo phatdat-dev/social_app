@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/modules/home/controllers/home_controller.dart';
 import 'package:ckc_social_app/app/modules/post/widget/facebook_card_post_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeVideoView extends StatefulWidget {
   const HomeVideoView({Key? key}) : super(key: key);
@@ -49,29 +49,9 @@ class HomeVideoViewState extends State<HomeVideoView> with TickerProviderStateMi
       ),
     };
 
-    controller.subTabBarGroupWidget = {
-      const Tab(text: 'Dành cho bạn'): ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          controller.postController.obx((state) => ListView.builder(
-              itemCount: state!.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemBuilder: (context, int index) {
-                return FacebookCardPostWidget(state[index]);
-              })),
-        ],
-      ),
-      const Tab(text: 'Nhóm của bạn'): Container(
-        width: 100,
-        height: 100,
-        child: const Text('Nhóm của bạn widget'),
-      ),
-    };
+    
 
     controller.subTabBarVideoController = TabController(length: controller.subTabBarVideoWidget!.length, vsync: this);
-    controller.subTabBarGroupController = TabController(length: controller.subTabBarGroupWidget!.length, vsync: this);
   }
 
   @override

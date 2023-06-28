@@ -6,6 +6,9 @@ import 'package:ckc_social_app/app/modules/post/widget/facebook_card_post_widget
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../generated/locales.g.dart';
+import '../../search_tag_friend/views/search_tag_friend_view.dart';
+
 class GroupView extends StatefulWidget {
   const GroupView({super.key});
 
@@ -148,7 +151,7 @@ class _GroupViewState extends State<GroupView> {
                             child: ElevatedButton.icon(
                               onPressed: () {},
                               icon: const Icon(Icons.diversity_3),
-                              label: const Text('Đã tham gia'),
+                              label: Text(LocaleKeys.Joined.tr),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.grey.shade200,
                                 foregroundColor: Theme.of(context).colorScheme.inverseSurface,
@@ -158,9 +161,17 @@ class _GroupViewState extends State<GroupView> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.call_fetchFriendToInviteGroup(controller.currentGroup['id']);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SearchTagFriendView<GroupController>(title: LocaleKeys.InviteFriendToGroup.tr, minSelected: 1),
+                                  ),
+                                );
+                              },
                               icon: const Icon(Icons.person_add),
-                              label: const Text('Mời bạn bè'),
+                              label: Text(LocaleKeys.InviteFriend.tr),
                             ),
                           ),
                         ],

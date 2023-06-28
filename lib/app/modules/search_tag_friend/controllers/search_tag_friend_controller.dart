@@ -1,8 +1,8 @@
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/app/core/utils/helper.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:get/get.dart';
 
 mixin SearchTagFriendController implements BaseController {
   //co thoi gian chuyen may cai nay` thanh` bien' Value<T>
@@ -82,6 +82,26 @@ mixin SearchTagFriendController implements BaseController {
     )
         .then((value) {
       listFriendRequest.value = Helper.convertToListMap(value);
+    });
+  }
+
+  Future<void> call_fetchFriendToInviteGroup(int groupId) async {
+    await apiCall
+        .onRequest(
+      ApiUrl.get_fetchFriendToInviteGroup(groupId),
+      RequestMethod.GET,
+    )
+        .then((value) {
+      
+      listFriendOfUser.value = Helper.convertToListMap(value)
+          .where((item) => item['status'] == 1)
+          .map((item) => UsersModel(
+                id: item['friendId'],
+                displayName: item['displayName'],
+                avatar: item['avatar'],
+                status: item['status'].toString(),
+              ))
+          .toList();
     });
   }
 }

@@ -1,7 +1,8 @@
+import 'dart:ui';
+
+import 'package:ckc_social_app/app/modules/stories/controllers/stories_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ckc_social_app/app/core/utils/utils.dart';
-import 'package:ckc_social_app/app/modules/stories/controllers/stories_controller.dart';
 
 class StoriesView extends GetView<StoriesController> {
   const StoriesView({Key? key}) : super(key: key);
@@ -15,33 +16,18 @@ class StoriesView extends GetView<StoriesController> {
       ),
       body: SafeArea(
         child: Stack(children: [
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: GestureDetector(
-                onTap: () {
-                  Printt.white('left');
-                },
-                child: Container(
-                  color: Colors.red,
-                  width: size.width / 2,
-                  // height: size.height,
-                ),
+          //Blur Image
+          //https://protocoderspoint.com/image-blur-background-flutter/
+          SizedBox.expand(
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(
+                sigmaX: 50,
+                sigmaY: 50,
               ),
-            ),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  Printt.white('right');
-                },
-                child: Container(
-                  color: Colors.green,
-                  width: size.width / 2,
-                  // height: size.height,
-                ),
+              child: Image.network(
+                controller.currentObject!.data['file_name_story'],
+                fit: BoxFit.fill,
+                errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
               ),
             ),
           ),
