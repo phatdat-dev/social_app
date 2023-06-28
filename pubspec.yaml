@@ -71,6 +71,7 @@ dependencies:
   flutter_reaction_button: any
   url_launcher: any
   pusher_client: ^2.0.0
+  agora_uikit: any
 
   #
   flutter_localizations:

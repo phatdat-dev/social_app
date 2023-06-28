@@ -24,6 +24,8 @@ abstract class Routes {
   static String POST_CREATE() => _Paths.POST + _Paths.CREATE;
   static String POST_HISTORY(String id) => POST(id) + _Paths.HISTORY;
   static String NOTIFICATION() => _Paths.NOTIFICATION;
+  static String VIDEO_CALL() => _Paths.VIDEO_CALL;
+  static String VIDEO_CALL_DETAIL() => _Paths.VIDEO_CALL + _Paths.DETAIL;
 }
 
 abstract class _Paths {
@@ -45,4 +47,5 @@ abstract class _Paths {
   static const EDITING = '/editing';
   static const HISTORY = '/history';
   static const NOTIFICATION = '/notification';
+  static const VIDEO_CALL = '/video-call';
 }

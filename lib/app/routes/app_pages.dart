@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:ckc_social_app/app/modules/user/views/user_editing_view.dart';
+import 'package:ckc_social_app/app/modules/videoCall/bindings/video_call_binding.dart';
+import 'package:ckc_social_app/app/modules/videoCall/views/video_call_detail_view.dart';
+import 'package:ckc_social_app/app/modules/videoCall/views/video_call_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -177,5 +180,12 @@ class AppPages {
       page: () => const NotificationView(),
       binding: BindingsBuilder(() => Get.lazyPut(() => NotificationController())),
     ),
+    GetPage(name: _Paths.VIDEO_CALL, transition: randomTransition, page: () => const VideoCallView(), binding: VideoCallBinding(), children: [
+      GetPage(
+        name: _Paths.DETAIL,
+        transition: randomTransition,
+        page: () => VideoCallDetailView(chanelName: Get.arguments['chanelName']),
+      )
+    ])
   ];
 }

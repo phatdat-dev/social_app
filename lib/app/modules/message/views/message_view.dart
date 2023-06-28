@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/services/firebase_service.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/custom/widget/app_bar_icon_widget.dart';
@@ -9,6 +6,9 @@ import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/message/widget/chatcard_widget.dart';
 import 'package:ckc_social_app/app/routes/app_pages.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 import '../controllers/message_controller.dart';
 
@@ -29,7 +29,7 @@ class MessageView<T extends MessageController> extends GetView<T> {
             ),
             title: const Text('Chats', style: TextStyle(color: Colors.black)),
             actions: [
-              AppBarIconWidget(icon: const Icon(Icons.camera_alt_outlined), onPressed: () {}),
+              AppBarIconWidget(icon: const Icon(Icons.camera_alt_outlined), onPressed: () => Get.toNamed(Routes.VIDEO_CALL())),
               AppBarIconWidget(
                 icon: const Icon(Icons.group_add_outlined, color: Colors.green),
                 onPressed: () => controller.onCreateNewGroupMessage<T>(context),
