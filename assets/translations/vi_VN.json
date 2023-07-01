@@ -95,7 +95,10 @@
   "PasswordNotMatch": "Mật khẩu không khớp",
   "Preview": "Xem trước",
   "CreateGroup": "Tạo nhóm",
+  "EditGroup": "Chỉnh sửa nhóm",
   "InviteFriend": "Mời bạn bè",
   "InviteFriendToGroup": "Mời bạn bè vào nhóm",
-  "Joined": "Đã tham gia"
+  "Joined": "Đã tham gia",
+  "PickImage": "Chọn ảnh",
+  "GroupImage": "Ảnh nhóm"
 }

@@ -95,7 +95,10 @@
   "PasswordNotMatch": "Password not match",
   "Preview": "Preview",
   "CreateGroup": "Create Group",
+  "EditGroup": "Edit Group",
   "InviteFriend": "Invite Friend",
   "InviteFriendToGroup": "Invite Friend To Group",
-  "Joined": "Joined"
+  "Joined": "Joined",
+  "PickImage": "Pick Image",
+  "GroupImage": "Group Image"
 }

@@ -1,15 +1,16 @@
 import 'dart:async';
 
-import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:ckc_social_app/app/core/base/base_connect.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:get/get_connect/http/src/response/response.dart';
 
 import '../../custom/widget/loadding_widget.dart';
 
+//gcloud auth print-access-token
 const _projectId = 'myanime-a7b0f';
 const _token =
-    'ya29.a0AWY7Cklqn-ysVYImFKB_HjAbtt6bzy5cSQgZppovFh-kDI4pZBaDcVnsU_7IVfRdfVbt_iCwxeHMJ7vLN0STk-BrBRDWkl_k9uLJYg1NUjmxbepjPO-Ryky49vh7uIHSu6bIpXl6TbkczatEt4QiyE5cUFy6bYMERb9pFAaCgYKAc0SARASFQG1tDrpVTPb3eoHZWZbJF_Anml_jg0173';
+    'ya29.a0AbVbY6P7pnX1db21Um_hpIriaztO0bWmsyq8VofqFn_7L5PgCJQmYETX6Wl8DsMQcmNxx1ljMEN8IofAAGK4_jFmnRvTXB5chjNb_2sYSTdfzDXM3MB2H9rYDvxr39-PH3FiEpPIkU5CNPND573dEpgxegOAr7BONX57-9EaCgYKARESARASFQFWKvPlg4T_OL-uqsia5zvXct2a-w0174';
 
 class CloudTranslationService {
   final _apiCall = _CloudTranslationApi();

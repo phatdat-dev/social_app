@@ -104,7 +104,7 @@ class AppPages {
       ],
     ),
     GetPage(
-      name: '${_Paths.GROUP}${_Paths.CREATE}', // /post/create
+      name: '${_Paths.GROUP}${_Paths.CREATE}', // /group/create
       transition: randomTransition,
       page: () => const GroupCreateView(),
     ),
@@ -115,16 +115,22 @@ class AppPages {
         binding: BindingsBuilder(() => Get.lazyPut(() => GroupController())),
         children: [
           GetPage(
-              name: _Paths.INFOMATION, // /group/:id/infomation
-              transition: randomTransition,
-              page: () => const GroupInfomationView(),
-              children: [
-                GetPage(
-                  name: _Paths.MEMBERS, // /group/:id/infomation/members
-                  transition: randomTransition,
-                  page: () => const GroupMembersView(),
-                ),
-              ]),
+            name: _Paths.INFOMATION, // /group/:id/infomation
+            transition: randomTransition,
+            page: () => const GroupInfomationView(),
+            children: [
+              GetPage(
+                name: _Paths.MEMBERS, // /group/:id/infomation/members
+                transition: randomTransition,
+                page: () => const GroupMembersView(),
+              ),
+            ],
+          ),
+          GetPage(
+            name: _Paths.EDITING, // /group/:id/editing
+            transition: randomTransition,
+            page: () => const GroupCreateView(isCreate: false),
+          ),
         ]),
     GetPage(
       name: '${_Paths.USER}/:id', // /user/:id

@@ -1,10 +1,5 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_reaction_button/flutter_reaction_button.dart';
-import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ckc_social_app/app/core/services/cloud_translation_service.dart';
 import 'package:ckc_social_app/app/core/services/social_share_service.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
@@ -13,8 +8,14 @@ import 'package:ckc_social_app/app/modules/authentication/views/authentication_v
 import 'package:ckc_social_app/app/modules/home/widget/comment_widget.dart';
 import 'package:ckc_social_app/app/modules/post/controllers/post_controller.dart';
 import 'package:ckc_social_app/app/modules/post/views/post_create_view.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_reaction_button/flutter_reaction_button.dart';
+import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../core/services/translation_service.dart';
 import '../../../custom/other/tooltip_shapeborder_custom.dart';
 import '../../../routes/app_pages.dart';
 
@@ -229,14 +230,14 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                     return CommentWidget(
                       data: data,
                       onSendComment: (text) {
-                        controller.call_createCommentPost(widget.postResponseModel['id'], text.text,text.files).then((value) {
+                        controller.call_createCommentPost(widget.postResponseModel['id'], text.text, text.files).then((value) {
                           loadComment();
                         });
                       },
                       onReplyComment: (text, comment) {
                         int commentId = comment['id'];
                         if (comment['parent_comment'] != null) commentId = comment['parent_comment'];
-                        controller.call_replyComment(widget.postResponseModel['id'], commentId, text.text,text.files).then((value) {
+                        controller.call_replyComment(widget.postResponseModel['id'], commentId, text.text, text.files).then((value) {
                           loadComment();
                         });
                       },
@@ -259,14 +260,17 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
           Text.rich(TextSpan(
             children: [
               TextSpan(text: postResponseModel['post_content']),
-              TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
+              // TextSpan(text: '\n#hasTag', style: TextStyle(color: Colors.blue.shade700)),
             ],
             style: const TextStyle(fontSize: 16),
           )),
           GestureDetector(
             onTap: () async {
               final cloudTranslationService = CloudTranslationService();
-              final text = await cloudTranslationService.translate(text: postResponseModel['post_content']);
+              final text = await cloudTranslationService.translate(
+                text: postResponseModel['post_content'],
+                to: TranslationService.locale.languageCode,
+              );
               postResponseModel['post_content'] = text;
 
               controller.refresh();
@@ -581,14 +585,43 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
   }) {
     Widget buildImage(String url) {
       return url.contains('http')
-          ? FadeInImage.assetNetwork(
-              placeholder: 'assets/images/Img_error.png',
-              image: url,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              fadeInDuration: const Duration(milliseconds: 200),
-              fadeOutDuration: const Duration(milliseconds: 180),
-              // height: 300,
+          ? GestureDetector(
+              onTap: () {
+                //from HelperWidget.buildImage
+                showDialog(
+                    //barrierDismissible: false,
+                    context: context,
+                    builder: (context) => Stack(
+                          children: [
+                            InteractiveViewer(
+                              maxScale: 10,
+                              child: Center(
+                                child: Image.network(
+                                  url,
+                                  // fit: BoxFit.fill,
+                                  alignment: Alignment.center,
+                                  errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                            const Align(
+                              alignment: Alignment.topLeft,
+                              child: Material(
+                                child: BackButton(),
+                              ),
+                            ),
+                          ],
+                        ));
+              },
+              child: FadeInImage.assetNetwork(
+                placeholder: 'assets/images/Img_error.png',
+                image: url,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                fadeInDuration: const Duration(milliseconds: 200),
+                fadeOutDuration: const Duration(milliseconds: 180),
+                // height: 300,
+              ),
             )
           : Image.asset(
               url,

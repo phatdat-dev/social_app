@@ -111,9 +111,12 @@ LocaleKeys._();
 	static const PasswordNotMatch = 'PasswordNotMatch';
 	static const Preview = 'Preview';
 	static const CreateGroup = 'CreateGroup';
+	static const EditGroup = 'EditGroup';
 	static const InviteFriend = 'InviteFriend';
 	static const InviteFriendToGroup = 'InviteFriendToGroup';
 	static const Joined = 'Joined';
+	static const PickImage = 'PickImage';
+	static const GroupImage = 'GroupImage';
 }
 
 class Locales {
@@ -215,9 +218,12 @@ class Locales {
 		'PasswordNotMatch': 'パスワードが一致しません',
 		'Preview': 'プレビュー',
 		'CreateGroup': 'グループを作成する',
+		'EditGroup': 'グループを編集する',
 		'InviteFriend': '友達を招待する',
 		'InviteFriendToGroup': 'グループに友達を招待する',
 		'Joined': '参加しました',
+		'PickImage': '画像を選択する',
+		'GroupImage': 'グループ画像',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -316,9 +322,12 @@ class Locales {
 		'PasswordNotMatch': 'Password not match',
 		'Preview': 'Preview',
 		'CreateGroup': 'Create Group',
+		'EditGroup': 'Edit Group',
 		'InviteFriend': 'Invite Friend',
 		'InviteFriendToGroup': 'Invite Friend To Group',
 		'Joined': 'Joined',
+		'PickImage': 'Pick Image',
+		'GroupImage': 'Group Image',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -417,9 +426,12 @@ class Locales {
 		'PasswordNotMatch': 'Mật khẩu không khớp',
 		'Preview': 'Xem trước',
 		'CreateGroup': 'Tạo nhóm',
+		'EditGroup': 'Chỉnh sửa nhóm',
 		'InviteFriend': 'Mời bạn bè',
 		'InviteFriendToGroup': 'Mời bạn bè vào nhóm',
 		'Joined': 'Đã tham gia',
+		'PickImage': 'Chọn ảnh',
+		'GroupImage': 'Ảnh nhóm',
 	};
 
 }

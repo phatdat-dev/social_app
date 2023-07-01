@@ -37,6 +37,7 @@ class ApiUrl {
   static String post_sendInviteToGroup() => '/api/v1/send-invite-to-group';
   static String get_fetchInviteToGroup() => '/api/v1/fetch-invite-to-group';
   static String post_acceptInviteToGroup() => '/api/v1/accept-invite-to-group';
+  static String post_editInformationGroup() => '/api/v1/edit-information-group';
   //
   static String post_likePost() => '/api/v1/post/like-post';
   static String post_saveDeviceToken() => '/api/v1/save-device-token';

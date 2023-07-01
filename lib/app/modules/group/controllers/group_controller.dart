@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ckc_social_app/app/core/utils/helper.dart';
 import 'package:ckc_social_app/app/core/utils/helper_widget.dart';
 import 'package:ckc_social_app/app/modules/home/controllers/base_fetch_controller.dart';
@@ -14,7 +16,7 @@ class GroupController extends BaseController with SearchTagFriendController {
 
   /// group of user
   RxList<Map<String, dynamic>> groupData = RxList.empty();
-  Map<String, dynamic> currentGroup = {};
+  RxMap<String, dynamic> currentGroup = RxMap();
   RxList<Map<String, dynamic>> memberGroupData = RxList();
   ListMapDataState inviteMyGroupData = ListMapDataState([]);
 
@@ -50,7 +52,7 @@ class GroupController extends BaseController with SearchTagFriendController {
   }
 
   void redirectToGroup(BuildContext context, Map<String, dynamic> data) {
-    currentGroup = data;
+    currentGroup.value = data;
     fetchPostByGroupIdController = FetchPostByGroupIdController(id: currentGroup['id']);
     Get.toNamed(Routes.GROUP(currentGroup['id'].toString()));
   }
@@ -61,6 +63,10 @@ class GroupController extends BaseController with SearchTagFriendController {
 
   void redirectToGroupMembers(BuildContext context) {
     Get.toNamed(Routes.GROUP_INFOMATION_MEMBERS(currentGroup['id'].toString()));
+  }
+
+  void redirectToGroupEditing(BuildContext context) {
+    Get.toNamed(Routes.GROUP_EDITING(currentGroup['id'].toString()));
   }
 
   Future<void> call_fetchMemberGroup() async {
@@ -105,15 +111,25 @@ class GroupController extends BaseController with SearchTagFriendController {
     });
   }
 
-  Future<void> call_createGroup(Map<String, dynamic> body) async {
+  Future<void> call_createOrUpdateGroup(Map<String, dynamic> body, List<String> filesPath) async {
+    final formData = FormData({
+      ...body,
+      if (filesPath.isNotEmpty) 'file': MultipartFile(File(filesPath.first), filename: filesPath.first),
+    });
+
     //groupName, privacy
     await apiCall
         .onRequest(
-          ApiUrl.post_createGroup(),
-          RequestMethod.POST,
-          body: body,
-        )
-        .then((value) => HelperWidget.showSnackBar(message: 'Success'));
+      (body.containsKey('groupId')) ? ApiUrl.post_editInformationGroup() : ApiUrl.post_createGroup(),
+      RequestMethod.POST,
+      body: formData,
+    )
+        .then((value) {
+      currentGroup.value = value;
+      onInitData();
+      fetchPostByGroupIdController.onInitData();
+      HelperWidget.showSnackBar(message: 'Success');
+    });
   }
 
   Future<void> call_sendInviteToGroup(int userId) async {

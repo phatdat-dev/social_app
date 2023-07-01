@@ -16,6 +16,7 @@ abstract class Routes {
   static String GROUP_CREATE() => _Paths.GROUP + _Paths.CREATE;
   static String GROUP_INFOMATION(String id) => GROUP(id) + _Paths.INFOMATION;
   static String GROUP_INFOMATION_MEMBERS(String id) => GROUP_INFOMATION(id) + _Paths.MEMBERS;
+  static String GROUP_EDITING(String id) => GROUP(id) + _Paths.EDITING;
   static String USER(String id) => _Paths.USER + '/$id';
   static String USER_FRIEND(String id) => USER(id) + _Paths.FRIEND;
   static String USER_EDITING(String id) => USER(id) + _Paths.EDITING;

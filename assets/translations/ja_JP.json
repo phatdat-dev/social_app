@@ -95,7 +95,10 @@
   "PasswordNotMatch": "パスワードが一致しません",
   "Preview": "プレビュー",
   "CreateGroup": "グループを作成する",
+  "EditGroup": "グループを編集する",
   "InviteFriend": "友達を招待する",
   "InviteFriendToGroup": "グループに友達を招待する",
-  "Joined": "参加しました"
+  "Joined": "参加しました",
+  "PickImage": "画像を選択する",
+  "GroupImage": "グループ画像"
 }
