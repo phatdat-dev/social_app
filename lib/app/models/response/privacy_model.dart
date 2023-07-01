@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/generated/locales.g.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PrivacyModel extends BaseModel<PrivacyModel> {
   int? privacyId;
@@ -79,7 +79,7 @@ class PrivacyModel extends BaseModel<PrivacyModel> {
           privacyId: 0,
           privacyPostName: LocaleKeys.Private.tr,
           privacyPostDescription: LocaleKeys.OnlyYouCanSeeYourPost.tr,
-          privacyGroupName: 'Private Group',
+          privacyGroupName: LocaleKeys.PrivateGroup.tr,
           privacyGroupDescription: 'Only members can see everyone in the group and what they post.',
           privacyIcon: Icons.lock,
         ),
@@ -87,7 +87,7 @@ class PrivacyModel extends BaseModel<PrivacyModel> {
           privacyId: 1,
           privacyPostName: LocaleKeys.Public.tr,
           privacyPostDescription: LocaleKeys.AnyoneCanSeeYourPost.tr,
-          privacyGroupName: 'Public Group',
+          privacyGroupName: LocaleKeys.PublicGroup.tr,
           privacyGroupDescription: 'Anyone can see everyone in the group and what they post.',
           privacyIcon: Icons.public,
         ),

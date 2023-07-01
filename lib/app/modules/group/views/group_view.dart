@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/models/response/privacy_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:ckc_social_app/app/modules/group/widget/group_drawer_widget.dart';
@@ -8,7 +10,7 @@ import 'package:ckc_social_app/app/modules/post/widget/facebook_card_post_widget
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../generated/locales.g.dart';
+import '../../../routes/app_pages.dart';
 import '../../search_tag_friend/views/search_tag_friend_view.dart';
 
 class GroupView extends StatefulWidget {
@@ -33,6 +35,27 @@ class _GroupViewState extends State<GroupView> {
   void initState() {
     super.initState();
     controller = Get.find<GroupController>();
+    controller.call_fetchMemberGroup();
+  }
+
+  void onLeaveGroup() async {
+    //viết tạm thẳng vào đây cho lẹ, lười tách
+    final result = await HelperWidget.showGenericDialog(
+      context: context,
+      title: 'Rời nhóm',
+      content: 'Bạn có muốn rời khỏi nhóm này?',
+      optionsBuilder: () => {LocaleKeys.Cancel.tr: false, 'OK': true},
+    );
+    if (result != null && result) {
+      await controller.call_removeMemberFromGroup(
+        userId: AuthenticationController.userAccount!.id!,
+        groupId: controller.currentGroup['id'],
+      );
+
+      //nếu "Rời nhóm thì out màn hình"
+      Get.until((route) => route.settings.name == Routes.HOME());
+      controller.onInitData();
+    }
   }
 
   @override
@@ -76,23 +99,29 @@ class _GroupViewState extends State<GroupView> {
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 5),
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        child: Icon(
-                                          Icons.public,
-                                          color: defaultTitleColor,
-                                          size: 18,
+                                Obx(() {
+                                  final lengthMembers = controller.memberGroupData.value.length.formatNumberCompact();
+                                  return Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        WidgetSpan(
+                                          child: Icon(
+                                            Icons.public,
+                                            color: defaultTitleColor,
+                                            size: 18,
+                                          ),
                                         ),
-                                      ),
-                                      const TextSpan(text: ' Công khai'),
-                                      const TextSpan(text: ' ☘ 100k thành viên'),
-                                      const TextSpan(text: ' >', style: TextStyle(color: Colors.cyan)),
-                                    ],
-                                  ),
-                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: defaultTitleColor),
-                                ),
+                                        TextSpan(
+                                          text: ' ${PrivacyModel.from(int.parse(controller.currentGroup['privacy'].toString())).privacyGroupName}',
+                                        ),
+                                        // memberGroupData.value
+                                        TextSpan(text: ' ☘ $lengthMembers thành viên'),
+                                        const TextSpan(text: ' >', style: TextStyle(color: Colors.cyan)),
+                                      ],
+                                    ),
+                                    style: Theme.of(context).textTheme.bodySmall!.copyWith(color: defaultTitleColor),
+                                  );
+                                }),
                               ],
                             );
                           },
@@ -139,10 +168,11 @@ class _GroupViewState extends State<GroupView> {
                         icon: const Icon(Icons.search),
                         onPressed: () {},
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.more_vert),
-                        onPressed: () => controller.redirectToGroupEditing(context),
-                      ),
+                      if (controller.currentGroup['isAdminGroup'] == true)
+                        IconButton(
+                          icon: const Icon(Icons.more_vert),
+                          onPressed: () => controller.redirectToGroupEditing(context),
+                        ),
                     ],
                   ),
                   SliverList(
@@ -153,7 +183,7 @@ class _GroupViewState extends State<GroupView> {
                           children: [
                             Expanded(
                               child: ElevatedButton.icon(
-                                onPressed: () {},
+                                onPressed: onLeaveGroup,
                                 icon: const Icon(Icons.diversity_3),
                                 label: Text(LocaleKeys.Joined.tr),
                                 style: ElevatedButton.styleFrom(

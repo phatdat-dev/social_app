@@ -82,7 +82,7 @@ class GroupCreateView extends GetView<GroupController> {
                   final List<PrivacyModel> listPrivacy = PrivacyModel.listPrivacy;
                   return FormBuilderRadioGroup(
                     name: 'privacy',
-                    initialValue: isCreate ? listPrivacy[0].privacyId : int.parse(controller.currentGroup['privacy']),
+                    initialValue: isCreate ? listPrivacy[0].privacyId : int.parse(controller.currentGroup['privacy'].toString()),
                     activeColor: Theme.of(context).colorScheme.primary,
                     options: listPrivacy
                         .map((privacyModel) => FormBuilderFieldOption(

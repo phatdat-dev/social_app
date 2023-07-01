@@ -77,7 +77,7 @@ class GroupController extends BaseController with SearchTagFriendController {
     )
         .then((value) {
       //
-      memberGroupData = Helper.convertToListMap(value).obs;
+      memberGroupData.value = Helper.convertToListMap(value);
     });
   }
 

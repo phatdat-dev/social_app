@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/custom/widget/app_bar_icon_widget.dart';
 import 'package:ckc_social_app/app/custom/widget/search_widget.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../routes/app_pages.dart';
 
 class GroupMembersView extends GetView<GroupController> {
   const GroupMembersView({super.key});
@@ -85,54 +87,60 @@ class GroupMembersView extends GetView<GroupController> {
                               ],
                             ),
                           ),
-                          if ((AuthenticationController.userAccount!.id != item['user_id']) && !isAdminGroup)
-                            const PopupMenuItem(
-                              value: 'addMemberToAdminGroup',
-                              child: Row(
-                                children: [
-                                  Icon(Icons.vpn_key_outlined),
-                                  SizedBox(width: 10),
-                                  Text('Thăng cấp quản trị viên'),
-                                ],
-                              ),
-                            ),
-                          if ((AuthenticationController.userAccount!.id != item['user_id']) && isAdminGroup)
-                            const PopupMenuItem(
-                              value: 'removeAdminToGroup',
-                              child: Row(
-                                children: [
-                                  Icon(Icons.vpn_key_off_outlined),
-                                  SizedBox(width: 10),
-                                  Text('Xóa quyền quản trị viên'),
-                                ],
-                              ),
-                            ),
-                          (AuthenticationController.userAccount!.id != item['user_id'])
-                              ? const PopupMenuItem(
-                                  value: 'delete',
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.person_remove_outlined),
-                                      SizedBox(width: 10),
-                                      Text('Xóa khỏi nhóm'),
-                                    ],
-                                  ),
-                                )
-                              : const PopupMenuItem(
-                                  value: 'delete',
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.logout_outlined),
-                                      SizedBox(width: 10),
-                                      Text('Rời khỏi nhóm'),
-                                    ],
-                                  ),
+                          if (controller.currentGroup['isAdminGroup'] == true) ...[
+                            if ((AuthenticationController.userAccount!.id != item['user_id']) && !isAdminGroup)
+                              const PopupMenuItem(
+                                value: 'addMemberToAdminGroup',
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.vpn_key_outlined),
+                                    SizedBox(width: 10),
+                                    Text('Thăng cấp quản trị viên'),
+                                  ],
                                 ),
+                              ),
+                            if ((AuthenticationController.userAccount!.id != item['user_id']) && isAdminGroup)
+                              const PopupMenuItem(
+                                value: 'removeAdminToGroup',
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.vpn_key_off_outlined),
+                                    SizedBox(width: 10),
+                                    Text('Xóa quyền quản trị viên'),
+                                  ],
+                                ),
+                              ),
+                            if (AuthenticationController.userAccount!.id != item['user_id'])
+                              const PopupMenuItem(
+                                value: 'delete',
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.person_remove_outlined),
+                                    SizedBox(width: 10),
+                                    Text('Xóa khỏi nhóm'),
+                                  ],
+                                ),
+                              ),
+                          ],
+                          if (AuthenticationController.userAccount!.id == item['user_id'])
+                            const PopupMenuItem(
+                              value: 'delete',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.logout_outlined),
+                                  SizedBox(width: 10),
+                                  Text('Rời khỏi nhóm'),
+                                ],
+                              ),
+                            ),
                         ],
                         onSelected: (value) {
                           void refresh() => memberGroupDataSearch.value = List.from(controller.memberGroupData);
 
                           switch (value) {
+                            case 'profile':
+                              Get.toNamed(Routes.USER('${item['user_id']}'));
+                              break;
                             case 'addMemberToAdminGroup':
                               controller.call_setRoleAdminGroup(userId: item['user_id'], groupId: item['group_id']).then((value) {
                                 //
@@ -154,6 +162,11 @@ class GroupMembersView extends GetView<GroupController> {
                                 //
                                 controller.memberGroupData.remove(item);
                                 refresh();
+                                //nếu "Rời nhóm thì out màn hình"
+                                if (AuthenticationController.userAccount!.id == item['user_id']) {
+                                  Get.until((route) => route.settings.name == Routes.HOME());
+                                  controller.onInitData();
+                                }
                               });
                               break;
                             default:

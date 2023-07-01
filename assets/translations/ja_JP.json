@@ -47,6 +47,8 @@
   "Public": "パブリック",
   "Friend": "友達",
   "Group": "グループ",
+  "PublicGroup": "パブリックグループ",
+  "PrivateGroup": "プライベートグループ",
   "OnlyYouCanSeeYourPost": "あなただけがあなたの投稿を見ることができます",
   "AnyoneCanSeeYourPost": "誰でもあなたの投稿を見ることができます",
   "OnlyYourFriendCanSeeYourPost": "あなたの友人だけがあなたの投稿を見ることができます",

@@ -1,5 +1,6 @@
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/custom/other/search_controller_custom.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -273,5 +274,30 @@ class HelperWidget {
             ),
           );
         });
+  }
+
+  static Future<T?> showGenericDialog<T>({
+    required BuildContext context,
+    required dynamic title, //String or Widget
+    required dynamic content, //String or Widget
+    required Map<String, T> Function() optionsBuilder,
+  }) {
+    final options = optionsBuilder();
+    return showDialog<T>(
+        context: context,
+        useSafeArea: true,
+        builder: (context) => AlertDialog(
+              title: title is String ? Text(title) : title,
+              content: content is String ? Text(content) : content,
+              actions: options.entries.mapIndexed((index, e) {
+                return (index == options.length - 1)
+                    ? ElevatedButton(
+                        onPressed: () => Get.back(result: e.value),
+                        style: ElevatedButton.styleFrom(backgroundColor: context.theme.colorScheme.primary),
+                        child: Text(e.key),
+                      )
+                    : OutlinedButton(onPressed: () => Get.back(result: e.value), child: Text(e.key));
+              }).toList(),
+            ));
   }
 }

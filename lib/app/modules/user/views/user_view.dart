@@ -267,6 +267,7 @@ class UserView extends GetView<UserController> {
 
     return Builder(
       builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...Helper.listGenerateSeparated(
             data.length,
@@ -284,18 +285,19 @@ class UserView extends GetView<UserController> {
                 default:
                   text = userJson[item['value']] ?? '';
               }
-              return Row(
-                children: <Widget>[
-                  Icon(item['icon'] as IconData),
-                  const SizedBox(width: 5.0),
-                  Text("${item['title']}:"),
-                  const SizedBox(width: 5.0),
-                  Text(
-                    text,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
-                  )
-                ],
+              return Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(child: Icon(item['icon'] as IconData)),
+                    const WidgetSpan(child: SizedBox(width: 5.0)),
+                    TextSpan(text: "${item['title']}: "),
+                    TextSpan(
+                      text: text,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                // overflow: TextOverflow.ellipsis,
               );
             },
             separator: (index) => const SizedBox(width: 5.0),

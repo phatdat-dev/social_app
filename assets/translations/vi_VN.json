@@ -47,6 +47,8 @@
   "Public": "Công khai",
   "Friend": "Bạn bè",
   "Group": "Nhóm",
+  "PublicGroup": "Nhóm công khai",
+  "PrivateGroup": "Nhóm riêng tư",
   "OnlyYouCanSeeYourPost": "Chỉ có bạn mới có thể xem bài viết của bạn",
   "AnyoneCanSeeYourPost": "Ai cũng có thể xem bài viết của bạn",
   "OnlyYourFriendCanSeeYourPost": "Chỉ bạn bè mới có thể xem bài viết của bạn",

@@ -63,6 +63,8 @@ LocaleKeys._();
 	static const Public = 'Public';
 	static const Friend = 'Friend';
 	static const Group = 'Group';
+	static const PublicGroup = 'PublicGroup';
+	static const PrivateGroup = 'PrivateGroup';
 	static const OnlyYouCanSeeYourPost = 'OnlyYouCanSeeYourPost';
 	static const AnyoneCanSeeYourPost = 'AnyoneCanSeeYourPost';
 	static const OnlyYourFriendCanSeeYourPost = 'OnlyYourFriendCanSeeYourPost';
@@ -170,6 +172,8 @@ class Locales {
 		'Public': 'パブリック',
 		'Friend': '友達',
 		'Group': 'グループ',
+		'PublicGroup': 'パブリックグループ',
+		'PrivateGroup': 'プライベートグループ',
 		'OnlyYouCanSeeYourPost': 'あなただけがあなたの投稿を見ることができます',
 		'AnyoneCanSeeYourPost': '誰でもあなたの投稿を見ることができます',
 		'OnlyYourFriendCanSeeYourPost': 'あなたの友人だけがあなたの投稿を見ることができます',
@@ -274,6 +278,8 @@ class Locales {
 		'Public': 'Public',
 		'Friend': 'Friend',
 		'Group': 'Group',
+		'PublicGroup': 'Public Group',
+		'PrivateGroup': 'Private Group',
 		'OnlyYouCanSeeYourPost': 'Only you can see your post',
 		'AnyoneCanSeeYourPost': 'Anyone can see your post',
 		'OnlyYourFriendCanSeeYourPost': 'Only your friend can see your post',
@@ -378,6 +384,8 @@ class Locales {
 		'Public': 'Công khai',
 		'Friend': 'Bạn bè',
 		'Group': 'Nhóm',
+		'PublicGroup': 'Nhóm công khai',
+		'PrivateGroup': 'Nhóm riêng tư',
 		'OnlyYouCanSeeYourPost': 'Chỉ có bạn mới có thể xem bài viết của bạn',
 		'AnyoneCanSeeYourPost': 'Ai cũng có thể xem bài viết của bạn',
 		'OnlyYourFriendCanSeeYourPost': 'Chỉ bạn bè mới có thể xem bài viết của bạn',

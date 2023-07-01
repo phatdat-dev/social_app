@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// ignore_for_file: invalid_use_of_protected_member
+
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/models/response/privacy_model.dart';
 import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class GroupInfomationView extends StatefulWidget {
   const GroupInfomationView({super.key});
@@ -16,7 +19,6 @@ class _GroupInfomationViewState extends State<GroupInfomationView> {
   void initState() {
     super.initState();
     controller = Get.find<GroupController>();
-    controller.call_fetchMemberGroup();
   }
 
   @override
@@ -88,18 +90,26 @@ class _GroupInfomationViewState extends State<GroupInfomationView> {
           Text('Hoạt động trong nhóm', style: Theme.of(context).textTheme.titleLarge),
           const ListTile(
             leading: Icon(Icons.forum_outlined),
-            title: Text('0 bài viết mới hôm nay'),
-            subtitle: Text('4 bài viết trong 1 tháng qua'),
+            title: Text('... bài viết mới hôm nay'),
+            subtitle: Text('... bài viết trong ... tháng qua'),
           ),
-          const ListTile(
-            leading: Icon(Icons.groups_3_outlined),
-            title: Text('Tổng số thành viên: xxx'),
-            subtitle: Text('+123 trong tháng qua'),
+          Obx(
+            () {
+              final lengthMembers = controller.memberGroupData.value.length.formatNumberCompact();
+              return ListTile(
+                leading: const Icon(Icons.groups_3_outlined),
+                title: Text('Tổng số thành viên: $lengthMembers'),
+                subtitle: const Text('+... trong tháng qua'),
+              );
+            },
           ),
-          const ListTile(
-            leading: Icon(Icons.calendar_month_outlined),
-            title: Text('Tạo ra khoảng 4 năm trước (yyyy-MM-dd)'),
-          ),
+          Builder(builder: (context) {
+            final createdAt = DateTime.parse(controller.currentGroup['created_at']);
+            return ListTile(
+              leading: const Icon(Icons.calendar_month_outlined),
+              title: Text('Tạo ra từ: ${createdAt.timeAgoSinceDate()}'),
+            );
+          }),
         ],
       ),
     );

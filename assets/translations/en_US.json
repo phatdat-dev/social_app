@@ -47,6 +47,8 @@
   "Public": "Public",
   "Friend": "Friend",
   "Group": "Group",
+  "PublicGroup": "Public Group",
+  "PrivateGroup": "Private Group",
   "OnlyYouCanSeeYourPost": "Only you can see your post",
   "AnyoneCanSeeYourPost": "Anyone can see your post",
   "OnlyYourFriendCanSeeYourPost": "Only your friend can see your post",
