@@ -200,7 +200,7 @@ class _GroupViewState extends State<GroupView> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          SearchTagFriendView<GroupController>(title: LocaleKeys.InviteFriendToGroup.tr, minSelected: 1),
+                                          SearchTagFriendView<GroupController>(title: LocaleKeys.InviteFriendToGroup.tr),
                                     ),
                                   );
                                 },

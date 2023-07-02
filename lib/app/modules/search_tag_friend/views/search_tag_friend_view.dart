@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchTagFriendView<T extends SearchTagFriendController> extends StatefulWidget {
-  const SearchTagFriendView({super.key, required this.title, this.minSelected = 2}) : assert(minSelected > 0);
+  const SearchTagFriendView({super.key, required this.title, this.minSelected = 1}) : assert(minSelected > 0);
 
   final String title;
   final int minSelected;

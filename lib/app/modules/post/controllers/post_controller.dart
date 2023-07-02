@@ -37,6 +37,8 @@ class PostController extends BaseFetchController {
     int? groupId,
     List<String>? filesPath,
     List<String>? images, //image url https not file
+    List<int>? tagsUserId,
+    int? feelActivityId,
   }) async {
     final formData = FormData({
       'postContent': content,
@@ -44,6 +46,8 @@ class PostController extends BaseFetchController {
       'groupId': groupId,
       'files[]': filesPath?.map((path) => MultipartFile(File(path), filename: path)).toList(),
       'images': null,
+      'tags[]': tagsUserId,
+      'feelActivityId': feelActivityId,
     });
 
     await apiCall.onRequest(
@@ -127,5 +131,10 @@ class PostController extends BaseFetchController {
 
   Future<Map<String, dynamic>> call_fetchPostById(int postId) async {
     return await apiCall.onRequest(ApiUrl.get_fetchPostById(postId), RequestMethod.GET, isShowLoading: false);
+  }
+
+  Future<List<Map<String, dynamic>>> call_fetchFellAndActivityPosts() async {
+    final result = await apiCall.onRequest(ApiUrl.get_fetchFellAndActivityPosts(), RequestMethod.GET);
+    return Helper.convertToListMap(result);
   }
 }

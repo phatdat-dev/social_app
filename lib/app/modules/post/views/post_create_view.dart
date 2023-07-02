@@ -1,22 +1,25 @@
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
+import 'package:ckc_social_app/app/core/services/picker_service.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:ckc_social_app/app/models/response/privacy_model.dart';
+import 'package:ckc_social_app/app/models/users_model.dart';
+import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
+import 'package:ckc_social_app/app/modules/home/controllers/home_controller.dart';
+import 'package:ckc_social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
 import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ckc_social_app/app/core/services/picker_service.dart';
-import 'package:ckc_social_app/app/core/utils/utils.dart';
-import 'package:ckc_social_app/app/models/response/privacy_model.dart';
-import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
-import 'package:ckc_social_app/app/modules/home/controllers/home_controller.dart';
-import 'package:ckc_social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
 import 'package:video_player/video_player.dart';
 
+import 'feeling_activity_view.dart';
+
 // ignore: must_be_immutable
-class PostCreateView<T extends HomeController> extends GetView<T> {
+class PostCreateView extends GetView<HomeController> {
   PostCreateView({super.key, this.postResponseModel}) {
     txtController = TextEditingController(text: postResponseModel?['post_content']);
     currentPrivacy = ValueNotifier(PrivacyModel.from(postResponseModel?['privacy'] ?? 0)); //private
@@ -26,6 +29,7 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
   late final TextEditingController txtController;
   GroupController? groupController = null;
   final Map<String, dynamic>? postResponseModel;
+  final RxMap<String, dynamic> moreObject = RxMap();
 
   // đáng lý ra phải viết trong controller > nhưng pass qua 1 nùi giá trị thì mắc công
   // nên viết ổ đây luôn, mốt rảnh refactor code
@@ -39,7 +43,8 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
         privacy: currentPrivacy.value.privacyId!, //get dropdown privacy
         groupId: groupController?.currentGroup['id'] ?? null,
         filesPath: pickerService.files,
-        // images: [],
+        tagsUserId: (moreObject['tag'] as List<UsersModel>?)?.map((e) => e.id!).toList(),
+        feelActivityId: moreObject['icon'] != null ? moreObject['icon']['id'] : null,
       )
           .then((value) {
         HelperWidget.showSnackBar(message: 'Create Success');
@@ -61,6 +66,23 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
         HelperWidget.showSnackBar(message: 'Update Success');
         Get.back();
       });
+    }
+  }
+
+  void onPressedIconFeeling() async {
+    final result = await Navigator.of(Get.context!).push<Map<String, dynamic>>(MaterialPageRoute(builder: (context) => const FeelingActivityView()));
+    if (result != null) {
+      moreObject['icon'] = result;
+    }
+  }
+
+  void onPressedTagFriend() async {
+    await Navigator.of(Get.context!).push(
+      MaterialPageRoute(builder: (context) => SearchTagFriendView<HomeController>(title: LocaleKeys.TagAFriend.tr)),
+    );
+    final listTagFriend = controller.listFriendOfUser.where((element) => element.isSelected).toList();
+    if (listTagFriend.isNotEmpty) {
+      moreObject['tag'] = listTagFriend;
     }
   }
 
@@ -174,18 +196,20 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
                     ),
                   ),
                   InkWell(
-                    onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: LocaleKeys.TagAFriend.tr)));
-                    },
+                    onTap: onPressedTagFriend,
                     customBorder: const StadiumBorder(),
                     child: const Icon(
                       Icons.loyalty_outlined,
                       color: Colors.blue,
                     ),
                   ),
-                  const Icon(
-                    Icons.tag_faces,
-                    color: Colors.amber,
+                  InkWell(
+                    onTap: onPressedIconFeeling,
+                    customBorder: const StadiumBorder(),
+                    child: const Icon(
+                      Icons.tag_faces,
+                      color: Colors.amber,
+                    ),
                   ),
                   const Icon(
                     Icons.location_on_outlined,
@@ -236,7 +260,25 @@ class PostCreateView<T extends HomeController> extends GetView<T> {
         backgroundImage: NetworkImage(AuthenticationController.userAccount!.avatar!),
       ),
 
-      title: Text(AuthenticationController.userAccount!.displayName!, style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Obx(
+        () => Text.rich(TextSpan(children: [
+          TextSpan(text: AuthenticationController.userAccount!.displayName!, style: const TextStyle(fontWeight: FontWeight.bold)),
+          if (moreObject['icon'] != null) ...[
+            const TextSpan(text: ' đang cảm thấy'),
+            TextSpan(
+              text: ' ${moreObject['icon']['icon_name']}',
+              style: Get.theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+          if ((moreObject['tag'] as List?)?.isNotEmpty ?? false) ...[
+            const TextSpan(text: ' cùng với'),
+            TextSpan(
+              text: ' ${(moreObject['tag'] as List).length} người khác',
+              style: Get.theme.textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ])),
+      ),
       // isThreeLine: true,
       subtitle: Row(
         mainAxisSize: MainAxisSize.min,

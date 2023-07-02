@@ -119,6 +119,7 @@ LocaleKeys._();
 	static const Joined = 'Joined';
 	static const PickImage = 'PickImage';
 	static const GroupImage = 'GroupImage';
+	static const FeelingActivity = 'FeelingActivity';
 }
 
 class Locales {
@@ -228,6 +229,7 @@ class Locales {
 		'Joined': '参加しました',
 		'PickImage': '画像を選択する',
 		'GroupImage': 'グループ画像',
+		'FeelingActivity': '感情/アクティビティ',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -334,6 +336,7 @@ class Locales {
 		'Joined': 'Joined',
 		'PickImage': 'Pick Image',
 		'GroupImage': 'Group Image',
+		'FeelingActivity': 'Feeling/Activity',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -440,6 +443,7 @@ class Locales {
 		'Joined': 'Đã tham gia',
 		'PickImage': 'Chọn ảnh',
 		'GroupImage': 'Ảnh nhóm',
+		'FeelingActivity': 'Cảm xúc/Hoạt động',
 	};
 
 }

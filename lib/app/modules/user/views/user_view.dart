@@ -285,19 +285,22 @@ class UserView extends GetView<UserController> {
                 default:
                   text = userJson[item['value']] ?? '';
               }
-              return Text.rich(
-                TextSpan(
-                  children: [
-                    WidgetSpan(child: Icon(item['icon'] as IconData)),
-                    const WidgetSpan(child: SizedBox(width: 5.0)),
-                    TextSpan(text: "${item['title']}: "),
-                    TextSpan(
-                      text: text,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ],
+              return SizedBox(
+                width: double.infinity,
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      WidgetSpan(child: Icon(item['icon'] as IconData)),
+                      const WidgetSpan(child: SizedBox(width: 5.0)),
+                      TextSpan(text: "${item['title']}: "),
+                      TextSpan(
+                        text: text,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  // overflow: TextOverflow.ellipsis,
                 ),
-                // overflow: TextOverflow.ellipsis,
               );
             },
             separator: (index) => const SizedBox(width: 5.0),

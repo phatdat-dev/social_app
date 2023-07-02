@@ -534,7 +534,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ],
-                    if ((postResponseModel['tag'] as List).isNotEmpty)
+                    if ((postResponseModel['tag'] as List?)?.isNotEmpty ?? false)
                       WidgetSpan(
                           child: GestureDetector(
                         onTap: () => showBottomSheetIsWith(context, postResponseModel),

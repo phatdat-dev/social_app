@@ -42,10 +42,10 @@ class MessageView<T extends MessageController> extends GetView<T> {
                 child: SearchWidget(
                   controller: TextEditingController(),
                   hintText: 'Search Anyone',
-                  onTap: () {
-                    Get.toNamed(Routes.MESSAGE_SEARCH());
-                    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-                  },
+                  // onTap: () {
+                  //   Get.toNamed(Routes.MESSAGE_SEARCH());
+                  //   WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+                  // },
                 ),
               ),
             ),

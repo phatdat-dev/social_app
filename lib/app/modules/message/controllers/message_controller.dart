@@ -55,7 +55,7 @@ class MessageController extends BaseController with SearchTagFriendController {
       listFriendOfUser.firstWhereOrNull((e) => (e).id == element.id)?.isSelected = true;
     });
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Add member', minSelected: 1)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'Add member')));
   }
 
   void onPickFileSend({
