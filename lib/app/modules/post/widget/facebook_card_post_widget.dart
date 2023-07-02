@@ -130,6 +130,41 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
         });
   }
 
+  void showBottomSheetIsWith(BuildContext context, Map<String, dynamic> postResponseModel) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        builder: (context) {
+          final listTag = postResponseModel['tag'] as List;
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: SizedBox(
+              height: context.height / 2,
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                itemCount: listTag.length,
+                itemBuilder: (context, index) {
+                  final itemUser = listTag.elementAt(index)['user'];
+                  return ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Get.toNamed(Routes.USER("${itemUser['id']}"));
+                    },
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(itemUser['avatar']),
+                    ),
+                    title: Text(itemUser['displayName']),
+                  );
+                },
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     ValueNotifier<bool> isExpandedNotifier = ValueNotifier(false);
@@ -491,6 +526,26 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                       text: (isGroupPost) ? postResponseModel['groupName'] : postResponseModel['displayName']!,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                     ),
+                    //nếu có field Icon thì thêm "Đang cảm thấy...."
+                    if (postResponseModel['iconName'] != null) ...[
+                      const TextSpan(text: ' đang cảm thấy'),
+                      TextSpan(
+                        text: ' ${postResponseModel['iconName']}',
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                    if ((postResponseModel['tag'] as List).isNotEmpty)
+                      WidgetSpan(
+                          child: GestureDetector(
+                        onTap: () => showBottomSheetIsWith(context, postResponseModel),
+                        child: Text.rich(TextSpan(children: [
+                          const TextSpan(text: ' cùng với'),
+                          TextSpan(
+                            text: ' ${(postResponseModel['tag'] as List).length} người khác',
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ])),
+                      )),
                     if (postResponseModel['parent_post'] != null) const TextSpan(text: ' shared a post')
                   ])),
                   const SizedBox(height: 5),
