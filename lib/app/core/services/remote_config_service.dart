@@ -15,8 +15,24 @@ mixin RemoteConfigService {
       ),
       remoteConfig.fetchAndActivate(),
     ]);
+
+    // Listen for future fetch events.
+    remoteConfig.onConfigUpdated.listen((event) async {
+      await remoteConfig.activate();
+
+      // Use the new config values here.
+      if (event.updatedKeys.contains('base_url_app')) {
+        handleRemoteConfigBaseURL();
+      }
+    });
   }
 
   String getBaseURL() => remoteConfig.getString('base_url_app');
   String getOpenAISecretKey() => remoteConfig.getString('OpenAI_Secret_Key');
+
+  void handleRemoteConfigBaseURL() {
+    //update lai URL
+    Printt.cyan('--NEW BASE URL--');
+    Get.find<BaseConnect>().httpClient.baseUrl = getBaseURL();
+  }
 }

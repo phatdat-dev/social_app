@@ -12,6 +12,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:ckc_social_app/firebase_options.dart';
 
 import '../../modules/authentication/controllers/authentication_controller.dart';
+import '../base/base_connect.dart';
 import '../utils/utils.dart';
 
 part 'firestore_service.dart';

@@ -9,6 +9,7 @@ import '/app/custom/widget/loadding_widget.dart';
 import '/app/modules/authentication/controllers/authentication_controller.dart';
 import '../../routes/app_pages.dart';
 import '../constants/app_constant.dart';
+import '../services/firebase_service.dart';
 import 'base_project.dart';
 
 // ignore: constant_identifier_names
@@ -22,7 +23,7 @@ class BaseConnect extends GetConnect {
   @override
   void onInit() {
     super.onInit();
-    httpClient.baseUrl = 'http://192.168.1.2:8080'; //Get.find<FireBaseService>().getBaseURL();
+    httpClient.baseUrl = Get.find<FireBaseService>().getBaseURL();
     httpClient.timeout = Duration(seconds: timeOutSecond);
     // httpClient.addAuthenticator(authInterceptor);
     httpClient.addRequestModifier(requestInterceptor);
