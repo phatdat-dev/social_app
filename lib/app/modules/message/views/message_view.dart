@@ -1,5 +1,3 @@
-import 'package:ckc_social_app/app/core/services/firebase_service.dart';
-import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/custom/widget/app_bar_icon_widget.dart';
 import 'package:ckc_social_app/app/custom/widget/search_widget.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
@@ -7,7 +5,6 @@ import 'package:ckc_social_app/app/modules/authentication/controllers/authentica
 import 'package:ckc_social_app/app/modules/message/widget/chatcard_widget.dart';
 import 'package:ckc_social_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../controllers/message_controller.dart';
@@ -53,46 +50,30 @@ class MessageView<T extends MessageController> extends GetView<T> {
           ),
           SliverList(
               delegate: SliverChildListDelegate([
+            const SizedBox(height: 10),
             buildListUser(
-              onTapUserIndex: (index, user) {
-                controller.currentChatRoom = controller.currentChatRoom.copyWith({
-                  'chatRoomId': controller.generateChatRoomId(['${AuthenticationController.userAccount!.id!}', '${user.id!}']),
-                  'user': user,
-                });
-                Get.toNamed(Routes.MESSAGE_DETAIL(user.id!.toString()));
-              },
+              onTapUserIndex: controller.onCreateMessage,
             ),
-            StreamBuilder(
-                stream: Get.find<FireBaseService>().call_getGroupChatOfUser(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final groupList = snapshot.data!.docs;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: groupList.length,
-                      itemBuilder: (context, index) {
-                        final item = groupList[index];
-                        return ChatCard(
-                          user: AuthenticationController.userAccount!.copyWith(
-                            displayName: item['name'],
-                          ),
-                          onTap: () {
-                            controller.currentChatRoom = controller.currentChatRoom.copyWith({
-                              'chatRoomId': item['id'],
-                              'user': UsersModel(
-                                id: 0,
-                                displayName: 'asdasd',
-                              ),
-                            });
-                            Get.toNamed(Routes.MESSAGE_DETAIL(item['id']));
-                          },
-                        );
+            controller.listChatState.obx((state) => ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state!.length,
+                  itemBuilder: (context, index) {
+                    final item = state[index];
+                    final user = UsersModel(
+                      id: item['userId'],
+                      displayName: item['conversation_name'],
+                      avatar: item['conversation_avatar'],
+                    );
+                    return ChatCard(
+                      user: user,
+                      onTap: () {
+                        controller.onCreateMessage(index, user);
                       },
                     );
-                  }
-                  return const SizedBox.shrink();
-                }),
+                  },
+                )),
           ])),
         ],
       ),
@@ -100,34 +81,45 @@ class MessageView<T extends MessageController> extends GetView<T> {
   }
 
   Widget buildListUser({void Function(int index, UsersModel user)? onTapUserIndex}) {
-    return Obx(() {
-      return (controller.listFriendOfUser.isEmpty)
-          ? Column(
+    final defaultWidth = 30.0;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      height: 86,
+      child: Obx(() {
+        return ListView.separated(
+          // shrinkWrap: true, //tranh' loi~ view SingleChildScrollView-column
+          //ngan chan ListView no' cuon xuong' duoc, xai` cho SingleChildScrollView-column
+
+          // physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemCount: controller.listFriendOfUser.length,
+          separatorBuilder: (context, index) => const SizedBox(width: 10),
+          itemBuilder: (context, index) {
+            final item = controller.listFriendOfUser[index];
+            // if (LoginController.userLogin?.id == user.id) {
+            //   return const SizedBox.shrink();
+            // }
+            return Column(
               children: [
-                SvgPicture.asset(
-                  'assets/svg/search_2.svg',
-                  width: 200,
-                  height: 200,
-                ),
-                const Text('Not found'),
-              ],
-            )
-          : ListView.builder(
-              shrinkWrap: true, //tranh' loi~ view SingleChildScrollView-column
-              //ngan chan ListView no' cuon xuong' duoc, xai` cho SingleChildScrollView-column
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: controller.listFriendOfUser.length,
-              itemBuilder: (context, index) {
-                final item = controller.listFriendOfUser[index];
-                // if (LoginController.userLogin?.id == user.id) {
-                //   return const SizedBox.shrink();
-                // }
-                return ChatCard(
+                ChatCard(
                   user: item,
                   onTap: () => onTapUserIndex != null ? onTapUserIndex(index, item) : null,
-                );
-              },
+                ).buildAvatar(defaultWidth),
+                SizedBox(
+                  width: defaultWidth * 2,
+                  child: Text(
+                    item.displayName ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.textTheme.bodySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             );
-    });
+          },
+        );
+      }),
+    );
   }
 }

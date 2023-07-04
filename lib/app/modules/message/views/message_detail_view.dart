@@ -1,15 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/services/firebase_service.dart';
-import 'package:ckc_social_app/app/core/utils/helper_widget.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/custom/widget/textfield_comment_widget.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:ckc_social_app/app/routes/app_pages.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../../core/services/picker_service.dart';
 import '../widget/video_play_widget.dart';
 
 //code layout tham khao tu` google https://viblo.asia/p/flutter-viet-ung-dung-chat-voi-flutter-p1-GrLZD8GOZk0
@@ -34,6 +35,9 @@ class MessageDetailViewState extends State<MessageDetailView> {
     assert(!(controller.currentChatRoom['chatRoomId'] == null));
     assert(!(controller.currentChatRoom['user'] == null));
     fireBaseService = Get.find<FireBaseService>();
+    //
+    controller.call_fetchMessageCurrentUser();
+    controller.handleMessage();
   }
 
   @override
@@ -51,17 +55,14 @@ class MessageDetailViewState extends State<MessageDetailView> {
 
   //ham` khi nhan' gui~
   void _handleSubmitted(String text) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
-      // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    });
     //textField sẽ clear chu~^
     _textController.clear();
     //dat lai trang thai' dang soan =false
     if (text.isNotEmpty) {
       //neu' textField ko rong~ thi` gui tin nhan den fireStore
       //them vao` danh sach tin nhan' o phan tu? dau` tien
-      fireBaseService.call_sendMessage(chatRoomId: controller.currentChatRoom['chatRoomId'], type: 'text', data: text);
+      final pickerService = Get.find<PickerService>();
+      controller.call_sendMessage(text, pickerService.files);
     }
   }
 
@@ -83,50 +84,21 @@ class MessageDetailViewState extends State<MessageDetailView> {
           elevation: 0, //shadow
           title: Row(children: [
             const BackButton(),
-            Expanded(
-                child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: fireBaseService.call_getUser('${(controller.currentChatRoom['user'] as UsersModel).id}'),
-              builder: (context, snapshot) {
-                final data = snapshot.data?.data();
-                if (snapshot.hasData && data != null && data.isNotEmpty) {
-                  final bool isOnline = data['onlineStatus'] == 'Online';
-                  return ListTile(
-                    leading: Stack(
-                      children: [
-                        CircleAvatar(
-                          //radius: 25,
-                          backgroundImage: NetworkImage((controller.currentChatRoom['user'] as UsersModel).avatar!),
-                        ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: Container(
-                            height: 16,
-                            width: 16,
-                            decoration: BoxDecoration(
-                              //neu dang hoat dong thi` them cai bo tron` nho? nho?
-                              // ignore: dead_code
-                              color: isOnline ? Colors.green : Colors.grey,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 3),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    title: Text(
-                      (controller.currentChatRoom['user'] as UsersModel).displayName!,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    subtitle: Text(
-                      "${data['onlineStatus']}", //Online/Offline
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            )),
+            Expanded(child: Builder(builder: (context) {
+              final user = (controller.currentChatRoom['user'] as UsersModel);
+              return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                stream: fireBaseService.call_getUser('${user.id}'),
+                builder: (context, snapshot) {
+                  final data = snapshot.data?.data();
+
+                  if (snapshot.hasData && data != null && data.isNotEmpty) {
+                    final bool isOnline = data['onlineStatus'] == 'Online';
+                    return buildLeadingAvatar(user: user, isOnline: isOnline);
+                  }
+                  return buildLeadingAvatar(user: user);
+                },
+              );
+            })),
           ]),
           actions: [
             IconButton(
@@ -151,34 +123,32 @@ class MessageDetailViewState extends State<MessageDetailView> {
             children: [
               Flexible(
                 // Flexible dua theo widget, size cua thiet bi ma` thay doi?
-                child: StreamBuilder(
-                  stream: fireBaseService.call_getChatRoom(controller.currentChatRoom['chatRoomId']),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final docs = snapshot.data!.docs;
-                      scrollToLastIndex();
-                      return ListView.builder(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.all(8.0),
-                        //reverse: true, //tu duoi' len
-                        itemCount: docs.length,
-                        itemBuilder: (context, index) {
-                          return _buildChatMessage(docs[index]);
-                        },
-                      );
-                    }
-                    return const Center(child: CircularProgressIndicator());
+                child: controller.listMessageState.obx(
+                  (state) {
+                    scrollToLastIndex();
+                    return ListView.builder(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.all(8.0),
+                      //reverse: true, //tu duoi' len
+                      itemCount: state!.length,
+                      itemBuilder: (context, index) {
+                        return _buildChatMessage(state[index]);
+                      },
+                    );
                   },
                 ),
               ),
               // Divider(height: 1.0),
-              TextFieldCommentWidget(
-                textEditingController: _textController,
-                onSendComment: (value) {
-                  _handleSubmitted(value);
-                },
-                onPickMedia: () => controller.onPickFileSend(type: FileType.media),
-                onPickFile: () => controller.onPickFileSend(type: FileType.any),
+              GetBuilder(
+                init: PickerService(),
+                builder: (pickerService) => TextFieldCommentWidget(
+                  textEditingController: _textController,
+                  onSendComment: (value) {
+                    _handleSubmitted(value);
+                  },
+                  onPickMedia: () => pickerService.pickMultiFile(FileType.media),
+                  // onPickFile: () => controller.onPickFileSend(type: FileType.any),
+                ),
               ),
             ],
           ),
@@ -187,13 +157,17 @@ class MessageDetailViewState extends State<MessageDetailView> {
     );
   }
 
-  Widget _buildChatMessage(QueryDocumentSnapshot<Map<String, dynamic>> messageData) {
+  Widget _buildChatMessage(Map<String, dynamic> message) {
     //minh` nhan', xac' dinh no' thong qua thuoc tinh' gi` gi` do', o day cho dai random
 
-    final bool? isMySend = messageData.data()['user']?['id'] == AuthenticationController.userAccount!.id;
+    final bool isMySend = message['user_id'] == AuthenticationController.userAccount!.id;
+    if (message['media_file'] != null && (message['media_file'] is List) && (message['media_file'] as List).isNotEmpty) {
+    } else {
+      message['type'] = 'text';
+    }
 
     Widget renderText() {
-      if (isMySend ?? false) {
+      if (isMySend) {
         return Align(
           alignment: Alignment.centerRight,
           child: Container(
@@ -201,7 +175,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
               decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)), color: Colors.blue),
-              child: Text(messageData['data'], style: const TextStyle(color: Colors.white))), //noi dung chat
+              child: Text(message['content'], style: const TextStyle(color: Colors.white))), //noi dung chat
         );
       }
       return Container(
@@ -211,19 +185,19 @@ class MessageDetailViewState extends State<MessageDetailView> {
           children: [
             Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
+              child: CircleAvatar(backgroundImage: NetworkImage(message['avatar'])), //hinh anh avt
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(messageData['user']['displayName']), //ten
+                Text(message['userName']), //! api (đáng lý ra là displayName)
                 Container(
                   //width: MediaQuery.of(context).size.width / (1.3),
                   constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                   margin: const EdgeInsets.only(top: 5.0),
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(30)), color: Colors.grey.withOpacity(0.4)),
-                  child: Text(messageData['data']), //noi dung chat
+                  child: Text(message['content']), //noi dung chat
                 ),
               ],
             ),
@@ -233,7 +207,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
     }
 
     Widget renderImage(String url) {
-      if (isMySend ?? false) {
+      if (isMySend) {
         return Align(
           alignment: Alignment.centerRight,
           child: HelperWidget.buildImage(url), //noi dung chat
@@ -246,12 +220,12 @@ class MessageDetailViewState extends State<MessageDetailView> {
           children: [
             Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
+              child: CircleAvatar(backgroundImage: NetworkImage(message['avatar'])), //hinh anh avt
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(messageData['user']['displayName']), //ten
+                Text(message['userName']), //ten
                 HelperWidget.buildImage(url),
               ],
             ),
@@ -261,7 +235,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
     }
 
     Widget renderFile(String url) {
-      if (isMySend ?? false) {
+      if (isMySend) {
         return Align(
           alignment: Alignment.centerRight,
           child: HelperWidget.buildFile(url), //noi dung chat
@@ -274,12 +248,12 @@ class MessageDetailViewState extends State<MessageDetailView> {
           children: [
             Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
+              child: CircleAvatar(backgroundImage: NetworkImage(message['avatar'])), //hinh anh avt
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(messageData['user']['displayName']), //ten
+                Text(message['userName']), //ten
                 HelperWidget.buildFile(url),
               ],
             ),
@@ -304,7 +278,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
             ),
           );
 
-      if (isMySend ?? false) {
+      if (isMySend) {
         return Align(
           alignment: Alignment.centerRight,
           child: videoBuilder(),
@@ -317,12 +291,12 @@ class MessageDetailViewState extends State<MessageDetailView> {
           children: [
             Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(backgroundImage: NetworkImage(messageData['user']['avatar'])), //hinh anh avt
+              child: CircleAvatar(backgroundImage: NetworkImage(message['avatar'])), //hinh anh avt
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(messageData['user']['displayName']), //ten
+                Text(message['userName']), //ten
                 videoBuilder(),
               ],
             ),
@@ -331,7 +305,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
       );
     }
 
-    switch (messageData['type']) {
+    switch (message['type']) {
       case 'notify':
         return Align(
           alignment: Alignment.center,
@@ -341,7 +315,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
             decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), color: Colors.grey.shade100),
             child: Text(
-              messageData['data'],
+              message['content'],
             ),
           ), //noi dung chat
         );
@@ -349,19 +323,61 @@ class MessageDetailViewState extends State<MessageDetailView> {
       case 'text':
         return renderText();
       default:
+        //with content = List Image URl
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(
-            (messageData['data'] as List).length,
-            (index) {
-              final String item = messageData['data'][index];
-              if (item.isImageFileName) return renderImage(item);
-              if (item.isVideoFileName) return renderVideo(item);
+          children: [
+            ...List.generate(
+              (message['media_file'] as List).length,
+              (index) {
+                final String item = (message['media_file'] as List)[index]['media_file_name'];
+                if (item.isImageFileName) return renderImage(item);
+                if (item.isVideoFileName) return renderVideo(item);
 
-              return renderFile(item);
-            },
-          ),
+                return renderFile(item);
+              },
+            ),
+            renderText(),
+          ],
         );
     }
   }
+
+  Widget buildLeadingAvatar({
+    required UsersModel user,
+    bool isOnline = false,
+  }) =>
+      ListTile(
+        leading: Stack(
+          children: [
+            CircleAvatar(
+              //radius: 25,
+              backgroundImage: NetworkImage(user.avatar!),
+            ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: Container(
+                height: 16,
+                width: 16,
+                decoration: BoxDecoration(
+                  //neu dang hoat dong thi` them cai bo tron` nho? nho?
+                  // ignore: dead_code
+                  color: isOnline ? Colors.green : Colors.grey,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 3),
+                ),
+              ),
+            ),
+          ],
+        ),
+        title: Text(
+          user.displayName!,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        subtitle: Text(
+          isOnline ? 'Online' : 'Offline',
+          style: const TextStyle(fontSize: 12),
+        ),
+      );
 }

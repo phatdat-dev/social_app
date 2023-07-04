@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
+import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
   //dang' ly' ra la` truyen` id hoac token gi` do' de sang trang chat se~ query ra.
@@ -19,33 +19,11 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isActive = Random().nextBool();
     final isSeen = Random().nextBool();
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       onTap: onTap,
-      leading: Stack(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage(user.avatar!),
-          ),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: 16,
-              width: 16,
-              decoration: BoxDecoration(
-                //neu dang hoat dong thi` them cai bo tron` nho? nho?
-                color: isActive ? Colors.green : Colors.grey,
-                shape: BoxShape.circle,
-                border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 3),
-              ),
-            ),
-          )
-        ],
-      ),
+      leading: buildAvatar(),
       title: txtSearch != null
           ? RichText(
               text: TextSpan(
@@ -78,4 +56,34 @@ class ChatCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildAvatar([double radius = 25]) => Builder(builder: (context) {
+        final isActive = Random().nextBool();
+
+        return InkWell(
+          onTap: onTap,
+          child: Stack(
+            children: [
+              CircleAvatar(
+                radius: radius,
+                backgroundImage: NetworkImage(user.avatar!),
+              ),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  height: 16,
+                  width: 16,
+                  decoration: BoxDecoration(
+                    //neu dang hoat dong thi` them cai bo tron` nho? nho?
+                    color: isActive ? Colors.green : Colors.grey,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 3),
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      });
 }

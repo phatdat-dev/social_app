@@ -60,5 +60,5 @@ class ApiUrl {
   static String post_createChat() => '/api/v1/chats/create-chat';
   static String get_fetchListChat() => '/api/v1/fetch-list-chats';
   static String get_fetchMessage(int userId) => '/api/v1/fetch-message/userId=$userId';
-  static String post_sendMessage(int userId) => '/api/v1/chats/sent-message-file';
+  static String post_sendMessage() => '/api/v1/chats/sent-message-file';
 }
