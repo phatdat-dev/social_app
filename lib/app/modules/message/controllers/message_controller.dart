@@ -1,8 +1,5 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/app/core/services/firebase_service.dart';
 import 'package:ckc_social_app/app/core/services/picker_service.dart';
@@ -11,8 +8,15 @@ import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
 import 'package:ckc_social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../core/services/pusher_service.dart';
 
 class MessageController extends BaseController with SearchTagFriendController {
+  final ListMapDataState listChat = ListMapDataState([]);
+
   Map<String, dynamic> currentChatRoom = {
     'chatRoomId': null,
     'user': null,
@@ -20,7 +24,8 @@ class MessageController extends BaseController with SearchTagFriendController {
 
   @override
   Future<void> onInitData() async {
-    call_fetchFriendByUserId();
+    // call_fetchFriendByUserId();
+    call_fetchListChat();
   }
 
   String generateChatRoomId(List<String> users) {
@@ -80,6 +85,30 @@ class MessageController extends BaseController with SearchTagFriendController {
       chatRoomId: currentChatRoom['chatRoomId'],
       type: type.name,
       data: images,
+    );
+  }
+
+  //
+  Future<void> call_fetchListChat() async {
+    listChat.run(
+      apiCall
+          .onRequest(
+            ApiUrl.get_fetchListChat(),
+            RequestMethod.GET,
+          )
+          .then((value) => Helper.convertToListMap(value)),
+    );
+  }
+
+  void handleMessage() {
+    final pusherService = Get.find<PusherService>();
+    pusherService.subscribeChannel(
+      channalName: 'conversation-' + '123',
+      bindEventName: 'message',
+      onEvent: (event) {
+        // Printt.white(jsonDecode(event!.data!));
+        // listNotification.update((value) => value!.insert(0, jsonDecode(event!.data!)['notif']));
+      },
     );
   }
 }

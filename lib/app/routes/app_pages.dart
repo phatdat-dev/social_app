@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:ckc_social_app/app/modules/message/open_ai/controller/openai_controller.dart';
+import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_setting_bot_view.dart';
+import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_view.dart';
 import 'package:ckc_social_app/app/modules/user/views/user_editing_view.dart';
 import 'package:ckc_social_app/app/modules/videoCall/bindings/video_call_binding.dart';
 import 'package:ckc_social_app/app/modules/videoCall/views/video_call_detail_view.dart';
@@ -99,6 +102,26 @@ class AppPages {
                 name: _Paths.MEMBERS, // /message/setting-profile/:id/members
                 transition: randomTransition,
                 page: () => const MessageSettingProfileMembersView(),
+              ),
+            ]),
+      ],
+    ),
+    GetPage(
+      name: _Paths.OPENAI,
+      transition: randomTransition,
+      page: () => const SizedBox(),
+      // binding: BindingsBuilder(() => Get.lazyPut(() => OpenAIController())),
+      children: [
+        GetPage(
+            name: _Paths.MESSAGE, // /open-ai/message
+            transition: randomTransition,
+            page: () => const OpenAIMessageView(),
+            binding: BindingsBuilder(() => Get.lazyPut(() => OpenAIController())),
+            children: [
+              GetPage(
+                name: _Paths.SETTING, // /open-ai/message/setting
+                transition: randomTransition,
+                page: () => const OpenAIMessageSettingBotView(),
               ),
             ]),
       ],

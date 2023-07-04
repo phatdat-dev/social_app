@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_connect.dart';
+import 'package:get/get.dart';
 
 abstract class BaseController extends GetxController {
   BaseConnect get apiCall => Get.find<BaseConnect>();
@@ -19,11 +19,15 @@ abstract class BaseController extends GetxController {
 
 //? Base DataType for State --------------------------------------------
 
-class MapDataState extends DataState<Map<String, dynamic>> {
+class MapDataState<T extends dynamic> extends DataState<Map<String, T>> {
   MapDataState(super.val);
 }
 
-class ListMapDataState extends DataState<List<Map<String, dynamic>>> {
+class ListDataState<T> extends DataState<List<T>> {
+  ListDataState(super.val);
+}
+
+class ListMapDataState extends ListDataState<Map<String, dynamic>> {
   ListMapDataState(super.val);
 }
 

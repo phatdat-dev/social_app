@@ -41,7 +41,6 @@ class ApiUrl {
   //
   static String post_likePost() => '/api/v1/post/like-post';
   static String post_saveDeviceToken() => '/api/v1/save-device-token';
-  static String post_messageUploadFile() => '/api/v1/message/upload-file';
   static String post_sharePostToProfile() => '/api/v1/share-post-to-profile';
   static String get_fetchCommentByPost(int postId) => '/api/v1/fetch-comment-by-post/postId=$postId';
   static String get_fetchReplyComment(int commentId) => '/api/v1/fetch-reply-comment/commentId=$commentId';
@@ -49,13 +48,17 @@ class ApiUrl {
   static String post_replyComment() => '/api/v1/reply-comment';
   static String post_unfriend() => '/api/v1/unfriend';
   static String post_requestAddFriend() => '/api/v1/request-add-friend';
-  static String post_acceptFriendRequest() => '/api/v1/accept-friend-request';
+  static String post_acceptFriendRequest() => '/api/v1/accept-frieyiind-request';
   static String get_fetchFellAndActivityPosts() => '/api/v1/fetch-fell-and-activity-posts';
   //
   static String get_fetchStories() => '/api/v1/stories';
   static String get_createStories() => '/api/v1/stories/create-story';
   //
   static String get_fetchNotification() => '/api/v1/fetch-notifications';
-  //
-  
+  //Message
+  static String post_messageUploadFile() => '/api/v1/message/upload-file'; //bo?
+  static String post_createChat() => '/api/v1/chats/create-chat';
+  static String get_fetchListChat() => '/api/v1/fetch-list-chats';
+  static String get_fetchMessage(int userId) => '/api/v1/fetch-message/userId=$userId';
+  static String post_sendMessage(int userId) => '/api/v1/chats/sent-message-file';
 }

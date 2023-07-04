@@ -12,6 +12,8 @@ abstract class Routes {
   static String MESSAGE_SEARCH() => _Paths.MESSAGE + _Paths.SEARCH;
   static String MESSAGE_SETTING_PROFILE(String id) => _Paths.MESSAGE + _Paths.SETTING_PROFILE + '/$id';
   static String MESSAGE_SETTING_PROFILE_MEMBERS(String id) => MESSAGE_SETTING_PROFILE(id) + _Paths.MEMBERS;
+  static String OPENAI_MESSAGE() => _Paths.OPENAI + _Paths.MESSAGE;
+  static String OPENAI_MESSAGE_SETTING() => OPENAI_MESSAGE() + _Paths.SETTING;
   static String GROUP(String id) => _Paths.GROUP + '/$id';
   static String GROUP_CREATE() => _Paths.GROUP + _Paths.CREATE;
   static String GROUP_INFOMATION(String id) => GROUP(id) + _Paths.INFOMATION;
@@ -49,4 +51,6 @@ abstract class _Paths {
   static const HISTORY = '/history';
   static const NOTIFICATION = '/notification';
   static const VIDEO_CALL = '/video-call';
+  static const OPENAI = '/open-ai';
+  static const SETTING = '/setting';
 }

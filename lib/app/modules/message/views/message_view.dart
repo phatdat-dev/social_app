@@ -29,6 +29,7 @@ class MessageView<T extends MessageController> extends GetView<T> {
             ),
             title: const Text('Chats', style: TextStyle(color: Colors.black)),
             actions: [
+              AppBarIconWidget(icon: const Icon(Icons.smart_toy_outlined), onPressed: () => Get.toNamed(Routes.OPENAI_MESSAGE())),
               AppBarIconWidget(icon: const Icon(Icons.camera_alt_outlined), onPressed: () => Get.toNamed(Routes.VIDEO_CALL())),
               AppBarIconWidget(
                 icon: const Icon(Icons.group_add_outlined, color: Colors.green),
