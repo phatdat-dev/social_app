@@ -414,7 +414,7 @@ class PostCreateView extends GetView<HomeController> {
     });
   }
 
-  static List<Widget> buildFileAttachments(List<({int? id, String path})> filesPicker, {required ValueChanged<int> onDelete}) {
+  static List<Widget> buildFileAttachments(List<({int? id, String path})> filesPicker, {required ValueChanged<int> onDelete, double iconSize = 5}) {
     return List.generate(
       filesPicker.length,
       (index) {
@@ -438,7 +438,14 @@ class PostCreateView extends GetView<HomeController> {
                   child: Material(
                     elevation: 1,
                     shape: const CircleBorder(),
-                    child: CloseButton(onPressed: () => onDelete(index)),
+                    child: Padding(
+                      padding: EdgeInsets.all(iconSize * 1.5),
+                      child: InkWell(
+                        customBorder: const CircleBorder(), //StadiumBorder
+                        onTap: () => onDelete(index),
+                        child: Icon(Icons.close, size: iconSize * 5, color: Colors.red),
+                      ),
+                    ),
                   ),
                 ),
               ),

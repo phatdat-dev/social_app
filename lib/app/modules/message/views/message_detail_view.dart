@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/picker_service.dart';
+import '../../post/views/post_create_view.dart';
 import '../widget/video_play_widget.dart';
 
 //code layout tham khao tu` google https://viblo.asia/p/flutter-viet-ung-dung-chat-voi-flutter-p1-GrLZD8GOZk0
@@ -141,13 +142,35 @@ class MessageDetailViewState extends State<MessageDetailView> {
               // Divider(height: 1.0),
               GetBuilder(
                 init: PickerService(),
-                builder: (pickerService) => TextFieldCommentWidget(
-                  textEditingController: _textController,
-                  onSendComment: (value) {
-                    _handleSubmitted(value);
-                  },
-                  onPickMedia: () => pickerService.pickMultiFile(FileType.media),
-                  // onPickFile: () => controller.onPickFileSend(type: FileType.any),
+                builder: (pickerService) => Column(
+                  children: [
+                    Obx(
+                      () {
+                        final filesPicker = pickerService.files.map((e) => (id: null, path: e)).toList();
+                        if (filesPicker.isEmpty) return const SizedBox.shrink();
+
+                        return SizedBox(
+                          height: 100,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: PostCreateView.buildFileAttachments(
+                              filesPicker,
+                              onDelete: (index) => pickerService.files.removeAt(index),
+                              iconSize: 3,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    TextFieldCommentWidget(
+                      textEditingController: _textController,
+                      onSendComment: (value) {
+                        _handleSubmitted(value);
+                      },
+                      onPickMedia: () => pickerService.pickMultiFile(FileType.media),
+                      // onPickFile: () => controller.onPickFileSend(type: FileType.any),
+                    ),
+                  ],
                 ),
               ),
             ],
