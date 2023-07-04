@@ -18,4 +18,5 @@ mixin RemoteConfigService {
   }
 
   String getBaseURL() => remoteConfig.getString('base_url_app');
+  String getOpenAISecretKey() => remoteConfig.getString('OpenAI_Secret_Key');
 }

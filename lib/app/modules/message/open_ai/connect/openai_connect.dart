@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 
 import '../../../../core/base/base_connect.dart';
+import '../../../../core/services/firebase_service.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../custom/widget/loadding_widget.dart';
 
@@ -20,7 +22,7 @@ class OpenAiConnect extends BaseConnect {
 
   @override
   FutureOr<Request> requestInterceptor(Request request) async {
-    request.headers['Authorization'] = 'Bearer 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'; //3 tháng xài
+    request.headers['Authorization'] = 'Bearer ${Get.find<FireBaseService>().getOpenAISecretKey()}'; //3 tháng xài free
 
     request.headers['Accept'] = 'application/json, text/plain, */*';
     request.headers['Charset'] = 'utf-8';
