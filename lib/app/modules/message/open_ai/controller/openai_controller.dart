@@ -268,4 +268,14 @@ address correction, keywords
       // modelSelectDropDown.value = responseModels.state!.first;
     }
   }
+
+  Future<List<Map<String, dynamic>>> generateImage({required String prompt, int n = 1, String size = '512x512'}) async {
+    final res = await apiCall.onRequest(
+      '/images/generations',
+      RequestMethod.POST,
+      body: {'prompt': prompt, 'n': n, 'size': size},
+    );
+
+    return Helper.convertToListMap(res['data']);
+  }
 }

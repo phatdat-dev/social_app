@@ -73,7 +73,7 @@ class HelperWidget {
       ));
 
   static Widget buildImage(String image) {
-    if (!image.isImageFileName) return const SizedBox.shrink();
+    // if (!image.isImageFileName) return const SizedBox.shrink();
     final context = Get.context!;
     return GestureDetector(
       onTap: () {

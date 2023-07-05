@@ -1,4 +1,4 @@
-import 'package:ckc_social_app/app/core/utils/helper_widget.dart';
+import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/custom/widget/textfield_comment_widget.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/controller/openai_controller.dart';
@@ -50,8 +50,8 @@ class OpenAIMessageViewState extends State<OpenAIMessageView> {
     });
   }
 
-  //ham` khi nhan' gui~
-  void _handleSubmitted(String text) async {
+  void _afterOnPressedSubmited(ValueChanged<String> callback) {
+    final text = _textController.text;
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(); //huy keyboard
     //textField sẽ clear chu~^
     _textController.clear();
@@ -60,18 +60,22 @@ class OpenAIMessageViewState extends State<OpenAIMessageView> {
       //neu' textField ko rong~ thi` tao 1 widget tin nhan' moi'
       final mess = _ChatMessage(data: text, user: AuthenticationController.userAccount!, type: 'text');
       messages.add(mess);
+      callback.call(text);
+    }
+  }
 
+  //ham` khi nhan' gui~
+  void _handleSubmitted() async {
+    _afterOnPressedSubmited((text) {
       //call api goi bot
       controller.sendCompletion(text).then((value) {
-        scrollToLastIndex();
-
         if (value != null) {
           value.choices?.forEach((element) {
-            String text = element.text!;
-            text = text.substring(2); //bỏ cái cái \n\n
+            String newText = element.text!;
+            newText = newText.substring(2); //bỏ cái cái \n\n
             messages.add(
               _ChatMessage(
-                data: text,
+                data: newText,
                 user: botUser,
                 type: 'text',
               ),
@@ -79,7 +83,25 @@ class OpenAIMessageViewState extends State<OpenAIMessageView> {
           });
         }
       });
-    }
+    });
+  }
+
+  void _handleOnPressedImage() {
+    _afterOnPressedSubmited((text) {
+      //call api goi bot
+      controller.generateImage(prompt: text).then((value) {
+        value.forEach((element) {
+          messages.add(
+            _ChatMessage(
+              data: element['url'],
+              user: botUser,
+              type: 'image',
+            ),
+          );
+        });
+        //
+      });
+    });
   }
 
   @override //new
@@ -156,23 +178,24 @@ class OpenAIMessageViewState extends State<OpenAIMessageView> {
             children: [
               Flexible(
                 // Flexible dua theo widget, size cua thiet bi ma` thay doi?
-                child: Obx(() => ListView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(8.0),
-                      //reverse: true, //tu duoi' len
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        return _buildChatMessage(messages[index]);
-                      },
-                    )),
+                child: Obx(() {
+                  scrollToLastIndex();
+                  return ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(8.0),
+                    //reverse: true, //tu duoi' len
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      return _buildChatMessage(messages[index]);
+                    },
+                  );
+                }),
               ),
               // Divider(height: 1.0),
               TextFieldCommentWidget(
                 textEditingController: _textController,
-                onSendComment: (value) {
-                  _handleSubmitted(value);
-                },
-                // onPickMedia: () => controller.onPickFileSend(type: FileType.image),
+                onSendComment: (value) => _handleSubmitted(),
+                onPickMedia: _handleOnPressedImage,
               ),
             ],
           ),
@@ -342,6 +365,9 @@ class OpenAIMessageViewState extends State<OpenAIMessageView> {
 
       case 'text':
         return renderText();
+
+      case 'image':
+        return renderImage(chatMessage.data);
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
