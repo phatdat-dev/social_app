@@ -34,14 +34,20 @@ class WaveDrawClipPathWidget extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 const SizedBox(height: 20),
-                const Icon(
-                  Icons.fastfood,
-                  color: Colors.white,
-                  size: 60,
+                SvgPicture.asset(
+                  'assets/svg/iconApp-512x512-remove.svg',
+                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  width: 75,
+                  // height: 100,
                 ),
+                // const Icon(
+                //   Icons.fastfood,
+                //   color: Colors.white,
+                //   size: 60,
+                // ),
                 const SizedBox(height: 20),
                 Text(
-                  title,
+                  'CKC Social',
                   style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary, fontWeight: FontWeight.w700, fontSize: 30),
                 ),
               ],
