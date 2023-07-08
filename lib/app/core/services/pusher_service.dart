@@ -28,7 +28,7 @@ class PusherService extends GetxService {
       cluster: 'ap1',
       encrypted: true,
       auth: PusherAuth(
-        Get.find<FireBaseService>().getBaseURL(),
+        Get.find<FireBaseService>().getBaseURLServer(),
         headers: {
           'Authorization': 'Bearer ${AuthenticationController.userAccount?.token}',
         },

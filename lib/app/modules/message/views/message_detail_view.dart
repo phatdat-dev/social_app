@@ -64,6 +64,7 @@ class MessageDetailViewState extends State<MessageDetailView> {
       //them vao` danh sach tin nhan' o phan tu? dau` tien
       final pickerService = Get.find<PickerService>();
       controller.call_sendMessage(text, pickerService.files);
+      pickerService.files.clear();
     }
   }
 

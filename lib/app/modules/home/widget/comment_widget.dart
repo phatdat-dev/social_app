@@ -147,7 +147,7 @@ class CommentWidget extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 10),
-                      SizedBox(height: 150, child: HelperWidget.buildImage('${data['fileName']}'))
+                      if (data['fileName'] != null) SizedBox(height: 150, child: HelperWidget.buildImage('${data['fileName']}'))
                     ],
                   ),
                 ),

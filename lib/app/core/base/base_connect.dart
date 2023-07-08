@@ -23,7 +23,7 @@ class BaseConnect extends GetConnect {
   @override
   void onInit() {
     super.onInit();
-    httpClient.baseUrl = Get.find<FireBaseService>().getBaseURL();
+    httpClient.baseUrl = baseUrl = Get.find<FireBaseService>().getBaseURLServer();
     httpClient.timeout = Duration(seconds: timeOutSecond);
     // httpClient.addAuthenticator(authInterceptor);
     httpClient.addRequestModifier(requestInterceptor);

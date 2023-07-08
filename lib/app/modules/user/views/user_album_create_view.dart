@@ -72,9 +72,9 @@ class UserAlbumCreateView extends GetView<UserController> {
                   );
                 }),
                 const SizedBox(height: 10),
-                Text('${LocaleKeys.GroupImage.tr}: ', style: Theme.of(context).textTheme.bodyLarge),
+                Text('Ảnh: ', style: Theme.of(context).textTheme.bodyLarge),
                 OutlinedButton.icon(
-                  onPressed: () => pickerService.pickMultiFile(FileType.image, allowMultiple: false),
+                  onPressed: () => pickerService.pickMultiFile(FileType.image),
                   icon: Text(LocaleKeys.PickImage.tr),
                   label: const Icon(Icons.image_outlined),
                 ),

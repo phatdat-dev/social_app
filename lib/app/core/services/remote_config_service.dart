@@ -27,13 +27,14 @@ mixin RemoteConfigService {
     });
   }
 
-  String getBaseURL() => remoteConfig.getString('base_url_app');
+  String getBaseURLServer() => remoteConfig.getString('base_url_server');
+  String getBaseURLWeb() => remoteConfig.getString('base_url_web');
   String getOpenAISecretKey() => remoteConfig.getString('OpenAI_Secret_Key');
 
   void handleRemoteConfigBaseURL() {
     //update lai URL
     Printt.cyan('--NEW BASE URL--');
-    Get.find<BaseConnect>().httpClient.baseUrl = getBaseURL();
+    Get.find<BaseConnect>().httpClient.baseUrl = getBaseURLServer();
   }
 
   Map<String, dynamic> getAgoraTestingKey() => jsonDecode(remoteConfig.getString('Agora_Testing_Key'));

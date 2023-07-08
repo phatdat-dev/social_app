@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../core/services/firebase_service.dart';
 import '../../../core/services/translation_service.dart';
 import '../../../custom/other/tooltip_shapeborder_custom.dart';
 import '../../../routes/app_pages.dart';
@@ -103,10 +104,13 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                             customBorder: const CircleBorder(),
                             onTap: () {
                               final socialShare = Get.find<SocialShareService>();
+                              final urlShare =
+                                  "${Get.find<FireBaseService>().getBaseURLWeb()}/posts/view-post-detail/${widget.postResponseModel['id']}";
+                              Printt.white(urlShare);
                               socialShare.onShare(
                                 type: item,
-                                urlShare: 'https://www.youtube.com/watch?v=bWehAFTFc9o', //url this post website
-                                text: 'zzzzzzz',
+                                urlShare: urlShare, //url this post website
+                                text: '',
                               );
                             },
                             child: Ink(

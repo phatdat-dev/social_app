@@ -79,7 +79,7 @@ class AuthenticationController extends BaseController {
   }
 
   static void onSignOut() {
-    saveAccount(userAccount?..token = '');
+    saveAccount(null);
     Get.offAllNamed(Routes.AUTHENTICATION());
     Get.find<FireBaseService>().call_setStatusUserOnline('Offline');
   }
