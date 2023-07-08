@@ -72,6 +72,10 @@ mixin UserPhotoControllerMixin implements BaseController {
   }
 
   Future<void> call_deleteAlbum(int albumId) async {
-    await apiCall.onRequest(ApiUrl.post_deleteAlbum(), RequestMethod.POST, body: {'albumId': albumId});
+    final result = await apiCall.onRequest(ApiUrl.post_deleteAlbum(), RequestMethod.POST, body: {'albumId': albumId});
+    if (result != null) {
+      Get.back();
+      HelperWidget.showSnackBar(message: result.toString());
+    }
   }
 }

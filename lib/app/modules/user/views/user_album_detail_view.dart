@@ -41,7 +41,7 @@ class _UserAlbumDetailViewState extends State<UserAlbumDetailView> {
       LocaleKeys.DeleteAlbum: (
         iconColor: Colors.red,
         icon: const Icon(Icons.delete_outline),
-        onTap: () {},
+        onTap: () => controller.call_deleteAlbum(albumId).then((value) => controller.call_fetchAlbumByUserId(userId)),
       ),
     };
   }
