@@ -103,5 +103,10 @@
   "Joined": "参加しました",
   "PickImage": "画像を選択する",
   "GroupImage": "グループ画像",
-  "FeelingActivity": "感情/アクティビティ"
+  "FeelingActivity": "感情/アクティビティ",
+  "PhotosWithYourFace": "あなたの顔の写真",
+  "PhotosOfYou": "あなたの写真",
+  "CreateAlbum": "アルバムを作成する",
+  "EditAlbum": "アルバムを編集する",
+  "DeleteAlbum": "アルバムを削除する"
 }

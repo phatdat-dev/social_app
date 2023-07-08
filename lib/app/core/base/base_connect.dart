@@ -36,6 +36,8 @@ class BaseConnect extends GetConnect {
     request.headers['Accept'] = 'application/json, text/plain, */*';
     request.headers['Charset'] = 'utf-8';
     request.headers['Access-Control-Allow-Origin'] = '*';
+    // request.headers['Access-Control-Allow-Methods'] = 'GET,PUT,PATCH,POST,DELETE';
+    // request.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
     // request.headers['Content-Type'] = 'application/json;charset=UTF-8';
 
     // tự động mở loadding khi Request

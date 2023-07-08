@@ -108,12 +108,13 @@ class MessageDetailViewState extends State<MessageDetailView> {
             ),
             IconButton(
               icon: const Icon(Icons.videocam),
-              onPressed: () {},
+              onPressed: () =>
+                  Get.toNamed(Routes.VIDEO_CALL_DETAIL(), arguments: {'chanelName': controller.currentChatRoom['chatRoomId'].toString()}),
             ),
             IconButton(
               icon: const Icon(Icons.info),
               onPressed: () {
-                Get.toNamed(Routes.MESSAGE_SETTING_PROFILE(controller.currentChatRoom['chatRoomId']));
+                Get.toNamed(Routes.MESSAGE_SETTING_PROFILE(controller.currentChatRoom['chatRoomId'].toString()));
               },
             ),
             const SizedBox(width: 15 / 2),

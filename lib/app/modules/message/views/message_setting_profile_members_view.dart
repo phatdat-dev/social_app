@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'package:ckc_social_app/app/core/services/firebase_service.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:ckc_social_app/app/modules/message/widget/chatcard_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MessageSettingProfileMembersView extends StatefulWidget {
   const MessageSettingProfileMembersView({super.key});
@@ -99,7 +98,7 @@ class MessageSettingProfileMembersTabAllWidget extends StatelessWidget {
     final controller = Get.find<MessageController>();
     final fireBaseService = Get.find<FireBaseService>();
     return StreamBuilder(
-        stream: fireBaseService.call_getChatRoomDocs(controller.currentChatRoom['chatRoomId']),
+        stream: fireBaseService.call_getChatRoomDocs(controller.currentChatRoom['chatRoomId'].toString()),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<UsersModel> members = List<Map<String, dynamic>>.from(snapshot.data!['members']).map((e) => UsersModel().fromJson(e)).toList();

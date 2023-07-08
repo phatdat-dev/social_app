@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:ckc_social_app/app/modules/message/open_ai/controller/openai_controller.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_setting_bot_view.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_view.dart';
+import 'package:ckc_social_app/app/modules/user/views/user_album_create_view.dart';
+import 'package:ckc_social_app/app/modules/user/views/user_album_detail_view.dart';
 import 'package:ckc_social_app/app/modules/user/views/user_editing_view.dart';
 import 'package:ckc_social_app/app/modules/videoCall/bindings/video_call_binding.dart';
 import 'package:ckc_social_app/app/modules/videoCall/views/video_call_detail_view.dart';
@@ -36,6 +38,7 @@ import '../modules/post/views/post_history_view.dart';
 import '../modules/stories/views/stories_view.dart';
 import '../modules/user/controllers/user_controller.dart';
 import '../modules/user/views/user_friend_view.dart';
+import '../modules/user/views/user_photo_view.dart';
 import '../modules/user/views/user_view.dart';
 
 part 'app_middleware.dart';
@@ -170,6 +173,35 @@ class AppPages {
           page: () => const UserFriendView(),
         ),
         GetPage(
+          name: _Paths.PHOTOS, // /user/:id/photos
+          transition: randomTransition,
+          page: () => const UserPhotoView(),
+          children: [
+            GetPage(
+                name: _Paths.ALBUM, // /user/:id/photos/album
+                transition: randomTransition,
+                page: () => const SizedBox.shrink(),
+                children: [
+                  GetPage(
+                      name: '/d/:albumId', // /user/:id/photos/album/d/:albumId
+                      transition: randomTransition,
+                      page: () => const UserAlbumDetailView(),
+                      children: [
+                        GetPage(
+                          name: _Paths.EDITING, // /user/:id/photos/album/d/:albumId/editing
+                          transition: randomTransition,
+                          page: () => const UserAlbumCreateView(isCreate: false),
+                        ),
+                      ]),
+                  GetPage(
+                    name: _Paths.CREATE, // /user/:id/photos/album/create
+                    transition: randomTransition,
+                    page: () => const UserAlbumCreateView(),
+                  ),
+                ]),
+          ],
+        ),
+        GetPage(
           name: _Paths.EDITING, // /user/:id/editing
           transition: randomTransition,
           page: () => const UserEditingView(),
@@ -209,12 +241,19 @@ class AppPages {
       page: () => const NotificationView(),
       binding: BindingsBuilder(() => Get.lazyPut(() => NotificationController())),
     ),
-    GetPage(name: _Paths.VIDEO_CALL, transition: randomTransition, page: () => const VideoCallView(), binding: VideoCallBinding(), children: [
-      GetPage(
-        name: _Paths.DETAIL,
-        transition: randomTransition,
-        page: () => VideoCallDetailView(chanelName: Get.arguments['chanelName']),
-      )
-    ])
+    GetPage(
+      name: _Paths.VIDEO_CALL,
+      transition: randomTransition,
+      page: () => const VideoCallView(),
+      binding: VideoCallBinding(),
+      children: [
+        GetPage(
+          name: _Paths.DETAIL,
+          transition: randomTransition,
+          page: () => VideoCallDetailView(chanelName: Get.arguments['chanelName']),
+          binding: VideoCallBinding(),
+        )
+      ],
+    )
   ];
 }

@@ -103,5 +103,10 @@
   "Joined": "Đã tham gia",
   "PickImage": "Chọn ảnh",
   "GroupImage": "Ảnh nhóm",
-  "FeelingActivity": "Cảm xúc/Hoạt động"
+  "FeelingActivity": "Cảm xúc/Hoạt động",
+  "PhotosWithYourFace": "Ảnh có mặt bạn",
+  "PhotosOfYou": "Ảnh của bạn",
+  "CreateAlbum": "Tạo album",
+  "EditAlbum": "Chỉnh sửa album",
+  "DeleteAlbum": "Xoá album"
 }

@@ -35,4 +35,6 @@ mixin RemoteConfigService {
     Printt.cyan('--NEW BASE URL--');
     Get.find<BaseConnect>().httpClient.baseUrl = getBaseURL();
   }
+
+  Map<String, dynamic> getAgoraTestingKey() => jsonDecode(remoteConfig.getString('Agora_Testing_Key'));
 }

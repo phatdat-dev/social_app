@@ -103,5 +103,10 @@
   "Joined": "Joined",
   "PickImage": "Pick Image",
   "GroupImage": "Group Image",
-  "FeelingActivity": "Feeling/Activity"
+  "FeelingActivity": "Feeling/Activity",
+  "PhotosWithYourFace": "Photos with your face",
+  "PhotosOfYou": "Photos of you",
+  "CreateAlbum": "Create Album",
+  "EditAlbum": "Edit Album",
+  "DeleteAlbum": "Delete Album"
 }

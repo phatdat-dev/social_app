@@ -9,7 +9,7 @@ class StoriesView extends GetView<StoriesController> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(controller.currentObject!.data['displayName']),

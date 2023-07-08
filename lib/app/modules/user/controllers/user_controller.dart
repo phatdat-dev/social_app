@@ -6,7 +6,10 @@ import 'package:ckc_social_app/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import '../../../models/users_model.dart';
+import '../../authentication/controllers/authentication_controller.dart';
 import '../../search_tag_friend/controllers/search_tag_friend_controller.dart';
+
+part 'user_photo_controller_mixin.dart';
 
 enum Relationship {
   Nothing(3, 'Không'),
@@ -23,7 +26,7 @@ enum Relationship {
   }
 }
 
-class UserController extends BaseController with SearchTagFriendController, StateMixin<UsersModel?> {
+class UserController extends BaseController with SearchTagFriendController, UserPhotoControllerMixin, StateMixin<UsersModel?> {
   final int userId;
   UserController(this.userId);
 
@@ -32,6 +35,12 @@ class UserController extends BaseController with SearchTagFriendController, Stat
     call_profileUser(userId).then((value) => change(value, status: RxStatus.success()));
     call_fetchFriendByUserId(userId, 6);
     call_fetchImageUploadByUserId(userId, 3);
+  }
+
+  Future<void> onInitDataUserImage() async {
+    call_fetchImageUploadByUserId(userId);
+    call_fetchImageFromPostTag(userId);
+    call_fetchAlbumByUserId(userId);
   }
 
   Future<void> onInitDataUserFriend() async {

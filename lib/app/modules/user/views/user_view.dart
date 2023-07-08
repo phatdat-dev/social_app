@@ -1,13 +1,12 @@
-import 'package:ckc_social_app/app/core/utils/helper.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/user/controllers/user_controller.dart';
-import 'package:ckc_social_app/generated/locales.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../../core/utils/utils.dart';
 import '../../../routes/app_pages.dart';
 
 class UserView extends GetView<UserController> {
@@ -84,6 +83,7 @@ class UserView extends GetView<UserController> {
                   children: <Widget>[
                     controller.obx((state) => buildInfomation(controller)),
                     const Divider(),
+                    // Photo & Friend nen viet base TabView
                     _buildPhotos(),
                     const Divider(),
                     _buildFriends(),
@@ -373,34 +373,16 @@ class UserView extends GetView<UserController> {
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
-                _buildViewMoreButton(() {}),
+                _buildViewMoreButton(() => Get.toNamed(Routes.USER_PHOTO('${controller.userId}'))),
               ],
             ),
-            ObxValue(
-                (listImageUploadOfUser) => GridView.builder(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(top: 20),
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: listImageUploadOfUser.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5,
-                        childAspectRatio: 1,
-                        crossAxisCount: 3,
-                      ),
-                      itemBuilder: (context, index) {
-                        final item = listImageUploadOfUser[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: NetworkImage(item['media_file_name']!),
-                                fit: BoxFit.cover,
-                              )),
-                        );
-                      },
-                    ),
-                controller.listImageUploadOfUser),
+            controller.listImageUploadOfUser.obx(
+              (state) => HelperWidget.buildGridViewImage(
+                listData: state!,
+                fieldName: 'media_file_name',
+                maxLength: state.length > 6 ? 6 : state.length,
+              ),
+            ),
           ],
         ),
       );
@@ -416,7 +398,7 @@ class UserView extends GetView<UserController> {
                       LocaleKeys.Friend.tr,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    const Text('123 friend'),
+                    Obx(() => Text('${controller.listFriendOfUser.length} ${LocaleKeys.Friend.tr}')),
                   ],
                 ),
                 const Spacer(),

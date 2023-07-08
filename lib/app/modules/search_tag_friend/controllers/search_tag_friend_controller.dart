@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 mixin SearchTagFriendController implements BaseController {
   //co thoi gian chuyen may cai nay` thanh` bien' Value<T>
   RxList<UsersModel> listFriendOfUser = RxList.empty();
-  RxList<Map<String, dynamic>> listImageUploadOfUser = RxList.empty();
   RxList<UsersModel> listFriendSuggest = RxList.empty();
   RxList<Map<String, dynamic>> listFriendRequest = RxList.empty();
 
@@ -36,16 +35,7 @@ mixin SearchTagFriendController implements BaseController {
     });
   }
 
-  Future<void> call_fetchImageUploadByUserId([int? userId, int? limit]) async {
-    apiCall
-        .onRequest(
-      ApiUrl.get_fetchImageUpload(userId ?? AuthenticationController.userAccount!.id!, limit),
-      RequestMethod.GET,
-    )
-        .then((value) {
-      listImageUploadOfUser.value = Helper.convertToListMap(value);
-    });
-  }
+  
 
   void onPresseSearchTagFriendDone() async {}
 

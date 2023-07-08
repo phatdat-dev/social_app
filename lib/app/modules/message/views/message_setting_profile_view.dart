@@ -1,10 +1,10 @@
+import 'package:ckc_social_app/app/custom/widget/app_bar_icon_widget.dart';
+import 'package:ckc_social_app/app/modules/message/controllers/message_controller.dart';
+import 'package:ckc_social_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:ckc_social_app/app/custom/widget/app_bar_icon_widget.dart';
-import 'package:ckc_social_app/app/modules/message/controllers/message_controller.dart';
-import 'package:ckc_social_app/app/routes/app_pages.dart';
 
 class MessageSettingProfileView extends GetView<MessageController> {
   MessageSettingProfileView({super.key});
@@ -157,7 +157,7 @@ class MessageSettingProfileView extends GetView<MessageController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
-                        'Mebina NepalMebina NepalMebina NepalMebina NepalMebina NepalNepalMebinaNepalMebinaNepalMebinaNepalMebina',
+                        'Tiêu đề chatGroup',
                         style: Theme.of(context).textTheme.titleLarge,
                         textAlign: TextAlign.center,
                         maxLines: 3,

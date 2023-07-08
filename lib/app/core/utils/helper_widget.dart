@@ -300,4 +300,28 @@ class HelperWidget {
               }).toList(),
             ));
   }
+
+  static Widget buildGridViewImage({required List<Map<String,dynamic>> listData,required String fieldName,int? maxLength}) => GridView.builder(
+        shrinkWrap: true,
+        padding: const EdgeInsets.only(top: 20),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: maxLength??listData.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+          childAspectRatio: 1,
+          crossAxisCount: 3,
+        ),
+        itemBuilder: (context, index) {
+          final item = listData[index];
+          return Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: NetworkImage(item[fieldName]!),
+                  fit: BoxFit.cover,
+                )),
+          );
+        },
+      );
 }

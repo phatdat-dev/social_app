@@ -27,7 +27,7 @@ class MessageView<T extends MessageController> extends GetView<T> {
             title: const Text('Chats', style: TextStyle(color: Colors.black)),
             actions: [
               AppBarIconWidget(icon: const Icon(Icons.smart_toy_outlined), onPressed: () => Get.toNamed(Routes.OPENAI_MESSAGE())),
-              AppBarIconWidget(icon: const Icon(Icons.camera_alt_outlined), onPressed: () => Get.toNamed(Routes.VIDEO_CALL())),
+              // AppBarIconWidget(icon: const Icon(Icons.camera_alt_outlined), onPressed: () => Get.toNamed(Routes.VIDEO_CALL())),
               AppBarIconWidget(
                 icon: const Icon(Icons.group_add_outlined, color: Colors.green),
                 onPressed: () => controller.onCreateNewGroupMessage<T>(context),
@@ -84,7 +84,7 @@ class MessageView<T extends MessageController> extends GetView<T> {
     final defaultWidth = 30.0;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: 86,
+      height: 90,
       child: Obx(() {
         return ListView.separated(
           // shrinkWrap: true, //tranh' loi~ view SingleChildScrollView-column

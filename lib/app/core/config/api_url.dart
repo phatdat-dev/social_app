@@ -15,7 +15,6 @@ class ApiUrl {
   static String get_fetchHistoryEditPost(int postId) => '/api/v1/fetch-history-edit-post/postId=$postId';
   //
   static String get_fetchFriendByUserId(int userId, [int? limit]) => '/api/v1/fetch-friend-by-user-id/$userId' + (limit != null ? '/$limit' : '');
-  static String get_fetchImageUpload(int userId, [int? limit]) => '/api/v1/fetch-image-uploaded/userId=$userId' + (limit != null ? '/$limit' : '');
   static String get_profileUser(int userId) => '/api/v1/profile-user/userId=$userId';
   static String get_fetchFriendsSuggestion() => '/api/v1/fetch-friends-suggestion';
   static String get_fetchFriendRequest() => '/api/v1/fetch-friend-request-list';
@@ -61,4 +60,12 @@ class ApiUrl {
   static String get_fetchListChat() => '/api/v1/fetch-list-chats';
   static String get_fetchMessage(int userId) => '/api/v1/fetch-message/userId=$userId';
   static String post_sendMessage() => '/api/v1/chats/sent-message-file';
+  //
+  static String get_fetchImageUpload(int userId, [int? limit]) => '/api/v1/fetch-image-uploaded/userId=$userId' + (limit != null ? '/$limit' : '');
+  static String get_fetchImageFromPostTag(int userId) => '/api/v1/fetch-image-from-post-tag/userId=$userId';
+  static String get_fetchAlbumByUserId(int userId) => '/api/v1/fetch-album-by-userid/userId=$userId';
+  static String get_fetchImageAlbum(int userId,int albumId) => '/api/v1/fetch-image-album/$userId/$albumId';
+  static String post_createAlbum() => '/api/v1/create-album';
+  static String post_editAlbum() => '/api/v1/edit-album';
+  static String post_deleteAlbum() => '/api/v1/delete-album';
 }

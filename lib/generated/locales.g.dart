@@ -120,6 +120,11 @@ LocaleKeys._();
 	static const PickImage = 'PickImage';
 	static const GroupImage = 'GroupImage';
 	static const FeelingActivity = 'FeelingActivity';
+	static const PhotosWithYourFace = 'PhotosWithYourFace';
+	static const PhotosOfYou = 'PhotosOfYou';
+	static const CreateAlbum = 'CreateAlbum';
+	static const EditAlbum = 'EditAlbum';
+	static const DeleteAlbum = 'DeleteAlbum';
 }
 
 class Locales {
@@ -230,6 +235,11 @@ class Locales {
 		'PickImage': '画像を選択する',
 		'GroupImage': 'グループ画像',
 		'FeelingActivity': '感情/アクティビティ',
+		'PhotosWithYourFace': 'あなたの顔の写真',
+		'PhotosOfYou': 'あなたの写真',
+		'CreateAlbum': 'アルバムを作成する',
+		'EditAlbum': 'アルバムを編集する',
+		'DeleteAlbum': 'アルバムを削除する',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -337,6 +347,11 @@ class Locales {
 		'PickImage': 'Pick Image',
 		'GroupImage': 'Group Image',
 		'FeelingActivity': 'Feeling/Activity',
+		'PhotosWithYourFace': 'Photos with your face',
+		'PhotosOfYou': 'Photos of you',
+		'CreateAlbum': 'Create Album',
+		'EditAlbum': 'Edit Album',
+		'DeleteAlbum': 'Delete Album',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -444,6 +459,11 @@ class Locales {
 		'PickImage': 'Chọn ảnh',
 		'GroupImage': 'Ảnh nhóm',
 		'FeelingActivity': 'Cảm xúc/Hoạt động',
+		'PhotosWithYourFace': 'Ảnh có mặt bạn',
+		'PhotosOfYou': 'Ảnh của bạn',
+		'CreateAlbum': 'Tạo album',
+		'EditAlbum': 'Chỉnh sửa album',
+		'DeleteAlbum': 'Xoá album',
 	};
 
 }
