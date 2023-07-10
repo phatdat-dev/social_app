@@ -73,6 +73,13 @@ class AppPages {
         Get.put(homeController.storiesController);
         Get.put(homeController.notificationController);
       }),
+      children: [
+        GetPage(
+          name: _Paths.SEARCH,
+      transition: randomTransition,
+      page: () => const HomeView(),
+        ),
+      ],
       middlewares: [AuthenticationMiddleware()],
     ),
     GetPage(

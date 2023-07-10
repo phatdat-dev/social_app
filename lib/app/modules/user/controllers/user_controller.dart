@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 import '../../../models/users_model.dart';
 import '../../authentication/controllers/authentication_controller.dart';
-import '../../search_tag_friend/controllers/search_tag_friend_controller.dart';
+import '../../search_friend/controllers/search_tag_friend_mixin_controller.dart';
 
 part 'user_photo_controller_mixin.dart';
 
@@ -26,7 +26,7 @@ enum Relationship {
   }
 }
 
-class UserController extends BaseController with SearchTagFriendController, UserPhotoControllerMixin, StateMixin<UsersModel?> {
+class UserController extends BaseController with SearchTagFriendMixinController, UserPhotoControllerMixin, StateMixin<UsersModel?> {
   final int userId;
   UserController(this.userId);
 

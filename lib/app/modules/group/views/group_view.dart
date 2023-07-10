@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
-import '../../search_tag_friend/views/search_tag_friend_view.dart';
+import '../../search_friend/views/search_tag_friend_view.dart';
 
 class GroupView extends StatefulWidget {
   const GroupView({super.key});

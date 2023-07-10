@@ -7,6 +7,7 @@ abstract class Routes {
   Routes._();
   static String AUTHENTICATION() => _Paths.AUTHENTICATION;
   static String HOME() => _Paths.HOME;
+  static String HOME_SEARCH() => _Paths.HOME + _Paths.SEARCH;
   static String MESSAGE() => _Paths.MESSAGE;
   static String MESSAGE_DETAIL(Object id) => _Paths.MESSAGE + _Paths.DETAIL + '/$id';
   static String MESSAGE_SEARCH() => _Paths.MESSAGE + _Paths.SEARCH;

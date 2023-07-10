@@ -2,11 +2,11 @@
 
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/custom/widget/search_widget.dart';
-import 'package:ckc_social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
+import 'package:ckc_social_app/app/modules/search_friend/controllers/search_tag_friend_mixin_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SearchTagFriendView<T extends SearchTagFriendController> extends StatefulWidget {
+class SearchTagFriendView<T extends SearchTagFriendMixinController> extends StatefulWidget {
   const SearchTagFriendView({super.key, required this.title, this.minSelected = 1}) : assert(minSelected > 0);
 
   final String title;
@@ -16,7 +16,7 @@ class SearchTagFriendView<T extends SearchTagFriendController> extends StatefulW
   State<SearchTagFriendView> createState() => _SearchTagFriendViewState<T>();
 }
 
-class _SearchTagFriendViewState<T extends SearchTagFriendController> extends State<SearchTagFriendView> {
+class _SearchTagFriendViewState<T extends SearchTagFriendMixinController> extends State<SearchTagFriendView> {
   late final T controller;
   final txtController = TextEditingController();
 

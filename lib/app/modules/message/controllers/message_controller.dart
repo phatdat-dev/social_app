@@ -6,15 +6,15 @@ import 'package:ckc_social_app/app/core/services/firebase_service.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:ckc_social_app/app/modules/search_tag_friend/controllers/search_tag_friend_controller.dart';
-import 'package:ckc_social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
+import 'package:ckc_social_app/app/modules/search_friend/controllers/search_tag_friend_mixin_controller.dart';
+import 'package:ckc_social_app/app/modules/search_friend/views/search_tag_friend_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/pusher_service.dart';
 import '../../../routes/app_pages.dart';
 
-class MessageController extends BaseController with SearchTagFriendController {
+class MessageController extends BaseController with SearchTagFriendMixinController {
   final ListMapDataState listChatState = ListMapDataState([]);
   final ListMapDataState listMessageState = ListMapDataState([]);
 
@@ -59,12 +59,12 @@ class MessageController extends BaseController with SearchTagFriendController {
     Get.toNamed(Routes.MESSAGE_DETAIL(user.id!.toString()));
   }
 
-  void onCreateNewGroupMessage<T extends SearchTagFriendController>(BuildContext context) {
+  void onCreateNewGroupMessage<T extends SearchTagFriendMixinController>(BuildContext context) {
     currentChatRoom.update('chatRoomId', (value) => null);
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'New Group Message')));
   }
 
-  void onAddMemberToGroupMessage<T extends SearchTagFriendController>({
+  void onAddMemberToGroupMessage<T extends SearchTagFriendMixinController>({
     required BuildContext context,
     required ValueNotifier<List<UsersModel>> listMemberSelected,
   }) {

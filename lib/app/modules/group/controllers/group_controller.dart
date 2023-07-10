@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/base/base_project.dart';
-import '../../search_tag_friend/controllers/search_tag_friend_controller.dart';
+import '../../search_friend/controllers/search_tag_friend_mixin_controller.dart';
 
-class GroupController extends BaseController with SearchTagFriendController {
+class GroupController extends BaseController with SearchTagFriendMixinController {
   final FetchPostGroupController fetchPostGroupController = FetchPostGroupController();
   late FetchPostByGroupIdController fetchPostByGroupIdController;
 

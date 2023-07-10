@@ -4,7 +4,7 @@ import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:get/get.dart';
 
-mixin SearchTagFriendController implements BaseController {
+mixin SearchTagFriendMixinController implements BaseController {
   //co thoi gian chuyen may cai nay` thanh` bien' Value<T>
   RxList<UsersModel> listFriendOfUser = RxList.empty();
   RxList<UsersModel> listFriendSuggest = RxList.empty();
@@ -34,8 +34,6 @@ mixin SearchTagFriendController implements BaseController {
           .toList();
     });
   }
-
-  
 
   void onPresseSearchTagFriendDone() async {}
 
@@ -82,7 +80,6 @@ mixin SearchTagFriendController implements BaseController {
       RequestMethod.GET,
     )
         .then((value) {
-      
       listFriendOfUser.value = Helper.convertToListMap(value)
           .where((item) => item['status'] == 1)
           .map((item) => UsersModel(

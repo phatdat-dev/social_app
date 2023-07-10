@@ -8,7 +8,7 @@ import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/group/controllers/group_controller.dart';
 import 'package:ckc_social_app/app/modules/home/controllers/home_controller.dart';
-import 'package:ckc_social_app/app/modules/search_tag_friend/views/search_tag_friend_view.dart';
+import 'package:ckc_social_app/app/modules/search_friend/views/search_tag_friend_view.dart';
 import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
