@@ -37,7 +37,7 @@ mixin SearchTagFriendMixinController implements BaseController {
 
   void onPresseSearchTagFriendDone() async {}
 
-  Future<List> call_searchUsersAndGroups(String input, String getObjectList) async {
+  Future<Map<String, dynamic>> call_searchUsersAndGroups(String input) async {
     //json {users: [], groups: [], posts: []}
     return await apiCall
         .onRequest(
@@ -46,7 +46,7 @@ mixin SearchTagFriendMixinController implements BaseController {
           isShowLoading: false,
         )
         .then(
-          (value) => value[getObjectList],
+          (value) => value,
         );
   }
 

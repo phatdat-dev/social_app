@@ -115,7 +115,7 @@ class _GroupViewState extends State<GroupView> {
                                           text: ' ${PrivacyModel.from(int.parse(controller.currentGroup['privacy'].toString())).privacyGroupName}',
                                         ),
                                         // memberGroupData.value
-                                        TextSpan(text: ' ☘ $lengthMembers thành viên'),
+                                        TextSpan(text: ' ☘ $lengthMembers ${LocaleKeys.Members.tr}'),
                                         const TextSpan(text: ' >', style: TextStyle(color: Colors.cyan)),
                                       ],
                                     ),
@@ -199,8 +199,7 @@ class _GroupViewState extends State<GroupView> {
                                   controller.call_fetchFriendToInviteGroup(controller.currentGroup['id']);
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          SearchTagFriendView<GroupController>(title: LocaleKeys.InviteFriendToGroup.tr),
+                                      builder: (context) => SearchTagFriendView<GroupController>(title: LocaleKeys.InviteFriendToGroup.tr),
                                     ),
                                   );
                                 },

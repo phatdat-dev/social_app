@@ -108,5 +108,7 @@
   "PhotosOfYou": "Photos of you",
   "CreateAlbum": "Create Album",
   "EditAlbum": "Edit Album",
-  "DeleteAlbum": "Delete Album"
+  "DeleteAlbum": "Delete Album",
+  "Members": "Members",
+  "Post": "Post"
 }

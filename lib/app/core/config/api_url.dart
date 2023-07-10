@@ -30,7 +30,7 @@ class ApiUrl {
   static String post_removeMemberFromGroup() => '/api/v1/remove-member-from-group';
   static String post_removeAdminToGroup() => '/api/v1/remove-admin-to-group';
   static String post_addAdminToGroup() => '/api/v1/add-admin-group';
-  static String get_searchUsersAndGroups(String input) => '/api/v1/search-users-and-groups/$input';
+  static String get_searchUsersAndGroups(String input) => '/api/v1/search-users-and-groups/input=$input';
   static String post_createGroup() => '/api/v1/create-group';
   static String get_fetchFriendToInviteGroup(int groupId) => '/api/v1/fetch-friend-to-invite-group/$groupId';
   static String post_sendInviteToGroup() => '/api/v1/send-invite-to-group';

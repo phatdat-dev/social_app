@@ -108,5 +108,7 @@
   "PhotosOfYou": "あなたの写真",
   "CreateAlbum": "アルバムを作成する",
   "EditAlbum": "アルバムを編集する",
-  "DeleteAlbum": "アルバムを削除する"
+  "DeleteAlbum": "アルバムを削除する",
+  "Members": "メンバー",
+  "Post": "投稿"
 }

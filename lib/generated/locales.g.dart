@@ -125,6 +125,8 @@ LocaleKeys._();
 	static const CreateAlbum = 'CreateAlbum';
 	static const EditAlbum = 'EditAlbum';
 	static const DeleteAlbum = 'DeleteAlbum';
+	static const Members = 'Members';
+	static const Post = 'Post';
 }
 
 class Locales {
@@ -240,6 +242,8 @@ class Locales {
 		'CreateAlbum': 'アルバムを作成する',
 		'EditAlbum': 'アルバムを編集する',
 		'DeleteAlbum': 'アルバムを削除する',
+		'Members': 'メンバー',
+		'Post': '投稿',
 	};
 	static const en_US = {
 		'en_US': 'English',
@@ -352,6 +356,8 @@ class Locales {
 		'CreateAlbum': 'Create Album',
 		'EditAlbum': 'Edit Album',
 		'DeleteAlbum': 'Delete Album',
+		'Members': 'Members',
+		'Post': 'Post',
 	};
 	static const vi_VN = {
 		'en_US': 'Tiếng Anh',
@@ -464,6 +470,8 @@ class Locales {
 		'CreateAlbum': 'Tạo album',
 		'EditAlbum': 'Chỉnh sửa album',
 		'DeleteAlbum': 'Xoá album',
+		'Members': 'thành viên',
+		'Post': 'Bài viết',
 	};
 
 }

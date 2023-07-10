@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:ckc_social_app/app/modules/home/views/home_search_view.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/controller/openai_controller.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_setting_bot_view.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_view.dart';
@@ -76,8 +77,8 @@ class AppPages {
       children: [
         GetPage(
           name: _Paths.SEARCH,
-      transition: randomTransition,
-      page: () => const HomeView(),
+          transition: randomTransition,
+          page: () => const HomeSearchView(),
         ),
       ],
       middlewares: [AuthenticationMiddleware()],

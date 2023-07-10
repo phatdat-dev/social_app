@@ -29,6 +29,7 @@ extension HomeViewFunctionExtension on _HomeViewState {
     // Printt.white(result?.dataResponse);
 
     //?
+    Get.toNamed(Routes.HOME_SEARCH());
   }
 }
 

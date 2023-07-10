@@ -642,45 +642,51 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
     required BuildContext context,
     required Map<String, dynamic> postResponseModel,
   }) {
+    final List<Map<String, dynamic>> listMedia = Helper.convertToListMap(postResponseModel['mediafile'] ?? []);
+
+    void showDialogImage() {
+      showDialog(
+          //barrierDismissible: false,
+          context: context,
+          builder: (context) => PageView.builder(
+                itemCount: listMedia.length,
+                itemBuilder: (context, index) {
+                  final url = listMedia[index]['media_file_name']!;
+                  return Stack(
+                    children: [
+                      InteractiveViewer(
+                        maxScale: 10,
+                        child: Center(
+                          child: Image.network(
+                            url,
+                            // fit: BoxFit.fill,
+                            alignment: Alignment.center,
+                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                      const Align(
+                        alignment: Alignment.topLeft,
+                        child: Material(
+                          child: BackButton(),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ));
+    }
+
     Widget buildImage(String url) {
       return url.contains('http')
-          ? GestureDetector(
-              onTap: () {
-                //from HelperWidget.buildImage
-                showDialog(
-                    //barrierDismissible: false,
-                    context: context,
-                    builder: (context) => Stack(
-                          children: [
-                            InteractiveViewer(
-                              maxScale: 10,
-                              child: Center(
-                                child: Image.network(
-                                  url,
-                                  // fit: BoxFit.fill,
-                                  alignment: Alignment.center,
-                                  errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
-                                ),
-                              ),
-                            ),
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Material(
-                                child: BackButton(),
-                              ),
-                            ),
-                          ],
-                        ));
-              },
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/Img_error.png',
-                image: url,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                fadeInDuration: const Duration(milliseconds: 200),
-                fadeOutDuration: const Duration(milliseconds: 180),
-                // height: 300,
-              ),
+          ? FadeInImage.assetNetwork(
+              placeholder: 'assets/images/Img_error.png',
+              image: url,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              fadeInDuration: const Duration(milliseconds: 200),
+              fadeOutDuration: const Duration(milliseconds: 180),
+              // height: 300,
             )
           : Image.asset(
               url,
@@ -737,62 +743,66 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
       return const SizedBox.shrink();
     }
 
-    final List<Map<String, dynamic>> listMedia = Helper.convertToListMap(postResponseModel['mediafile'] ?? []);
-
     if (listMedia.isEmpty) return const SizedBox.shrink();
 
-    if (listMedia.length == 1) return buildMedia(listMedia.first['media_file_name']!);
+    if (listMedia.length == 1) return GestureDetector(onTap: () => showDialogImage(), child: buildMedia(listMedia.first['media_file_name']!));
 
     if (listMedia.length == 2) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          buildMedia(listMedia.first['media_file_name']!),
-          buildMedia(listMedia.last['media_file_name']!),
-        ],
+      return GestureDetector(
+        onTap: () => showDialogImage(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildMedia(listMedia.first['media_file_name']!),
+            buildMedia(listMedia.last['media_file_name']!),
+          ],
+        ),
       );
     }
 
 //imageUrl.length >= 3
     else {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          buildMedia(listMedia.first['media_file_name']!),
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 150,
-                  child: buildMedia(listMedia[1]['media_file_name']!),
+      return GestureDetector(
+        onTap: () => showDialogImage(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildMedia(listMedia.first['media_file_name']!),
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 150,
+                    child: buildMedia(listMedia[1]['media_file_name']!),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    SizedBox(
-                      height: 150,
-                      child: buildMedia(listMedia[2]['media_file_name']!),
-                    ),
-                    Container(
-                      height: 150,
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: CircleAvatar(
-                          child: Text('+${listMedia.length - 2}'),
-                          backgroundColor: Colors.transparent,
+                Expanded(
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: 150,
+                        child: buildMedia(listMedia[2]['media_file_name']!),
+                      ),
+                      Container(
+                        height: 150,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                      Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            child: Text('+${listMedia.length - 2}'),
+                            backgroundColor: Colors.transparent,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       );
     }
   }
