@@ -1,6 +1,38 @@
 part of '../views/home_view.dart';
 
-extension HomeViewExtension on _HomeViewState {
+extension HomeViewFunctionExtension on _HomeViewState {
+  void _onPressedSearchAppBar() async {
+    // final searchDropDown = [
+    //   MoreDropDownSearchCustom(
+    //     key: 'users',
+    //     queryName: 'displayName',
+    //     apiCall: (data) => controller.call_searchUsersAndGroups(data, 'users'),
+    //   ),
+    //   MoreDropDownSearchCustom(
+    //     key: 'groups',
+    //     queryName: 'group_name',
+    //     apiCall: (data) => controller.call_searchUsersAndGroups(data, 'groups'),
+    //   ),
+    //   MoreDropDownSearchCustom(
+    //     key: 'posts',
+    //     queryName: 'post_content',
+    //     apiCall: (data) => controller.call_searchUsersAndGroups(data, 'posts'),
+    //   ),
+    // ];
+
+    // final result = await HelperWidget.showSearchDropDownApiCall(
+    //   context: context,
+    //   hintText: 'find your friends...',
+    //   initData: searchDropDown.first,
+    //   moreDropDownSearch: searchDropDown,
+    // );
+    // Printt.white(result?.dataResponse);
+
+    //?
+  }
+}
+
+extension HomeViewWidgetExtension on _HomeViewState {
   SliverAppBar _buildAppBarDefaultTab() {
     return SliverAppBar(
       automaticallyImplyLeading: false,
@@ -37,33 +69,7 @@ extension HomeViewExtension on _HomeViewState {
         AppBarIconWidget(icon: const Icon(Icons.add), onPressed: () {}),
         AppBarIconWidget(
           icon: const Icon(MdiIcons.magnify),
-          onPressed: () async {
-            final searchDropDown = [
-              MoreDropDownSearchCustom(
-                key: 'users',
-                queryName: 'displayName',
-                apiCall: (data) => controller.call_searchUsersAndGroups(data, 'users'),
-              ),
-              MoreDropDownSearchCustom(
-                key: 'groups',
-                queryName: 'group_name',
-                apiCall: (data) => controller.call_searchUsersAndGroups(data, 'groups'),
-              ),
-              MoreDropDownSearchCustom(
-                key: 'posts',
-                queryName: 'post_content',
-                apiCall: (data) => controller.call_searchUsersAndGroups(data, 'posts'),
-              ),
-            ];
-
-            final result = await HelperWidget.showSearchDropDownApiCall(
-              context: context,
-              hintText: 'find your friends...',
-              initData: searchDropDown.first,
-              moreDropDownSearch: searchDropDown,
-            );
-            Printt.white(result?.dataResponse);
-          },
+          onPressed: _onPressedSearchAppBar,
         ),
         AppBarIconWidget(
             icon: const Icon(MdiIcons.facebookMessenger),

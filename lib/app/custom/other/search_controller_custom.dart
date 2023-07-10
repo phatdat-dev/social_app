@@ -1,37 +1,47 @@
 import 'package:flutter/material.dart';
 
 // https://api.flutter.dev/flutter/material/SearchAnchor-class.html
-class SearchControllerCustom<T extends SearchDelegateQueryName> extends SearchController {
-  SearchControllerCustom({required this.searchSuggestions});
-  final List<T> searchSuggestions;
-  List<T> searchHistory = <T>[];
-  T? selectedItem = null;
+class SelectedSearchControllerCustom<T extends SearchDelegateQueryName> extends SearchController {
+  SelectedSearchControllerCustom({required this.data});
+  List<T> data; //nên để final
+  Set<T> searchHistory = {};
+  T? selectedItem;
+  ValueChanged<T>? onSelectionChanged;
 
-  void handleSelection(T item) {
+  void _handleSelection(T item) {
     closeView(item.queryName);
     //
     selectedItem = item;
-    if (searchHistory.length >= 5) {
-      searchHistory.removeLast();
+
+    //xóa để add lại vào đầu
+    searchHistory.remove(item);
+    final length = searchHistory.length;
+    if (length >= 5) {
+      final lastElement = searchHistory.elementAt(length - 1);
+      searchHistory.remove(lastElement);
     }
-    searchHistory.insert(0, item);
+    searchHistory.add(item);
+    //
+    onSelectionChanged?.call(item);
   }
 
   Iterable<Widget> getHistoryList() {
-    return searchHistory.map((item) => ListTile(
-          leading: const Icon(Icons.history),
-          title: Text(item.queryName),
-          trailing: _buildTrailingIconButton(item),
-          onTap: () => handleSelection(item),
-        ));
+    return searchHistory
+        .map((item) => ListTile(
+              leading: const Icon(Icons.history),
+              title: Text(item.queryName),
+              trailing: _buildTrailingIconButton(item),
+              onTap: () => _handleSelection(item),
+            ))
+        .toList()
+        .reversed;
   }
 
   Iterable<Widget> getSuggestions() {
-    final String input = value.text;
-    return searchSuggestions.where((element) => element.queryName.contains(input)).map((item) => ListTile(
+    return data.where((element) => element.queryName.toLowerCase().contains(text.toLowerCase())).map((item) => ListTile(
           title: Text(item.queryName),
           trailing: _buildTrailingIconButton(item),
-          onTap: () => handleSelection(item),
+          onTap: () => _handleSelection(item),
         ));
   }
 

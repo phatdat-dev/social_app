@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/config/theme_config.dart';
 import 'package:ckc_social_app/app/core/services/translation_service.dart';
 import 'package:ckc_social_app/app/custom/widget/check_radio_listtitle_widget.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../core/constants/app_constant.dart';
 import '../../../core/utils/utils.dart';
@@ -58,38 +58,38 @@ class HomeDrawerWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              ListTile(
-                style: ListTileStyle.drawer,
-                leading: const Icon(Icons.favorite_outline),
-                title: Text(LocaleKeys.Favorite.tr),
-                trailing: const Icon(Icons.navigate_next_outlined),
-              ),
-              //download
-              const ListTile(
-                style: ListTileStyle.drawer,
-                leading: Icon(Icons.download_outlined),
-                title: Text('Download'),
-                trailing: Icon(Icons.navigate_next_outlined),
-              ),
+              // ListTile(
+              //   style: ListTileStyle.drawer,
+              //   leading: const Icon(Icons.favorite_outline),
+              //   title: Text(LocaleKeys.Favorite.tr),
+              //   trailing: const Icon(Icons.navigate_next_outlined),
+              // ),
+              // //download
+              // const ListTile(
+              //   style: ListTileStyle.drawer,
+              //   leading: Icon(Icons.download_outlined),
+              //   title: Text('Download'),
+              //   trailing: Icon(Icons.navigate_next_outlined),
+              // ),
 
-              //location
-              const ListTile(
-                style: ListTileStyle.drawer,
-                leading: Icon(Icons.location_on_outlined),
-                title: Text('Location'),
-                trailing: Icon(Icons.navigate_next_outlined),
-              ),
-              //display
-              const ListTile(
-                style: ListTileStyle.drawer,
-                leading: Icon(Icons.display_settings_outlined),
-                title: Text('Display'),
-                trailing: Icon(Icons.navigate_next_outlined),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(),
-              ),
+              // //location
+              // const ListTile(
+              //   style: ListTileStyle.drawer,
+              //   leading: Icon(Icons.location_on_outlined),
+              //   title: Text('Location'),
+              //   trailing: Icon(Icons.navigate_next_outlined),
+              // ),
+              // //display
+              // const ListTile(
+              //   style: ListTileStyle.drawer,
+              //   leading: Icon(Icons.display_settings_outlined),
+              //   title: Text('Display'),
+              //   trailing: Icon(Icons.navigate_next_outlined),
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16),
+              //   child: Divider(),
+              // ),
               //language
 
               ExpansionTile(
@@ -109,7 +109,7 @@ class HomeDrawerWidget extends StatelessWidget {
               ),
               ExpansionTile(
                 leading: const Icon(Icons.color_lens_outlined),
-                title: const Text('Theme seeder color'),
+                title: const Text('Theme'),
                 children: [
                   Wrap(
                     children: [null, ...Colors.primaries]

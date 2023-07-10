@@ -15,34 +15,40 @@ class StoriesView extends GetView<StoriesController> {
         title: Text(controller.currentObject!.data['displayName']),
       ),
       body: SafeArea(
-        child: Stack(children: [
-          //Blur Image
-          //https://protocoderspoint.com/image-blur-background-flutter/
-          SizedBox.expand(
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(
-                sigmaX: 50,
-                sigmaY: 50,
+        child: PageView.builder(
+          itemCount: (controller.currentObject!.data['stories'] as List).length,
+          itemBuilder: (context, index) {
+            final item = (controller.currentObject!.data['stories'] as List)[index];
+            return Stack(children: [
+              //Blur Image
+              //https://protocoderspoint.com/image-blur-background-flutter/
+              SizedBox.expand(
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(
+                    sigmaX: 50,
+                    sigmaY: 50,
+                  ),
+                  child: Image.network(
+                    item['file_name_story'],
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
+                  ),
+                ),
               ),
-              child: Image.network(
-                controller.currentObject!.data['file_name_story'],
-                fit: BoxFit.fill,
-                errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
+              InteractiveViewer(
+                maxScale: 10,
+                child: Center(
+                  child: Image.network(
+                    item['file_name_story'],
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
+                  ),
+                ),
               ),
-            ),
-          ),
-          InteractiveViewer(
-            maxScale: 10,
-            child: Center(
-              child: Image.network(
-                controller.currentObject!.data['file_name_story'],
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-                errorBuilder: (context, error, stackTrace) => const Icon(Icons.image, color: Colors.grey),
-              ),
-            ),
-          ),
-        ]),
+            ]);
+          },
+        ),
       ),
     );
   }

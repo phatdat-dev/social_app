@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../core/utils/utils.dart';
 
-class SearchWidget extends StatelessWidget {
+class SearchBarWidget extends StatelessWidget {
   final String? hintText;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
@@ -14,7 +14,7 @@ class SearchWidget extends StatelessWidget {
   final Color? backgroundColor;
   final double? elevation;
 
-  SearchWidget({
+  SearchBarWidget({
     Key? key,
     this.hintText,
     this.onChanged,

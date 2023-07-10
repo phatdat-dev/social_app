@@ -64,7 +64,7 @@ class ApiUrl {
   static String get_fetchImageUpload(int userId, [int? limit]) => '/api/v1/fetch-image-uploaded/userId=$userId' + (limit != null ? '/$limit' : '');
   static String get_fetchImageFromPostTag(int userId) => '/api/v1/fetch-image-from-post-tag/userId=$userId';
   static String get_fetchAlbumByUserId(int userId) => '/api/v1/fetch-album-by-userid/userId=$userId';
-  static String get_fetchImageAlbum(int userId,int albumId) => '/api/v1/fetch-image-album/$userId/$albumId';
+  static String get_fetchImageAlbum(int userId, int albumId) => '/api/v1/fetch-image-album/$userId/$albumId';
   static String post_createAlbum() => '/api/v1/create-album';
   static String post_editAlbum() => '/api/v1/edit-album';
   static String post_deleteAlbum() => '/api/v1/delete-album';

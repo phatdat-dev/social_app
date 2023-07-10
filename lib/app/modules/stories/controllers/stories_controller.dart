@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:get/get.dart';
 
 import '../../../core/services/picker_service.dart';
 import '../../../routes/app_pages.dart';
@@ -18,22 +18,20 @@ class StoriesController extends BaseController {
   }
 
   Future<void> call_fetchStories() async {
-    await apiCall
+    listStories.run(apiCall
         .onRequest(
-      ApiUrl.get_fetchStories(),
-      RequestMethod.GET,
-      isShowLoading: false,
-    )
-        .then((value) {
-      //chổ này api viết tào lao quá nên mắc công phải sửa lại
-      value = (value as List).map((e) => e['stories']).expand((e) => e).toList();
-      listStories.change(Helper.convertToListMap(value), status: RxStatus.success());
-    });
+          ApiUrl.get_fetchStories(),
+          RequestMethod.GET,
+          isShowLoading: false,
+        )
+        .then(
+          (value) => Helper.convertToListMap(value),
+        ));
   }
 
   void redirectToStoriesView(({int index, Map<String, dynamic> data}) item) {
     currentObject = item;
-    Get.toNamed(Routes.STORIES(item.data['id'].toString()));
+    Get.toNamed(Routes.STORIES(item.data['user_id'].toString()));
   }
 
   void createStories() async {

@@ -54,7 +54,7 @@ class _SearchTagFriendViewState<T extends SearchTagFriendController> extends Sta
           ],
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(50),
-            child: SearchWidget(
+            child: SearchBarWidget(
               controller: txtController,
               hintText: 'Tìm kiếm',
               backgroundColor: Colors.grey.shade100,

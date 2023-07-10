@@ -37,7 +37,7 @@ class MessageView<T extends MessageController> extends GetView<T> {
               preferredSize: const Size.fromHeight(50.0),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: SearchWidget(
+                child: SearchBarWidget(
                   controller: TextEditingController(),
                   hintText: 'Search Anyone',
                   // onTap: () {
