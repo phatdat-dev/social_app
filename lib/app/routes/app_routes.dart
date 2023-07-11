@@ -31,6 +31,7 @@ abstract class Routes {
   static String POST(Object id) => _Paths.POST + '/$id';
   static String POST_CREATE() => _Paths.POST + _Paths.CREATE;
   static String POST_HISTORY(Object id) => POST(id) + _Paths.HISTORY;
+  static String POST_REPORT(Object id) => POST(id) + _Paths.REPORT;
   static String NOTIFICATION() => _Paths.NOTIFICATION;
   static String VIDEO_CALL() => _Paths.VIDEO_CALL;
   static String VIDEO_CALL_DETAIL() => _Paths.VIDEO_CALL + _Paths.DETAIL;
@@ -60,4 +61,5 @@ abstract class _Paths {
   static const SETTING = '/setting';
   static const PHOTOS = '/photos';
   static const ALBUM = '/album';
+  static const REPORT = '/report';
 }

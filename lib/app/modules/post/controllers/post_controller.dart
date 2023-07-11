@@ -137,4 +137,12 @@ class PostController extends BaseFetchController {
     final result = await apiCall.onRequest(ApiUrl.get_fetchFellAndActivityPosts(), RequestMethod.GET);
     return Helper.convertToListMap(result);
   }
+
+  Future<void> call_createReportPost(int type, int postId, String content) async {
+    await apiCall.onRequest(ApiUrl.post_createReport(), RequestMethod.POST, body: {
+      'objectType': type,
+      'objectId': postId,
+      'contentReport': content,
+    });
+  }
 }

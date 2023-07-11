@@ -5,6 +5,7 @@ import 'package:ckc_social_app/app/modules/home/views/home_search_view.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/controller/openai_controller.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_setting_bot_view.dart';
 import 'package:ckc_social_app/app/modules/message/open_ai/views/openai_message_view.dart';
+import 'package:ckc_social_app/app/modules/post/views/post_report_view.dart';
 import 'package:ckc_social_app/app/modules/user/views/user_album_create_view.dart';
 import 'package:ckc_social_app/app/modules/user/views/user_album_detail_view.dart';
 import 'package:ckc_social_app/app/modules/user/views/user_editing_view.dart';
@@ -239,6 +240,14 @@ class AppPages {
           page: () {
             final id = int.tryParse(Get.parameters['id'] ?? '') ?? 0;
             return PostHistoryView(postId: id);
+          },
+        ),
+        GetPage(
+          name: _Paths.REPORT, // /post/:id/report
+          transition: randomTransition,
+          page: () {
+            final id = int.tryParse(Get.parameters['id'] ?? '') ?? 0;
+            return PostReportView(postId: id);
           },
         ),
       ],

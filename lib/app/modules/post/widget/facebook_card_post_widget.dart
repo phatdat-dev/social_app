@@ -586,31 +586,33 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                 //   icon: const Icon(Icons.privacy_tip_outlined),
                 //   onTap: () {},
                 // ),
-                LocaleKeys.ViewEditHistory: (
-                  iconColor: Colors.green,
-                  icon: const Icon(Icons.history_outlined),
-                  onTap: () => Get.toNamed(Routes.POST_HISTORY(postResponseModel['id'].toString())),
-                ),
-                LocaleKeys.EditPost: (
-                  iconColor: Colors.amber,
-                  icon: const Icon(Icons.edit_outlined),
-                  onTap: () => Get.toNamed(Routes.POST_CREATE(), arguments: postResponseModel),
-                ),
-                LocaleKeys.DeletePost: (
-                  iconColor: Colors.red,
-                  icon: const Icon(Icons.delete_outline),
-                  onTap: () => controller.call_deletePostData(postResponseModel['id']).then((value) {
-                        //off dialog
-                        HelperWidget.showSnackBar(message: 'Success');
-                        controller.state!.remove(postResponseModel);
-                        controller.refresh();
-                      }),
-                ),
-                LocaleKeys.ReportPost: (
-                  iconColor: null,
-                  icon: const Icon(Icons.report_outlined),
-                  onTap: () {},
-                ),
+                if (postResponseModel['user_id'] == AuthenticationController.userAccount!.id) ...{
+                  LocaleKeys.ViewEditHistory: (
+                    iconColor: Colors.green,
+                    icon: const Icon(Icons.history_outlined),
+                    onTap: () => Get.toNamed(Routes.POST_HISTORY(postResponseModel['id'].toString())),
+                  ),
+                  LocaleKeys.EditPost: (
+                    iconColor: Colors.amber,
+                    icon: const Icon(Icons.edit_outlined),
+                    onTap: () => Get.toNamed(Routes.POST_CREATE(), arguments: postResponseModel),
+                  ),
+                  LocaleKeys.DeletePost: (
+                    iconColor: Colors.red,
+                    icon: const Icon(Icons.delete_outline),
+                    onTap: () => controller.call_deletePostData(postResponseModel['id']).then((value) {
+                          //off dialog
+                          HelperWidget.showSnackBar(message: 'Success');
+                          controller.state!.remove(postResponseModel);
+                          controller.refresh();
+                        }),
+                  ),
+                } else
+                  LocaleKeys.ReportPost: (
+                    iconColor: null,
+                    icon: const Icon(Icons.report_outlined),
+                    onTap: () => Get.toNamed(Routes.POST_REPORT(postResponseModel['id'])),
+                  ),
               };
               return PopupMenuButton(
                 //vị trí khi show menu
