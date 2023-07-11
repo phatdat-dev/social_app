@@ -61,15 +61,14 @@ class MessageView<T extends MessageController> extends GetView<T> {
                   itemCount: state!.length,
                   itemBuilder: (context, index) {
                     final item = state[index];
-                    final user = UsersModel(
-                      id: item['userId'],
-                      displayName: item['conversation_name'],
-                      avatar: item['conversation_avatar'],
-                    );
                     return ChatCard(
-                      user: user,
+                      user: (
+                        title: item['conversation_name'],
+                        subTitle: null,
+                        avatar: item['conversation_avatar'],
+                      ),
                       onTap: () {
-                        controller.onCreateMessage(index, user);
+                        controller.redirectToMessageDetail(item['id']);
                       },
                     );
                   },
@@ -102,7 +101,11 @@ class MessageView<T extends MessageController> extends GetView<T> {
             return Column(
               children: [
                 ChatCard(
-                  user: item,
+                  user: (
+                    title: item.displayName!,
+                    subTitle: null,
+                    avatar: item.avatar!,
+                  ),
                   onTap: () => onTapUserIndex != null ? onTapUserIndex(index, item) : null,
                 ).buildAvatar(defaultWidth),
                 SizedBox(

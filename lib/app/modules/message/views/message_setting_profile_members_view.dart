@@ -98,7 +98,7 @@ class MessageSettingProfileMembersTabAllWidget extends StatelessWidget {
     final controller = Get.find<MessageController>();
     final fireBaseService = Get.find<FireBaseService>();
     return StreamBuilder(
-        stream: fireBaseService.call_getChatRoomDocs(controller.currentChatRoom['chatRoomId'].toString()),
+        stream: fireBaseService.call_getChatRoomDocs(controller.currentChatRoom.value['chatRoomId'].toString()),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<UsersModel> members = List<Map<String, dynamic>>.from(snapshot.data!['members']).map((e) => UsersModel().fromJson(e)).toList();
@@ -109,8 +109,13 @@ class MessageSettingProfileMembersTabAllWidget extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemCount: members.length,
               itemBuilder: (context, index) {
+                final item = members[index];
                 return ChatCard(
-                  user: members[index],
+                  user: (
+                    title: item.displayName!,
+                    subTitle: null,
+                    avatar: item.avatar!,
+                  ),
                 );
               },
             );

@@ -5,7 +5,6 @@ import 'package:ckc_social_app/app/models/users_model.dart';
 import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/message/controllers/message_controller.dart';
 import 'package:ckc_social_app/app/routes/app_pages.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,11 +32,10 @@ class MessageDetailViewState extends State<MessageDetailView> {
     super.initState();
     controller = Get.find<MessageController>();
     //báo lỗi khi
-    assert(!(controller.currentChatRoom['chatRoomId'] == null));
-    assert(!(controller.currentChatRoom['user'] == null));
+    assert(!(controller.currentChatRoom.value['chatRoomId'] == null));
     fireBaseService = Get.find<FireBaseService>();
     //
-    controller.call_fetchMessageCurrentUser();
+    controller.call_fetchMessageCurrent();
     controller.handleMessage();
   }
 
@@ -86,21 +84,19 @@ class MessageDetailViewState extends State<MessageDetailView> {
           elevation: 0, //shadow
           title: Row(children: [
             const BackButton(),
-            Expanded(child: Builder(builder: (context) {
-              final user = (controller.currentChatRoom['user'] as UsersModel);
-              return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: fireBaseService.call_getUser('${user.id}'),
-                builder: (context, snapshot) {
-                  final data = snapshot.data?.data();
-
-                  if (snapshot.hasData && data != null && data.isNotEmpty) {
-                    final bool isOnline = data['onlineStatus'] == 'Online';
-                    return buildLeadingAvatar(user: user, isOnline: isOnline);
-                  }
-                  return buildLeadingAvatar(user: user);
-                },
-              );
-            })),
+            Expanded(
+                child: ValueListenableBuilder(
+              valueListenable: controller.currentChatRoom,
+              builder: (context, value, child) {
+                final conversation = value['conversation'];
+                if (conversation == null) return const SizedBox.shrink();
+                return buildLeadingAvatar(
+                    user: UsersModel(
+                  avatar: conversation['conversation_avatar'],
+                  displayName: conversation['conversation_name'],
+                ));
+              },
+            )),
           ]),
           actions: [
             IconButton(
@@ -110,12 +106,12 @@ class MessageDetailViewState extends State<MessageDetailView> {
             IconButton(
               icon: const Icon(Icons.videocam),
               onPressed: () =>
-                  Get.toNamed(Routes.VIDEO_CALL_DETAIL(), arguments: {'chanelName': controller.currentChatRoom['chatRoomId'].toString()}),
+                  Get.toNamed(Routes.VIDEO_CALL_DETAIL(), arguments: {'chanelName': controller.currentChatRoom.value['chatRoomId'].toString()}),
             ),
             IconButton(
               icon: const Icon(Icons.info),
               onPressed: () {
-                Get.toNamed(Routes.MESSAGE_SETTING_PROFILE(controller.currentChatRoom['chatRoomId'].toString()));
+                Get.toNamed(Routes.MESSAGE_SETTING_PROFILE(controller.currentChatRoom.value['chatRoomId'].toString()));
               },
             ),
             const SizedBox(width: 15 / 2),

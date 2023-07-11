@@ -21,7 +21,7 @@ import 'feeling_activity_view.dart';
 // ignore: must_be_immutable
 class PostCreateView extends GetView<HomeController> {
   PostCreateView({super.key, this.postResponseModel}) {
-    txtController = TextEditingController(text: postResponseModel?['post_content']);
+    txtController = TextEditingController(text: postResponseModel?['post_content'] ?? 'Tạo bài viết mới nè');
     currentPrivacy = ValueNotifier(PrivacyModel.from(postResponseModel?['privacy'] ?? 0)); //private
   }
 

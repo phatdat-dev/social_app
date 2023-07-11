@@ -18,10 +18,11 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
   final ListMapDataState listChatState = ListMapDataState([]);
   final ListMapDataState listMessageState = ListMapDataState([]);
 
-  Map<String, dynamic> currentChatRoom = {
+  ValueNotifier<Map<String, dynamic>> currentChatRoom = ValueNotifier({
     'chatRoomId': null,
-    'user': null,
-  };
+    'users': null,
+    'conversation': null,
+  });
 
   @override
   Future<void> onInitData() async {
@@ -40,7 +41,7 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
     final listSelected = listFriendOfUser.where((element) => element.isSelected).toList();
 
     await fireBaseService.call_createOrUpdateGroupChat(
-      chatRoomId: currentChatRoom['chatRoomId'] ?? Helper.generateIdFromDateTimeNow(),
+      chatRoomId: currentChatRoom.value['chatRoomId'] ?? Helper.generateIdFromDateTimeNow(),
       members: [AuthenticationController.userAccount!.toJson(), ...listSelected.map((e) => (e).toJson())],
     );
 
@@ -50,17 +51,11 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
   void onCreateMessage(int index, UsersModel user) async {
     final result = await call_createChat(user.id!);
     if (result == null) return;
-    currentChatRoom = currentChatRoom.copyWith({
-      'chatRoomId': result['id'],
-      'user': user,
-    });
-
-    call_fetchListChat();
-    Get.toNamed(Routes.MESSAGE_DETAIL(user.id!.toString()));
+    redirectToMessageDetail(result['id']);
   }
 
   void onCreateNewGroupMessage<T extends SearchTagFriendMixinController>(BuildContext context) {
-    currentChatRoom.update('chatRoomId', (value) => null);
+    currentChatRoom.value.update('chatRoomId', (value) => null);
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchTagFriendView<T>(title: 'New Group Message')));
   }
 
@@ -95,7 +90,7 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
   //   );
 
   //   Get.find<FireBaseService>().call_sendMessage(
-  //     chatRoomId: currentChatRoom['chatRoomId'],
+  //     chatRoomId: currentChatRoom.value['chatRoomId'],
   //     type: type.name,
   //     data: images,
   //   );
@@ -104,7 +99,7 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
   void handleMessage() {
     final pusherService = Get.find<PusherService>();
     pusherService.subscribeChannel(
-      channalName: 'conversation-' + currentChatRoom['chatRoomId'].toString(),
+      channalName: 'conversation-' + currentChatRoom.value['chatRoomId'].toString(),
       bindEventName: 'message',
       onEvent: (event) {
         // Printt.white(jsonDecode(event!.data!));
@@ -113,6 +108,15 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
           ..refresh();
       },
     );
+  }
+
+  void redirectToMessageDetail(int conversationId) async {
+    currentChatRoom.value = currentChatRoom.value.copyWith({
+      'chatRoomId': conversationId,
+    });
+
+    call_fetchListChat();
+    Get.toNamed(Routes.MESSAGE_DETAIL(conversationId));
   }
 
   Future<Map<String, dynamic>?> call_createChat(int userId) async {
@@ -136,14 +140,22 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
     );
   }
 
-  Future<void> call_fetchMessageCurrentUser() async {
+  Future<void> call_fetchMessageCurrent() async {
     listMessageState.run(
       apiCall
           .onRequest(
-        ApiUrl.get_fetchMessage((currentChatRoom['user'] as UsersModel).id!),
+        ApiUrl.get_fetchMessage(currentChatRoom.value['chatRoomId']),
         RequestMethod.GET,
       )
           .then((value) {
+        final listUser = (value['conversation']['paticipaints'] as List).map((element) {
+          return UsersModel().fromJson(element['user']);
+        }).toList();
+        //
+        currentChatRoom.value = currentChatRoom.value.copyWith({
+          'conversation': value['conversation'],
+          'users': listUser,
+        });
         return Helper.convertToListMap((value['message'] as List).reversed);
       }),
     );
@@ -151,7 +163,7 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
 
   Future<void> call_sendMessage(String contentString, [List<String>? filesPath]) async {
     final formData = FormData({
-      'conversationId': currentChatRoom['chatRoomId'],
+      'conversationId': currentChatRoom.value['chatRoomId'],
       'contentMessage': contentString,
       'files[]': filesPath?.map((path) => MultipartFile(File(path), filename: path)).toList(),
     });
