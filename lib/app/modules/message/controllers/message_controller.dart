@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ckc_social_app/app/core/base/base_project.dart';
-import 'package:ckc_social_app/app/core/services/firebase_service.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
 import 'package:ckc_social_app/app/models/users_model.dart';
-import 'package:ckc_social_app/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:ckc_social_app/app/modules/search_friend/controllers/search_tag_friend_mixin_controller.dart';
 import 'package:ckc_social_app/app/modules/search_friend/views/search_tag_friend_view.dart';
 import 'package:flutter/material.dart';
@@ -37,15 +35,17 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
 
   @override
   void onPresseSearchTagFriendDone() async {
-    final fireBaseService = Get.find<FireBaseService>();
+    //create group chat
     final listSelected = listFriendOfUser.where((element) => element.isSelected).toList();
 
-    await fireBaseService.call_createOrUpdateGroupChat(
-      chatRoomId: currentChatRoom.value['chatRoomId'] ?? Helper.generateIdFromDateTimeNow(),
-      members: [AuthenticationController.userAccount!.toJson(), ...listSelected.map((e) => (e).toJson())],
+    final result = await call_createGroupChat(
+      'Created group',
+      listSelected.map((e) => e.id!).toList(),
     );
 
     Get.back();
+    if (result == null) return;
+    redirectToMessageDetail(result['id']);
   }
 
   void onCreateMessage(int index, UsersModel user) async {
@@ -148,7 +148,7 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
         RequestMethod.GET,
       )
           .then((value) {
-        final listUser = (value['conversation']['paticipaints'] as List).map((element) {
+        final listUser = (value['conversation']?['paticipaints'] as List?)?.map((element) {
           return UsersModel().fromJson(element['user']);
         }).toList();
         //
@@ -169,5 +169,12 @@ class MessageController extends BaseController with SearchTagFriendMixinControll
     });
 
     await apiCall.onRequest(ApiUrl.post_sendMessage(), RequestMethod.POST, body: formData);
+  }
+
+  Future<Map<String, dynamic>?> call_createGroupChat(String contentMessage, List<int> listUserId) async {
+    return await apiCall.onRequest(ApiUrl.post_createGroupChat(), RequestMethod.POST, body: {
+      'contentMessage': contentMessage,
+      'members': listUserId,
+    }).then((value) => value[0]);
   }
 }
