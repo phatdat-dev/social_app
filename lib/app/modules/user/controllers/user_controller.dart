@@ -93,6 +93,20 @@ class UserController extends BaseController with SearchTagFriendMixinController,
     });
   }
 
+  Future<void> call_denyFriendRequest(int userId) async {
+    await apiCall.onRequest(
+      ApiUrl.post_denyFriendRequest(),
+      RequestMethod.POST,
+      body: {
+        'userId': userId,
+      },
+    ).then((result) {
+      HelperWidget.showSnackBar(message: result.toString());
+      call_fetchFriendsRequest();
+      call_fetchFriendByUserId();
+    });
+  }
+
   Future<void> call_editInformationUser(Map<String, dynamic> body) async {
     final result = await apiCall.onRequest(
       ApiUrl.post_editInformationUser(),

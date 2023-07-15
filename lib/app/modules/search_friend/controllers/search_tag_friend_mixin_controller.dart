@@ -65,8 +65,8 @@ mixin SearchTagFriendMixinController implements BaseController {
   Future<void> call_fetchFriendsRequest() async {
     apiCall
         .onRequest(
-      ApiUrl.get_fetchFriendRequest(),
-      RequestMethod.POST,
+      ApiUrl.get_fetchFriendRequest(AuthenticationController.userAccount!.id!),
+      RequestMethod.GET,
     )
         .then((value) {
       listFriendRequest.value = Helper.convertToListMap(value);

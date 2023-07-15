@@ -109,7 +109,7 @@ class _UserFriendViewState extends State<UserFriendView> with TickerProviderStat
             ),
             action2: (
               LocaleKeys.Remove.tr,
-              () {},
+              () => controller.call_denyFriendRequest(e['user_request']),
             ),
           );
         },

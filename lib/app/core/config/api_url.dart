@@ -18,7 +18,7 @@ class ApiUrl {
   static String get_fetchFriendByUserId(int userId, [int? limit]) => '/api/v1/fetch-friend-by-user-id/$userId' + (limit != null ? '/$limit' : '');
   static String get_profileUser(int userId) => '/api/v1/profile-user/userId=$userId';
   static String get_fetchFriendsSuggestion() => '/api/v1/fetch-friends-suggestion';
-  static String get_fetchFriendRequest() => '/api/v1/fetch-friend-request-list';
+  static String get_fetchFriendRequest(int userId) => '/api/v1/fetch-friend-request-list/userId=$userId';
   static String post_editInformationUser() => '/api/v1/edit-information-user';
   static String post_uploadAvatar() => '/api/v1/upload-avatar';
   static String post_uploadCoverImage() => '/api/v1/upload-cover-image';
@@ -48,7 +48,8 @@ class ApiUrl {
   static String post_replyComment() => '/api/v1/reply-comment';
   static String post_unfriend() => '/api/v1/unfriend';
   static String post_requestAddFriend() => '/api/v1/request-add-friend';
-  static String post_acceptFriendRequest() => '/api/v1/accept-frieyiind-request';
+  static String post_acceptFriendRequest() => '/api/v1/accept-friend-request';
+  static String post_denyFriendRequest() => '/api/v1/deny-friend-request';
   static String get_fetchFellAndActivityPosts() => '/api/v1/fetch-fell-and-activity-posts';
   //
   static String get_fetchStories() => '/api/v1/stories';
