@@ -113,7 +113,7 @@ class PostController extends BaseFetchController {
       'postId': postId,
       'commentId': commentId,
       'commentContent': content,
-      'file': MultipartFile(File(filesPath.first), filename: filesPath.first),
+      if (filesPath.isNotEmpty) 'file': MultipartFile(File(filesPath.first), filename: filesPath.first),
     });
 
     await apiCall.onRequest(ApiUrl.post_replyComment(), RequestMethod.POST, body: formData);

@@ -179,16 +179,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (widget.postResponseModel['parent_post'] == null) ...[
-            _buildPostCard(
-              context: context,
-              isExpandedNotifier: isExpandedNotifier,
-              postResponseModel: widget.postResponseModel,
-            ),
-            if (widget.isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
-          ]
-          //nếu bài viết được chia sẽ và có parent_post
-          else ...[
+          if (widget.postResponseModel['parent_post'] != null && widget.postResponseModel['parent_post'] is Map) ...[
             _buildHeaderPost(context, widget.postResponseModel),
             _buildPostContentString(
               context: context,
@@ -204,6 +195,15 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                 isExpandedNotifier: isExpandedNotifier,
                 postResponseModel: widget.postResponseModel['parent_post'],
               ),
+            ),
+            if (widget.isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
+          ]
+          //nếu bài viết được chia sẽ và có parent_post
+          else ...[
+            _buildPostCard(
+              context: context,
+              isExpandedNotifier: isExpandedNotifier,
+              postResponseModel: widget.postResponseModel,
             ),
             if (widget.isShowcontentOnly == false) ..._buildBottom(context: context, isExpandedNotifier: isExpandedNotifier),
           ]
@@ -327,8 +327,9 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
         Expanded(
           child: Builder(
             builder: (context) {
-              final typeIdMyUserReaction = (widget.postResponseModel['like'] as List)
-                  .firstWhereOrNull((userReaction) => userReaction['user_id'] == AuthenticationController.userAccount!.id)?['type'] as int?;
+              final likee = (widget.postResponseModel['like'] as List)
+                  .firstWhereOrNull((userReaction) => userReaction['user_id'].toString() == AuthenticationController.userAccount!.id.toString());
+              final typeIdMyUserReaction = int.tryParse(likee?['type'].toString() ?? '');
 
               final listReactions = controller.rectionsGif.entries
                   .mapIndexed(
@@ -447,7 +448,7 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
           ...top3ReactionsId
               .mapIndexed((index, e) => Positioned(
                     left: 2 + (index * 13),
-                    child: circleIcon(getAssetRectionsGif(e)),
+                    child: circleIcon(getAssetRectionsGif(int.parse(e.toString()))),
                   ))
               .toList(),
           //
@@ -492,7 +493,8 @@ class _FacebookCardPostWidgetState extends State<FacebookCardPostWidget> {
                 onTap: () => Get.toNamed(Routes.USER("${postResponseModel['user_id']}")),
                 child: CircleAvatar(
                   radius: 15,
-                  backgroundImage: NetworkImage(postResponseModel['avatarUser']!), //! api sida
+                  backgroundImage: NetworkImage(postResponseModel['avatarUser'] ??
+                      'https://banner2.cleanpng.com/20180402/ojw/kisspng-united-states-avatar-organization-information-user-avatar-5ac20804a62b58.8673620215226654766806.jpg'), //! api sida
                 ),
               ),
             )
