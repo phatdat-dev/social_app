@@ -105,11 +105,11 @@ class _UserFriendViewState extends State<UserFriendView> with TickerProviderStat
             image: NetworkImage(e['avatar'] ?? ''),
             action1: (
               LocaleKeys.Accept.tr,
-              () => controller.call_acceptFriendRequest(e['user_request']), //
+              () => controller.call_acceptFriendRequest(int.parse('${e['user_request']}')), //
             ),
             action2: (
               LocaleKeys.Remove.tr,
-              () => controller.call_denyFriendRequest(e['user_request']),
+              () => controller.call_denyFriendRequest(int.parse('${e['user_request']}')),
             ),
           );
         },

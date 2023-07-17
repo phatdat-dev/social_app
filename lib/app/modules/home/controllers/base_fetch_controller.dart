@@ -1,6 +1,6 @@
-import 'package:get/get.dart';
 import 'package:ckc_social_app/app/core/base/base_project.dart';
 import 'package:ckc_social_app/app/core/utils/utils.dart';
+import 'package:get/get.dart';
 
 abstract class BaseFetchController extends BaseController with StateMixin<List<Map<String, dynamic>>> {
   String get apiUrl;

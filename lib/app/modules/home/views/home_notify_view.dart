@@ -4,6 +4,8 @@ import 'package:ckc_social_app/app/modules/notification/controllers/notification
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
+
 class HomeNotifyView extends StatefulWidget {
   HomeNotifyView({Key? key}) : super(key: key);
 
@@ -51,11 +53,19 @@ class _HomeNotifyViewState extends State<HomeNotifyView> {
             itemBuilder: (context, int index) {
               final item = state![index];
               return FacebookCardNotification(
+                onPressed: () {
+                  switch (item['object_type']) {
+                    case 'FrInvitation':
+                      Get.toNamed(Routes.USER_FRIEND('${item['from']}'));
+                      break;
+                    default:
+                  }
+                },
                 color: item['status'] == 'unread' ? Theme.of(context).colorScheme.secondary : null,
                 ImageData: item['userAvatarFrom'],
                 title: item['userNameFrom'] + ' ' + item['title'],
                 date: DateTime.tryParse(item['created_at'] ?? '')?.timeAgoSinceDate() ?? '',
-                icon: item['notication_type'] == 'page' ? 'assets/images/page.jpg' : 'assets/images/fb.png',
+                icon: item['notication_type'] == 'page' ? 'assets/images/page.jpg' : 'assets/images/iconApp.png',
               );
             })),
       ],

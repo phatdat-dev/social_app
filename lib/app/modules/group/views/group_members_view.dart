@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../search_friend/views/search_tag_friend_view.dart';
 
 class GroupMembersView extends GetView<GroupController> {
   const GroupMembersView({super.key});
@@ -26,7 +27,14 @@ class GroupMembersView extends GetView<GroupController> {
               actions: [
                 AppBarIconWidget(
                   icon: const Icon(Icons.group_add_outlined, color: Colors.green),
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.call_fetchFriendToInviteGroup(controller.currentGroup['id']);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SearchTagFriendView<GroupController>(title: LocaleKeys.InviteFriendToGroup.tr),
+                      ),
+                    );
+                  },
                 ),
               ],
               bottom: PreferredSize(

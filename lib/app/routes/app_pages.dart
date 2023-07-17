@@ -180,6 +180,10 @@ class AppPages {
           name: _Paths.FRIEND, // /user/:id/friend
           transition: randomTransition,
           page: () => const UserFriendView(),
+          binding: BindingsBuilder(() {
+            final id = int.tryParse(Get.parameters['id'] ?? '') ?? 0;
+            Get.lazyPut(() => UserController(id), tag: '$id');
+          }),
         ),
         GetPage(
           name: _Paths.PHOTOS, // /user/:id/photos

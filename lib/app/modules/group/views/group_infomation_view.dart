@@ -34,7 +34,7 @@ class _GroupInfomationViewState extends State<GroupInfomationView> {
           Text('Giới thiệu', style: Theme.of(context).textTheme.titleLarge),
           Text(controller.currentGroup['description'] ?? ''),
           Builder(builder: (context) {
-            final privacyModel = PrivacyModel.from(controller.currentGroup['privacy']);
+            final privacyModel = PrivacyModel.from(int.parse(controller.currentGroup['privacy']));
             return ListTile(
               // contentPadding: EdgeInsets.zero,
               leading: Icon(privacyModel.privacyIcon),
