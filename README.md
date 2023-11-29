@@ -6,6 +6,8 @@ Preview: https://www.youtube.com/watch?v=ME0jkq9MRgM
 
 CHPlay: https://play.google.com/store/apps/details?id=com.ckc_social_app
 
+![Alt text](Demo/Demo-App/project-demo-app/Untitled.png)
+
 <table width="100%">
   <tbody>
     <tr>
